@@ -7,20 +7,29 @@
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
+    "@babel/register": "^7.12.10",
     "babel-loader": "^8.2.2",
+    "babel-plugin-webpack-aliases": "^1.1.3",
+    "chai": "^4.2.0",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
+    "esm": "^3.2.25",
     "html-webpack-plugin": "^4.5.1",
+    "mocha": "^8.2.1",
+    "module-alias": "^2.2.2",
     "webpack": "^5.15.0",
     "webpack-cli": "^4.3.1",
     "webpack-dev-server": "^3.11.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --require module-alias/register './specs/**/-pokerhand.spec.js'",
+    "test-all": "mocha './specs/**/*.spec.js'",
     "serve": "webpack serve --hot --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "test-last": "node ./test-last/index.js"
   },
   "repository": {
     "type": "git",
@@ -31,5 +40,9 @@
   "bugs": {
     "url": "https://github.com/vikcch/reludio/issues"
   },
-  "homepage": "https://github.com/vikcch/reludio#readme"
+  "homepage": "https://github.com/vikcch/reludio#readme",
+  "_moduleAliases": {
+    "@root": ".",
+    "@@": "src/"
+  }
 }

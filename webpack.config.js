@@ -21,5 +21,11 @@ module.exports = {
         filename: 'index.html',
         template: 'src/index.html'
     })],
-    devtool: 'source-map'
+    devtool: 'source-map',
+    resolve: {
+        alias: {
+            '@': path.join(__dirname, './src')
+        },
+        extensions: ['.js', '.vue', '.json']
+    }
 };
