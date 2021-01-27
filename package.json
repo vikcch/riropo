@@ -27,20 +27,20 @@
   "scripts": {
     "test": "mocha --require module-alias/register './specs/**/-pokerhand.spec.js'",
     "test-all": "mocha './specs/**/*.spec.js'",
-    "serve": "webpack serve --hot --mode development",
+    "serve": "webpack serve --mode development",
     "build": "webpack --mode production",
     "test-last": "node ./test-last/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vikcch/reludio.git"
+    "url": "git+https://github.com/vikcch/riropo.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vikcch/reludio/issues"
+    "url": "https://github.com/vikcch/riropo/issues"
   },
-  "homepage": "https://github.com/vikcch/reludio#readme",
+  "homepage": "https://github.com/vikcch/riropo#readme",
   "_moduleAliases": {
     "@root": ".",
     "@@": "src/"

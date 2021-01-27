@@ -1,4 +1,4 @@
-import ease from '../eases/pokerhand';
+import ease from '../eases/pokerhand/index';
 
 /**
  * 
@@ -60,18 +60,19 @@ const getGameMode = lines => {
  */
 export default function (lines) {
 
-    const holeCardsLineCount = lines.indexOf('*** HOLE CARDS ***');
-
     const buttonSeat = getButtonSeat(lines);
+
+    const players = ease.createPlayers(lines, buttonSeat);
+
+    const histories = ease.createHistories(lines, players);
 
     return {
 
         playersCount: countPlayers(lines),
         buttonSeat,
         gameMode: getGameMode(lines),
-        players: ease.createPlayers(lines, buttonSeat)
-
-
+        players,
+        histories
     };
 
 

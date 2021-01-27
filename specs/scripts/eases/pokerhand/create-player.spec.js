@@ -1,10 +1,6 @@
 // import { assert } from 'chai';
-// import { testables } from '../../../src/scripts/eases/pokerhand';
-import { testables } from '@/scripts/eases/pokerhand';
+import testables from '@/scripts/eases/pokerhand/create-player';
 
-// import { testables } from '@@/scripts/eases/pokerhand';
-
-// const testables = require('../../../src/scripts/eases/pokerhand');
 const assert = require('assert');
 
 describe('ease-pokerhand', function () {
@@ -58,6 +54,7 @@ describe('ease-pokerhand', function () {
             assert.deepStrictEqual(fn(lines), anticipate);
         });
     });
+
     describe('# 3 getPlayersInfoLines', function () {
 
         const fn = testables.getPlayersInfoLines;
@@ -77,6 +74,54 @@ describe('ease-pokerhand', function () {
             const anticipate = [
                 'Seat 2: Seat 9: vikcch in chips) (€2 in chips) ',
                 'Seat 5: ruipinho1 (€5.60 in chips) '
+            ];
+
+            assert.deepStrictEqual(fn(lines), anticipate);
+        });
+    });
+
+    describe('# 4 getPlayersInfoLines', function () {
+
+        const fn = testables.getPlayersInfoLines;
+
+        it('should return only Players info lines', function () {
+
+            const lines = [
+                "PokerStars Hand #206033306253: Tournament #2714160813, €116.50+€116.00+€17.50 EUR Hold'em No Limit - Level V (300/600) - 2019/11/10 20:12:50 WET [2019/11/10 15:12:50 ET]",
+                "Table '2714160813 219' 9-max Seat #3 is the button",
+                'Seat 1: EXXPL0ITRRRR (89631 in chips, €174 bounty) ',
+                'Seat 2: BonneChance1956 (54345 in chips, €116 bounty) ',
+                'Seat 3: vikcch (31514 in chips, €116 bounty) ',
+                'Seat 4: L€urop€an (70660 in chips, €116 bounty) ',
+                'Seat 5: Premove10 (56555 in chips, €116 bounty) ',
+                'Seat 6: MAILI SAIRES (35617 in chips, €116 bounty) ',
+                'Seat 7: Ericaao (50755 in chips, €116 bounty) ',
+                'Seat 8: surfingwithU (69802 in chips, €116 bounty) ',
+                'Seat 9: tonyrastas (40153 in chips, €116 bounty) ',
+                'EXXPL0ITRRRR: posts the ante 75',
+                'BonneChance1956: posts the ante 75',
+                'vikcch: posts the ante 75',
+                'L€urop€an: posts the ante 75',
+                'Premove10: posts the ante 75',
+                'MAILI SAIRES: posts the ante 75',
+                'Ericaao: posts the ante 75',
+                'surfingwithU: posts the ante 75',
+                'tonyrastas: posts the ante 75',
+                'L€urop€an: posts small blind 300',
+                'Premove10: posts big blind 600',
+                '*** HOLE CARDS ***'
+            ];
+
+            const anticipate = [
+                'Seat 1: EXXPL0ITRRRR (89631 in chips, €174 bounty) ',
+                'Seat 2: BonneChance1956 (54345 in chips, €116 bounty) ',
+                'Seat 3: vikcch (31514 in chips, €116 bounty) ',
+                'Seat 4: L€urop€an (70660 in chips, €116 bounty) ',
+                'Seat 5: Premove10 (56555 in chips, €116 bounty) ',
+                'Seat 6: MAILI SAIRES (35617 in chips, €116 bounty) ',
+                'Seat 7: Ericaao (50755 in chips, €116 bounty) ',
+                'Seat 8: surfingwithU (69802 in chips, €116 bounty) ',
+                'Seat 9: tonyrastas (40153 in chips, €116 bounty) ',
             ];
 
             assert.deepStrictEqual(fn(lines), anticipate);
@@ -113,7 +158,7 @@ describe('ease-pokerhand', function () {
         });
     });
 
-    describe('# getPlayerName', function () {
+    describe('# 1 getPlayerName', function () {
 
         const fn = testables.getPlayerName;
 
@@ -125,7 +170,19 @@ describe('ease-pokerhand', function () {
         });
     });
 
-    describe('# getPlayerStack', function () {
+    describe('# 2 getPlayerName', function () {
+
+        const fn = testables.getPlayerName;
+
+        it('should return Joan (ana', function () {
+
+            const line = 'Seat 7: Joan (ana (50680 in chips, €116 bounty) ';
+
+            assert.strictEqual(fn(line), 'Joan (ana');
+        });
+    });
+
+    describe('# 1 getPlayerStack', function () {
 
         const fn = testables.getPlayerStack;
 
@@ -134,6 +191,66 @@ describe('ease-pokerhand', function () {
             const line = 'Seat 7: Ericaao (50680 in chips, €116 bounty) ';
 
             assert.strictEqual(fn(line), 50680);
+        });
+    });
+
+    describe('# 2 getPlayerStack', function () {
+
+        const fn = testables.getPlayerStack;
+
+        it('should return 5.60', function () {
+
+            const line = 'Seat 5: ruipinho1 (€5.60 in chips) ';
+
+            assert.strictEqual(fn(line), 5.60);
+        });
+    });
+
+    describe('# 3 getPlayerStack', function () {
+
+        const fn = testables.getPlayerStack;
+
+        it('should return 50680', function () {
+
+            const line = 'Seat 7: Ericaao (50680 in chips) ';
+
+            assert.strictEqual(fn(line), 50680);
+        });
+    });
+
+    describe('# 1 getPlayerBounty', function () {
+
+        const fn = testables.getPlayerBounty;
+
+        it('should return 116', function () {
+
+            const line = 'Seat 7: Ericaao (50680 in chips, €116 bounty) ';
+
+            assert.strictEqual(fn(line), 116);
+        });
+    });
+
+    describe('# 2 getPlayerBounty', function () {
+
+        const fn = testables.getPlayerBounty;
+
+        it('should return 116.54', function () {
+
+            const line = 'Seat 7: Ericaao (50680 in chips, €116.54 bounty) ';
+
+            assert.strictEqual(fn(line), 116.54);
+        });
+    });
+
+    describe('# 3 getPlayerBounty', function () {
+
+        const fn = testables.getPlayerBounty;
+
+        it('should return null', function () {
+
+            const line = 'Seat 7: Ericaao (50680 in chips) ';
+
+            assert.strictEqual(fn(line), null);
         });
     });
 

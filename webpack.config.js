@@ -27,5 +27,8 @@ module.exports = {
             '@': path.join(__dirname, './src')
         },
         extensions: ['.js', '.vue', '.json']
-    }
+    },
+    target: "node",
+    mode: 'none',
+    externals: [/node_modules/, 'bufferutil', 'utf-8-validate'],
 };

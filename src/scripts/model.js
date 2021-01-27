@@ -16,7 +16,7 @@ export default class Model {
 
         // TODO:: 10 max é invalido
 
-        
+
         //TODO:: ver arranjar nome de jogador com \n
         // STOPSHIP:: ver no live-squeezer se envia com 3 enters
 
@@ -24,16 +24,18 @@ export default class Model {
 
         const jagged = arrayOfHands.map(x => x.split(/\r\n/));
 
-        console.log(jagged);
+        // console.log(jagged);
 
         this.handHistories = jagged.map(hand => {
 
             // TODO:: LIMPAR HAND (EX: remover playes "out of hand", comentarios, etc)
             // STOPSHIP:: "out of hand" é importantissimo
+            // tem tambem: "Chelov18 will be allowed to play after the button"
+            // tem tambem: "gporto68 leaves the table"
 
             return pokerHand(hand);
 
-        })
+        });
 
         console.log(this.handHistories);
     }

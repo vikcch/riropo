@@ -18,11 +18,7 @@ export default class Controller {
         this.view.bindControls({
             loadHandHistory: this.handlerLoadHandHistory_onChange
         });
-
-
-
     }
-
 
     handlerLoadHandHistory_onChange = (event) => {
 

@@ -1,5 +1,4 @@
-import Player from '../units/player';
-import fns from '../units/fns';
+import fns from '../../units/fns';
 
 /**
  * Exclui as duas primeiras linhas do log e acaba nos posts
@@ -25,7 +24,7 @@ const getPlayersInfoLines = lines => {
     const regSeat = value => /^Seat\s\d:\s/gm.test(value);
     const regChips = value => {
 
-        return /\sin\schips\)\s(|is\ssitting\sout)$/gm.test(value);
+        return /\)\s(|is\ssitting\sout)$/gm.test(value);
     };
 
     return barePlayersLines.filter(x => regSeat(x) && regChips(x));
@@ -42,13 +41,11 @@ const getPlayerName = line => {
     // Seat 5: ruipinho1 (€5.60 in chips) 
     // Seat 7: Ericaao (50680 in chips, €116 bounty) 
 
-    const rightPart = line.slice(8);
-    const rev = [...rightPart].reverse().join('');
+    const startAt = 'Seat *: '.length;
 
-    // +2 -> 1 porque é zero based, mais 1 por causa do espaço
-    const inStr = rev.indexOf("(") + 2;
+    const finishAt = line.lastIndexOf(' (');
 
-    return [...rev.slice(inStr)].reverse().join('');
+    return line.substring(startAt, finishAt);
 };
 
 /**
@@ -62,13 +59,9 @@ const getPlayerStack = line => {
     // Seat 5: ruipinho1 (€5.60 in chips) 
     // Seat 7: Ericaao (50680 in chips, €116 bounty) 
 
+    const bracketIndex = line.lastIndexOf('(');
 
-    // OPTIMIZE:: string.prototype.lastIndexOf() existe :)
-    const rev = [...line].reverse().join('');
-
-    const inStr = rev.indexOf("(");
-
-    const stackPart = ([...rev.slice(0, inStr)]).reverse().join('');
+    const stackPart = line.substring(bracketIndex);
 
     const finishAt = stackPart.indexOf(' in chips');
 
@@ -76,9 +69,6 @@ const getPlayerStack = line => {
 
     return Number(fns.removeMoney(stackStr));
 };
-
-// TODO:: util reverse string
-
 
 /**
  * 
@@ -90,6 +80,26 @@ const getPlayerSeat = line => {
     // Seat 5: ruipinho1 (€5.60 in chips) 
 
     return Number(line.substring(5, 6));
+};
+
+/**
+ * 
+ * @param {string} line
+ * @returns {number}
+ */
+const getPlayerBounty = line => {
+
+    // Seat 1: SteveAnoki (2120 in chips) is sitting out
+    // Seat 5: ruipinho1 (€5.60 in chips) 
+    // Seat 7: Ericaao (50680 in chips, €116 bounty) 
+
+    const bracketIndex = line.lastIndexOf('(');
+
+    const stackPart = line.substring(bracketIndex);
+
+    const match = stackPart.match(/(|\d+)(|\d+\.\d{2})(?=\sbounty)/g);
+
+    return match ? Number(match[0]) : null;
 };
 
 /**
@@ -139,7 +149,7 @@ const makeTablePositions = function (playersLines, buttonSeat) {
  * @param {string[]} lines
  * @returns {string}
  */
-const getHeroName = (lines, players) => {
+const getHeroName = (lines) => {
 
     // ...
     // *** HOLE CARDS ***
@@ -159,55 +169,11 @@ const getHeroName = (lines, players) => {
 };
 
 export default {
-
-    /**
-     * 
-     * @param {string[]} lines 
-     * @param {number} buttonSeat 
-     * @returns {Player[]} 
-     */
-    createPlayers(lines, buttonSeat) {
-
-        const holeCardsLineCount = lines.indexOf('*** HOLE CARDS ***');
-
-        // const playersLines = lines.slice(2, holeCardsLineCount - 1);
-
-        const playersLines = getPlayersInfoLines(lines);
-
-        const heroName = getHeroName(lines);
-
-        const tablePositions = makeTablePositions(playersLines, buttonSeat);
-
-        const players = playersLines.map(x => {
-
-            // TODO: name, stack, seat, position, isHero, isButton, bounty
-
-            const name = getPlayerName(x);
-            
-            const stack = getPlayerStack(x);
-
-            const seat = getPlayerSeat(x);
-
-            const isButton = seat === buttonSeat;
-
-            const isHero = name === heroName;
-
-            const position = tablePositions.find(x => x.seat === seat).position;
-
-            return Player({ name, stack, seat, position, isButton, isHero });
-        });
-
-        return players;
-    }
-}
-
-export const testables = {
-
     getPlayersInfoLines,
-    getPlayerStack,
     getPlayerName,
-    getHeroName,
+    getPlayerStack,
+    getPlayerSeat,
+    getPlayerBounty,
     makeTablePositions,
-}
-
-
+    getHeroName
+};
