@@ -1,5 +1,6 @@
 // import { assert } from 'chai';
 import { testables } from '@/scripts/eases/pokerhand/create-history';
+import { Delimiters } from '@/scripts/units/delimiters';
 
 const assert = require('assert');
 
@@ -25,16 +26,18 @@ describe('ease-pokerhand-create-history', function () {
             ];
 
             const anticipate = [
-                'sasdfasdf: folds',
-                'vik: calls 5',
-                'rita: calls 3',
-                'joana: checks',
+                { value: 'sasdfasdf: folds', index: 5 },
+                { value: 'vik: calls 5', index: 6 },
+                { value: 'rita: calls 3', index: 7 },
+                { value: 'joana: checks', index: 8 },
             ];
 
-            assert.deepStrictEqual(fn(lines), anticipate);
+            const delimiters = Delimiters();
+
+            assert.deepStrictEqual(fn(lines, delimiters), anticipate);
         });
     });
-    
+
     describe('# 2 getActivityLines', function () {
 
         const fn = testables.getActivityLines;
@@ -50,11 +53,13 @@ describe('ease-pokerhand-create-history', function () {
             ];
 
             const anticipate = [
-                'ruipinho1: calls €0.01',
-                'vikcch: checks ',
+                { value: 'ruipinho1: calls €0.01', index: 2 },
+                { value: 'vikcch: checks ', index: 3 },
             ];
 
-            assert.deepStrictEqual(fn(lines), anticipate);
+            const delimiters = Delimiters();
+
+            assert.deepStrictEqual(fn(lines, delimiters), anticipate);
 
             // console.log('asddas');
             // console.log(fn(lines));

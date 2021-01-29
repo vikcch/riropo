@@ -1,9 +1,12 @@
-import Player from '@/scripts/units/player';
-import History from '@/scripts/units/history';
+import { Player, PlayerT } from '@/scripts/units/player';
+
+import { History } from '@/scripts/units/history';
 
 import createPlayer from './create-player';
 import createHistory from './create-history';
-import { head } from '@/scripts/units/fns';
+import { rear } from '@/scripts/units/fns';
+
+import { Delimiters } from '@/scripts/units/delimiters';
 
 export default {
 
@@ -58,24 +61,24 @@ export default {
      */
     createHistories(lines, players) {
 
-        const delimiters = {
-            index: 0,
-            names: ['HOLE CARDS', 'FLOP', 'TURN', 'RIVER', 'SHOW DOWN', 'SUMMARY'],
-            get current() { return `*** ${this.names[this.index]} ***`; },
-        };
-
-        const histories = [];
+        const delimiters = Delimiters();
 
         const posts = createHistory.posts(lines, players, delimiters);
-        histories.push(posts);
 
-        const lastHistory = head(histories);
+        const histories = [posts];
 
-        const activity = createHistory.activity(lines, lastHistory, delimiters);
-        histories.push(...activity);
+        const a = 'activity', s = 'street';
+        const series = [a, s, a, s, a, s, a];
 
+        while (!delimiters.done) {
 
+            const lastHistory = rear(histories);
 
+            const stage = series.shift();
+
+            const rows = createHistory[stage](lines, lastHistory, delimiters);
+            histories.push(...rows);
+        }
 
         console.log(players);
         console.log(histories);

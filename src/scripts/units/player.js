@@ -1,12 +1,6 @@
-/**
- * 
- * @param {{name:string, stack:number}} param0 
- */
-const Player = ({ name, stack, seat, position, isButton, isHero, bounty }) => {
+export const Player = ({ name, stack, seat, position, isButton, isHero, bounty }) => {
 
-    // let myProp = null;
-    // const setMyProp = value => myProp = value;
-
+    let _amountOnStreet = 0;
 
     return {
         stack,
@@ -16,14 +10,22 @@ const Player = ({ name, stack, seat, position, isButton, isHero, bounty }) => {
         isButton,
         isHero,
         bounty,
-        // setMyProp,
-        // get myProp() { return myProp; }
+
         clone() {
 
-            return Player(this);
-        }
+            return { ...this };
+        },
+        cloneResetStreet() {
 
+            const p = { ...this };
+            p.amountOnStreet = 0;
+
+            return p;
+        },
+
+        get amountOnStreet() { return _amountOnStreet; },
+        set amountOnStreet(value) { _amountOnStreet = value; }
     };
 };
 
-export default Player;
+export const PlayerT = Player({});
