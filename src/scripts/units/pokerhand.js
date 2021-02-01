@@ -47,8 +47,8 @@ const getGameMode = lines => {
 
     const gameModeLine = lines[0];
 
-    const tournament = gameModeLine.includes['Tournament'];
-    const Holdem = gameModeLine.includes['Hold'];
+    const tournament = gameModeLine.includes('Tournament');
+    const Holdem = gameModeLine.includes('Hold');
 
     if (tournament) return Holdem ? 1 : 3;
     else return Holdem ? 2 : 4;
@@ -65,6 +65,8 @@ export default function (lines) {
     const players = ease.createPlayers(lines, buttonSeat);
 
     const histories = ease.createHistories(lines, players);
+
+    // TODO:: table max, date, stakes, table name, room, hand id
 
     return {
 

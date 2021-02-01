@@ -1,7 +1,5 @@
 export const Player = ({ name, stack, seat, position, isButton, isHero, bounty }) => {
 
-    let _amountOnStreet = 0;
-
     return {
         stack,
         name,
@@ -10,6 +8,7 @@ export const Player = ({ name, stack, seat, position, isButton, isHero, bounty }
         isButton,
         isHero,
         bounty,
+        amountOnStreet:0,
 
         clone() {
 
@@ -22,9 +21,6 @@ export const Player = ({ name, stack, seat, position, isButton, isHero, bounty }
 
             return p;
         },
-
-        get amountOnStreet() { return _amountOnStreet; },
-        set amountOnStreet(value) { _amountOnStreet = value; }
     };
 };
 

@@ -84,6 +84,8 @@ export default {
         console.log(histories);
         console.log('+++++++');
 
+
+        return histories;
         // console.log(delimiters);
     }
 }

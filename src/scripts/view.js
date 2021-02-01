@@ -1,35 +1,68 @@
+import Button from "./controls/button";
+import ease from '@/scripts/eases/view/load-images';
+
 export default class View {
+
+    static canvasAux = document.createElement('canvas');
+    static contextAux = View.canvasAux.getContext('2d');
 
     constructor() {
 
+        this.coordsDiv = document.querySelector('#mouse-coords');
+
         this.loadHH = document.querySelector('#load-hand-history');
-
-
-
-
-
-
 
         /** @type {HTMLCanvasElement} */
         this.canvas = document.querySelector('#canvas');
         this.context = this.canvas.getContext('2d');
 
-
         this.canvas.width = 792;
         this.canvas.height = 555;
+
+        this.embeddables = [];
+        this.createEmbeddedControls();
+
+        this.images = {};
+        this.setImages();
 
         this.context.beginPath();
         this.context.moveTo(0, 0);
         this.context.lineTo(500, 100);
         this.context.stroke();
+    }
 
-        const img = new Image();
-        img.onload = () => {
+    async setImages() {
 
-            this.context.drawImage(img, 0, 0);
-        };
+        try {
 
-        img.src = './src/assets/images/bg-vector-792x555.jpg';
+            this.images = await ease.loadImages();
+
+            this.setEmbeddedControlsImages();
+
+            this.embeddables.forEach(x => x.draw());
+
+        } catch (error) {
+
+            console.log(error);
+        }
+    }
+
+    setEmbeddedControlsImages = () => {
+
+        this.context.drawImage(this.images.background, 0, 0);
+
+        this.nextAction.setImages(this.images.navigation, { row: 0 });
+        this.previousAction.setImages(this.images.navigation, { row: 1 });
+    }
+
+    createEmbeddedControls() {
+
+        const rect = { x: 500, y: 400, width: 50, height: 28 };
+        this.nextAction = new Button(this, rect);
+
+        const rect2 = { x: 570, y: 400, width: 50, height: 28 };
+
+        this.previousAction = new Button(this, rect2, 'disabled');
     }
 
 
@@ -37,7 +70,24 @@ export default class View {
 
 
         this.loadHH.addEventListener('change', handlers.loadHandHistory);
+        this.canvas.addEventListener('mousemove', handlers.canvasMouseMove);
 
+        // this.coordsDiv.innerHTML = e.offsetX
+
+        this.canvas.addEventListener('mousedown', handlers.canvasClick);
+
+        this.canvas.addEventListener('mouseup', (e) => { });
+        this.canvas.addEventListener('mouseout', (e) => {
+
+            // TODO:: deselecionar (hover) todos
+        });
+    }
+
+
+    bindEmbeddedControls(handlers) {
+
+        this.nextAction.bind(handlers.nextAction);
+        this.previousAction.bind(handlers.previousAction);
     }
 
 }

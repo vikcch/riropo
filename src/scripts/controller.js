@@ -3,6 +3,8 @@ import Model from "./model";
 
 export default class Controller {
 
+    static mousePoint = {};
+
     /**
      * 
      * @param {Model} model 
@@ -16,7 +18,21 @@ export default class Controller {
 
 
         this.view.bindControls({
-            loadHandHistory: this.handlerLoadHandHistory_onChange
+            loadHandHistory: this.handlerLoadHandHistory_onChange,
+            canvasClick: this.handlerCanvas_onClick,
+            canvasMouseMove: this.handlerCanvas_onMouseMove,
+        });
+
+        this.view.bindEmbeddedControls({
+            nextAction: {
+                click: this.handlerNextAction_onClick,
+                hover: this.handlerNextAction_onHover
+            },
+
+            previousAction: {
+                click: this.handlerPreviousAction_onClick,
+                hover: this.handlerPreviousAction_onHover
+            }
         });
     }
 
@@ -50,6 +66,50 @@ export default class Controller {
 
 
     }
+
+    handlerCanvas_onClick = (e) => {
+
+        const mousePoint = { x: e.offsetX, y: e.offsetY };
+
+        const found = this.view.embeddables.find(v => v.hitMe(mousePoint));
+
+        if (found) found.click();
+    }
+
+    handlerCanvas_onMouseMove = (e) => {
+
+        const mousePoint = { x: e.offsetX, y: e.offsetY };
+
+        Controller.mousePoint = mousePoint;
+
+        const found = this.view.embeddables.find(v => v.hitMe(mousePoint));
+
+        if (found) found.hover();
+    }
+
+
+    handlerNextAction_onClick = () => {
+
+        console.log('foi clicako  next');
+
+
+        this.view.previousAction.setState = 'normal';
+    }
+    handlerNextAction_onHover = (p) => {
+
+        console.log('foi hover  next');
+        console.log(p);
+    }
+
+    handlerPreviousAction_onClick = () => {
+
+        console.log('foi clicako  previous');
+    }
+    handlerPreviousAction_onHover = () => {
+
+        console.log('foi hover  previous');
+    }
+
 
 
 }
