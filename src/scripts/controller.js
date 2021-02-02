@@ -19,21 +19,39 @@ export default class Controller {
 
         this.view.bindControls({
             loadHandHistory: this.handlerLoadHandHistory_onChange,
-            canvasClick: this.handlerCanvas_onClick,
+            canvasMouseDown: this.handlerCanvas_onMouseDown,
+            canvasMouseUp: this.handlerCanvas_onMouseUp,
             canvasMouseMove: this.handlerCanvas_onMouseMove,
         });
 
         this.view.bindEmbeddedControls({
             nextAction: {
                 click: this.handlerNextAction_onClick,
-                hover: this.handlerNextAction_onHover
             },
 
             previousAction: {
                 click: this.handlerPreviousAction_onClick,
-                hover: this.handlerPreviousAction_onHover
             }
         });
+    }
+
+    /**
+     * 
+     * @param {MouseEvent} e 
+     */
+    setMousePoint(e) {
+
+        const {
+            width, height,              // Medida real do canvas
+            offsetWidth, offsetHeight   // Medida escalar (settada no style)
+        } = this.view.canvas;
+
+        const mousePoint = {
+            x: e.offsetX * width / offsetWidth,
+            y: e.offsetY * height / offsetHeight
+        };
+
+        Controller.mousePoint = mousePoint;
     }
 
     handlerLoadHandHistory_onChange = (event) => {
@@ -67,49 +85,65 @@ export default class Controller {
 
     }
 
-    handlerCanvas_onClick = (e) => {
+    handlerCanvas_onMouseDown = (e) => {
 
-        const mousePoint = { x: e.offsetX, y: e.offsetY };
+        const mousePoint = Controller.mousePoint;
+
+        const found = this.view.embeddables.find(v => v.hitMe(mousePoint));
+
+        if (found) found.mousedown();
+    }
+
+    handlerCanvas_onMouseUp = (e) => {
+
+        const mousePoint = Controller.mousePoint;
 
         const found = this.view.embeddables.find(v => v.hitMe(mousePoint));
 
         if (found) found.click();
     }
 
+
+    /**
+     * 
+     * @param {MouseEvent} e 
+     */
     handlerCanvas_onMouseMove = (e) => {
 
-        const mousePoint = { x: e.offsetX, y: e.offsetY };
+        this.setMousePoint(e)
 
-        Controller.mousePoint = mousePoint;
+        const mousePoint = Controller.mousePoint;
 
         const found = this.view.embeddables.find(v => v.hitMe(mousePoint));
 
         if (found) found.hover();
+
+        this.view.coordsDiv.innerHTML = e.offsetX
     }
 
+    //#region EmbeddedControls
 
     handlerNextAction_onClick = () => {
 
         console.log('foi clicako  next');
 
+        // this.view.context.fillRect(0, 0, 300, 50);
+
+
+        // this.view.context.fillStyle = '#FF0000';
+        // this.view.context.fillText('Merda', 10, 20)  
+
 
         this.view.previousAction.setState = 'normal';
-    }
-    handlerNextAction_onHover = (p) => {
 
-        console.log('foi hover  next');
-        console.log(p);
+        // const hand = this.model.handHistories[0];
+        // this.view.render(hand.histories[0]);
     }
 
     handlerPreviousAction_onClick = () => {
 
         console.log('foi clicako  previous');
     }
-    handlerPreviousAction_onHover = () => {
 
-        console.log('foi hover  previous');
-    }
-
-
-
+    //#endregion
 }

@@ -1,5 +1,6 @@
 import Button from "./controls/button";
-import ease from '@/scripts/eases/view/load-images';
+import ease from '@/scripts/eases/view/index';
+import { HistoryT } from '@/scripts/units/history';
 
 export default class View {
 
@@ -51,7 +52,7 @@ export default class View {
 
         this.context.drawImage(this.images.background, 0, 0);
 
-        this.nextAction.setImages(this.images.navigation, { row: 0 });
+        this.nextAction.setImages(this.images.navigation, { row: 3 });
         this.previousAction.setImages(this.images.navigation, { row: 1 });
     }
 
@@ -65,18 +66,16 @@ export default class View {
         this.previousAction = new Button(this, rect2, 'disabled');
     }
 
-
     bindControls(handlers) {
-
 
         this.loadHH.addEventListener('change', handlers.loadHandHistory);
         this.canvas.addEventListener('mousemove', handlers.canvasMouseMove);
 
         // this.coordsDiv.innerHTML = e.offsetX
 
-        this.canvas.addEventListener('mousedown', handlers.canvasClick);
+        this.canvas.addEventListener('mousedown', handlers.canvasMouseDown);
 
-        this.canvas.addEventListener('mouseup', (e) => { });
+        this.canvas.addEventListener('mouseup', handlers.canvasMouseUp);
         this.canvas.addEventListener('mouseout', (e) => {
 
             // TODO:: deselecionar (hover) todos
@@ -88,6 +87,15 @@ export default class View {
 
         this.nextAction.bind(handlers.nextAction);
         this.previousAction.bind(handlers.previousAction);
+    }
+
+    /**
+     * 
+     * @param {HistoryT} history 
+     */
+    render(history) {
+
+        ease.render.call(this, history);
     }
 
 }
