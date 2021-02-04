@@ -38,7 +38,7 @@ export default class View {
 
             this.images = await ease.loadImages();
 
-            this.setEmbeddedControlsImages();
+            await this.setEmbeddedControlsImages();
 
             this.embeddables.forEach(x => x.draw());
 
@@ -48,12 +48,12 @@ export default class View {
         }
     }
 
-    setEmbeddedControlsImages = () => {
+    async setEmbeddedControlsImages() {
 
         this.context.drawImage(this.images.background, 0, 0);
 
-        this.nextAction.setImages(this.images.navigation, { row: 3 });
-        this.previousAction.setImages(this.images.navigation, { row: 1 });
+        await this.nextAction.setImages(this.images.navigation, { row: 3 });
+        await this.previousAction.setImages(this.images.navigation, { row: 1 });
     }
 
     createEmbeddedControls() {

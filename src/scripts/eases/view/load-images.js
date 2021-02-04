@@ -16,6 +16,9 @@ const getImage = async function (file) {
 const files = {
     background: 'bg-vector-792x555.jpg',
     navigation: 'navigation-150x168.png',
+    emptySeat: 'empty-seat-90x90.png',
+    inPlay: 'in-play-25x30.png',
+    chips: 'chips-22-484x20.png'
 };
 
 
@@ -24,23 +27,26 @@ export default {
     async loadImages() {
 
         try {
-            const images = {};
+
             console.time('await total');
 
-            console.time('await 1');
-            const background = getImage(files.background);
+            const arrFiles = [
+                getImage(files.background),
+                getImage(files.navigation),
+                getImage(files.emptySeat),
+                getImage(files.inPlay),
+                getImage(files.chips),
+            ];
 
-            // this.images.background = await loadImages(files.background);
-            console.timeEnd('await 1');
+            const r = await Promise.all(arrFiles);
 
-            console.time('await 2');
-            const navigation = getImage(files.navigation);
-            // this.images.navigation = await loadImages(files.navigation);
-            console.timeEnd('await 2');
-
-            const r = await Promise.all([background, navigation]);
+            // TODO:: enum images
+            const images = {};
             images.background = r[0];
             images.navigation = r[1];
+            images.emptySeat = r[2];
+            images.inPlay = r[3];
+            images.chips = r[4];
 
             console.timeEnd('await total');
 

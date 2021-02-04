@@ -14,6 +14,8 @@ export default class Button {
 
         view.embeddables.push(this);
 
+        this.view = view;
+
         this.context = view.context;
         this.x = x;
         this.y = y;
@@ -28,10 +30,6 @@ export default class Button {
             normal: null,
             hover: null,
             disabled: null,
-            backSpot: {
-                regular: null, // para usar em mousedown
-                mousedown: null, // para usar em normal
-            }
         };
 
         this.state = state;
@@ -53,10 +51,13 @@ export default class Button {
 
         const { state } = this;
 
-        const { regular } = this.images.backSpot;
+        const { background } = this.view.images;
 
-        this.context.putImageData(regular, this.x, this.y);
-        this.context.putImageData(this.images[state], this.x + 1, this.y + 1);
+        this.context.drawImage(background,
+            this.x, this.y, this.width, this.height,
+            this.x, this.y, this.width, this.height);
+
+        this.context.drawImage(this.images[state], this.x + 1, this.y + 1);
 
         this.isPressed = true;
     }
@@ -76,7 +77,7 @@ export default class Button {
 
         if (this.state !== states.normal) return;
 
-        this.context.putImageData(this.images.hover, this.x, this.y);
+        this.context.drawImage(this.images.hover, this.x, this.y);
 
         this.state = states.hover;
 
@@ -109,36 +110,33 @@ export default class Button {
         return horizontal && vertical;
     }
 
-    setImages(image, { row }) {
+    async setImages(image, { row }) {
 
         const keys = ['normal', 'hover', 'disabled'];
 
-        // NOTE:: Dentro de `sprites`, se a imagem tiver transparencia
-        // o `getImageData` captura o background do body, e quando faço
-        // `putImageData` ele aparece
+        const { width, height } = this;
 
-        const { x, y, width, height } = this;
+        const images = await fns.sprites(image, row, width, height)
 
-        const regular = this.context.getImageData(x, y, width, height);
-        const mousedown = this.context.getImageData(x + 1, y + 1, width, height);
-
-        this.images.backSpot = { regular, mousedown };
-
-        fns.sprites(image, regular, row, width, height).forEach((v, i) => {
+        images.forEach((v, i) => {
 
             const key = keys[i];
 
             this.images[key] = v;
         });
+
     }
 
     draw() {
 
         const { state } = this;
 
-        const { mousedown } = this.images.backSpot;
+        const { background } = this.view.images;
 
-        this.context.putImageData(mousedown, this.x + 1, this.y + 1);
-        this.context.putImageData(this.images[state], this.x, this.y);
+        this.context.drawImage(background,
+            this.x, this.y, this.width + 1, this.height + 1,
+            this.x, this.y, this.width + 1, this.height + 1);
+        this.context.drawImage(this.images[state], this.x, this.y);
+
     }
 }

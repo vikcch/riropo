@@ -20,6 +20,13 @@ export const rear = array => {
     return array.slice(-1)[0];
 };
 
+// TODO:: separador de milhares e moeda em cash
+export const displayValue = value => {
+
+    if (Number.isInteger(value)) return value;
+
+    return value.toFixed(2);
+};
 
 
 
@@ -39,29 +46,30 @@ export default {
     },
 
     // TODO:: JSDOCS
-    sprites(image, backSpot, target, width, height) {
+    async sprites(image, row, width, height) {
 
-        View.canvasAux.width = image.width;
-        View.canvasAux.height = image.height;
+        View.canvasAux.width = width;
+        View.canvasAux.height = height;
 
         const spriteCount = image.width / width;
-        const y = target * height;
+        const y = row * height;
 
-        // NOTE:: Preciso repetir o `backSpot` e não posso aproveitar o 
-        // map porque precisa ser "colado" antes do `drawImage`
-        [...Array(spriteCount)].forEach((v, i) => {
+        const images = [...Array(spriteCount)].map((_, index) => {
 
-            const x = i * width;
-            View.contextAux.putImageData(backSpot, x, y);
+            View.contextAux.clearRect(0, 0, width, height);
+
+            View.contextAux.drawImage(image, -index * width, -y, image.width, image.height);
+
+            const source = View.canvasAux.toDataURL('image/png');
+
+            return new Promise((resolve, reject) => {
+
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.src = source;
+            });
         });
 
-        View.contextAux.drawImage(image, 0, 0);
-
-        return [...Array(spriteCount)].map((v, i) => {
-
-            const x = i * width;
-            return View.contextAux.getImageData(x, y, width, height);
-        });
-
-    }
+        return await Promise.all(images);
+    },
 }

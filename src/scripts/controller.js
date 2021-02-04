@@ -1,5 +1,6 @@
 import View from "./view";
 import Model from "./model";
+import seatPositions from '@/scripts/units/display-positions';
 
 export default class Controller {
 
@@ -118,31 +119,92 @@ export default class Controller {
 
         if (found) found.hover();
 
-        this.view.coordsDiv.innerHTML = e.offsetX
+        this.view.coordsDiv.innerHTML = e.offsetX;
     }
 
     //#region EmbeddedControls
+
+    static c = 0;
 
     handlerNextAction_onClick = () => {
 
         console.log('foi clicako  next');
 
-        // this.view.context.fillRect(0, 0, 300, 50);
-
-
-        // this.view.context.fillStyle = '#FF0000';
-        // this.view.context.fillText('Merda', 10, 20)  
-
-
         this.view.previousAction.setState = 'normal';
 
         // const hand = this.model.handHistories[0];
-        // this.view.render(hand.histories[0]);
+        // this.view.render(hand.histories[Controller.c++]);
+
+
+        seatPositions(9).forEach(item => {
+
+            const point = item.emptySeat;
+            const img = this.view.images.emptySeat;
+
+            this.view.context.drawImage(img, point.x, point.y);
+
+            this.view.context.textBaseline = "top";
+
+            this.view.context.fillText('lkasdjflkfjd', item.name.x, item.name.y)
+
+            this.view.context.fillRect(item.chips.x, item.chips.y, 22, 20);
+
+            const { inPlay } = this.view.images;
+            this.view.context.drawImage(inPlay, item.inPlay.x, item.inPlay.y);
+        });
+
+
+
+
     }
 
     handlerPreviousAction_onClick = () => {
 
         console.log('foi clicako  previous');
+
+        const { chips } = this.view.images;
+
+        // View.contextAux.clearRect(0, 0, 22, 20);
+        // View.contextAux.drawImage(chips, 0, 0)
+
+        // const imgData = View.contextAux.getImageData(0, 0, 22, 20);
+
+        // this.view.context.putImageData(imgData, 0, 100);
+
+        /* ****** */
+        /*   View.canvasAux.width = 22;
+          View.canvasAux.height = 20;
+          View.contextAux.clearRect(0, 0, 22, 20);
+          View.contextAux.drawImage(chips, 0, 0)
+  
+          // var imgData = View.contextAux.getImageData(0, 0, 22, 20);
+          // console.log(imgData);
+  
+          // var myImageData = View.contextAux.createImageData(imgData);
+  
+          var img = new Image();
+          img.onload = () => {
+              console.log('caregou');
+              this.view.context.drawImage(img, 0, 300); 
+          }
+          // img.src = imgData;
+          img.src = View.canvasAux.toDataURL('image/png'); */
+
+        /* ************** */
+
+        View.canvasAux.width = 22;
+        View.canvasAux.height = 20;
+        View.contextAux.clearRect(0, 0, 22, 20);
+        View.contextAux.drawImage(chips, -22, 0);
+
+        var img = new Image();
+        img.onload = () => {
+            console.log('caregou');
+            this.view.context.drawImage(img, 0, 300);
+        }
+        // img.src = imgData;
+        img.src = View.canvasAux.toDataURL('image/png');
+
     }
 
     //#endregion
