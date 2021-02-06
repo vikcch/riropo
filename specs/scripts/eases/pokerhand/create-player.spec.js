@@ -301,7 +301,4 @@ describe('ease-pokerhand', function () {
             assert.deepStrictEqual(fn(lines, 1), anticipate);
         });
     });
-
-
-
 });

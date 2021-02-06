@@ -1,4 +1,5 @@
 import ease from '../eases/pokerhand/index';
+import { head } from './fns';
 
 /**
  * 
@@ -55,6 +56,22 @@ const getGameMode = lines => {
 };
 
 /**
+ * @param {string[]} lines
+ * @returns {number}
+ */
+const getTableMax = lines => {
+
+    // ...
+    // Table 'Akiyama II' 6-max Seat #5 is the button
+
+    const tableMaxLine = lines[1];
+
+    const match = tableMaxLine.match(/\d+(?=\-max\sSeat\s#\d+\sis\sthe\sbutton$)/gm)
+
+    return head(match);
+};
+
+/**
  * 
  * @param {string[]} lines 
  */
@@ -73,6 +90,7 @@ export default function (lines) {
         playersCount: countPlayers(lines),
         buttonSeat,
         gameMode: getGameMode(lines),
+        tableMax: getTableMax(lines),
         players,
         histories
     };
@@ -82,5 +100,6 @@ export default function (lines) {
 
 export const testables = {
     getButtonSeat,
-    getGameMode
+    getGameMode,
+    getTableMax
 }

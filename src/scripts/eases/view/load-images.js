@@ -1,3 +1,5 @@
+import fns, { head } from "@/scripts/units/fns";
+import { imagesNames } from '@/scripts/units/enums';
 
 const getImage = async function (file) {
 
@@ -18,7 +20,10 @@ const files = {
     navigation: 'navigation-150x168.png',
     emptySeat: 'empty-seat-90x90.png',
     inPlay: 'in-play-25x30.png',
-    chips: 'chips-22-484x20.png'
+    chips: 'chips-22-484x20.png',
+    status: 'status-93x33.png',
+    statusHighlight: 'status-highlight-97x37.png',
+    actions: 'actions-300x22.png'
 };
 
 
@@ -36,17 +41,29 @@ export default {
                 getImage(files.emptySeat),
                 getImage(files.inPlay),
                 getImage(files.chips),
+                getImage(files.status),
+                getImage(files.statusHighlight),
+                getImage(files.actions)
             ];
 
             const r = await Promise.all(arrFiles);
 
             // TODO:: enum images
             const images = {};
-            images.background = r[0];
-            images.navigation = r[1];
-            images.emptySeat = r[2];
-            images.inPlay = r[3];
-            images.chips = r[4];
+            images[imagesNames.background] = r[0];
+            images[imagesNames.navigation] = r[1];
+            images[imagesNames.emptySeat] = r[2];
+            images[imagesNames.inPlay] = r[3];
+
+            const chips = await fns.sprites(r[4], 0, 22, 20);
+            images[imagesNames.dealer] = head(chips);
+            images[imagesNames.chips] = chips.slice(1);
+
+            images[imagesNames.status] = r[5];
+            images[imagesNames.statusHighlight] = r[6];
+
+            const actions = await fns.sprites(r[7], 0, 60, 22);
+            images[imagesNames.actions] = actions;
 
             console.timeEnd('await total');
 
@@ -54,6 +71,7 @@ export default {
 
         } catch (error) {
 
+            console.log(error);
         }
 
     }

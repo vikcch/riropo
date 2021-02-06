@@ -26,6 +26,6 @@ export const History = function ({
 
         players, pot, streetCards, action, player, line, lineIndex
     };
-};
+}
 
 export const HistoryT = History({});

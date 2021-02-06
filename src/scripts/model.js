@@ -37,7 +37,7 @@ export default class Model {
 
         });
 
-        console.log(this.handHistories);
+        // console.log(this.handHistories);
     }
 
 

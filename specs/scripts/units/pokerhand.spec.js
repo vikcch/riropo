@@ -1,7 +1,7 @@
 // import { testables } from '@root/src/scripts/units/pokerhand.js';
-import { testables } from '@@/scripts/units/pokerhand.js';
+// import { testables } from '@@/scripts/units/pokerhand.js';
 // import { testables } from '';
-// import { testables } from '../../../src/scripts/units/pokerhand';
+import { testables } from '../../../src/scripts/units/pokerhand';
 
 const assert = require('assert');
 

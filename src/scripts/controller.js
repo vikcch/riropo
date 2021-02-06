@@ -1,6 +1,9 @@
 import View from "./view";
 import Model from "./model";
 import seatPositions from '@/scripts/units/display-positions';
+import { getChipIndex } from "./units/biz";
+import { imagesNames } from '@/scripts/units/enums';
+
 
 export default class Controller {
 
@@ -133,28 +136,47 @@ export default class Controller {
         this.view.previousAction.setState = 'normal';
 
         // const hand = this.model.handHistories[0];
-        // this.view.render(hand.histories[Controller.c++]);
+        // console.log(hand);
+        // this.view.render(hand.histories[Controller.c++])
 
-
-        seatPositions(9).forEach(item => {
+        seatPositions(9).forEach((item, i) => {
 
             const point = item.emptySeat;
             const img = this.view.images.emptySeat;
 
+            if (i === 3) this.view.context.globalAlpha = 0.4;
             this.view.context.drawImage(img, point.x, point.y);
+            this.view.context.globalAlpha = 1;
 
-            this.view.context.textBaseline = "top";
 
-            this.view.context.fillText('lkasdjflkfjd', item.name.x, item.name.y)
+            const { status } = this.view.images;
+            this.view.context.drawImage(status, item.status.x, item.status.y);
 
-            this.view.context.fillRect(item.chips.x, item.chips.y, 22, 20);
+
+            this.view.context.textAlign = 'center';
+            this.view.context.textBaseline = 'middle';
+            this.view.context.fillStyle = 'white';
+
+            this.view.context.fillText('lkasdjflkfjd', item.name.x, item.name.y);
+            this.view.context.fillText('24,534', item.stack.x, item.stack.y);
+
+
+            const { chips } = this.view.images;
+            const n = Math.floor(Math.random() * 20);
+
+            this.view.context.drawImage(chips[n], item.chips.x, item.chips.y);
 
             const { inPlay } = this.view.images;
             this.view.context.drawImage(inPlay, item.inPlay.x, item.inPlay.y);
+
+            const { dealer } = this.view.images;
+            this.view.context.drawImage(dealer, item.dealer.x, item.dealer.y);
+
+
+            const { actions } = this.view.images;
+            const n2 = Math.floor(Math.random() * 5);
+            this.view.context.drawImage(actions[n2], item.action.x, item.action.y);
         });
-
-
-
 
     }
 
@@ -162,48 +184,9 @@ export default class Controller {
 
         console.log('foi clicako  previous');
 
-        const { chips } = this.view.images;
+        const index = getChipIndex(25000);
 
-        // View.contextAux.clearRect(0, 0, 22, 20);
-        // View.contextAux.drawImage(chips, 0, 0)
-
-        // const imgData = View.contextAux.getImageData(0, 0, 22, 20);
-
-        // this.view.context.putImageData(imgData, 0, 100);
-
-        /* ****** */
-        /*   View.canvasAux.width = 22;
-          View.canvasAux.height = 20;
-          View.contextAux.clearRect(0, 0, 22, 20);
-          View.contextAux.drawImage(chips, 0, 0)
-  
-          // var imgData = View.contextAux.getImageData(0, 0, 22, 20);
-          // console.log(imgData);
-  
-          // var myImageData = View.contextAux.createImageData(imgData);
-  
-          var img = new Image();
-          img.onload = () => {
-              console.log('caregou');
-              this.view.context.drawImage(img, 0, 300); 
-          }
-          // img.src = imgData;
-          img.src = View.canvasAux.toDataURL('image/png'); */
-
-        /* ************** */
-
-        View.canvasAux.width = 22;
-        View.canvasAux.height = 20;
-        View.contextAux.clearRect(0, 0, 22, 20);
-        View.contextAux.drawImage(chips, -22, 0);
-
-        var img = new Image();
-        img.onload = () => {
-            console.log('caregou');
-            this.view.context.drawImage(img, 0, 300);
-        }
-        // img.src = imgData;
-        img.src = View.canvasAux.toDataURL('image/png');
+        this.view.context.drawImage(this.view.images.chips[index], 0, 100);
 
     }
 

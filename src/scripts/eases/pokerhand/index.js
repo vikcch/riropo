@@ -80,9 +80,9 @@ export default {
             histories.push(...rows);
         }
 
-        console.log(players);
-        console.log(histories);
-        console.log('+++++++');
+        // console.log(players);
+        // console.log(histories);
+        // console.log('+++++++');
 
 
         return histories;

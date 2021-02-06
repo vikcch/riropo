@@ -4,7 +4,20 @@ export const buttonStates = {
     disabled: 'disabled',
 };
 
+export const imagesNames = {
+    background: 'background',
+    navigation: 'navigation',
+    emptySeat: 'emptySeat',
+    inPlay: 'inPlay',
+    chips: 'chips',
+    dealer: 'dealer',
+    status: 'status',
+    statusHighlight: 'statusHighlight',
+    actions: 'actions'
+};
+
 export default {
 
-    buttonStates
+    buttonStates,
+    imagesNames
 };

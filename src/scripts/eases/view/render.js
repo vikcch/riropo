@@ -9,8 +9,9 @@ import View from '@/scripts/view';
 const pot = function (value) {
 
     const amount = displayValue(value);
+    const text = `Pot: ${amount}`;
 
-    const textWidth = this.context.measureText(amount).width
+    const textWidth = this.context.measureText(text).width
 
     const center = this.canvas.width / 2;
     const verticalPadding = 16;
@@ -23,8 +24,19 @@ const pot = function (value) {
     this.context.textAlign = 'center';
     this.context.textBaseline = 'middle';
     this.context.fillStyle = 'black';
-    this.context.fillText(amount, center, 16);
+
+    this.context.fillText(text, center, 16);
 };
+
+/**
+ * @this {View}
+ * @param {number} value 
+ */
+const players = function (players) {
+
+    
+}
+
 
 export default {
 
@@ -36,8 +48,9 @@ export default {
     render(history) {
 
 
-
         pot.call(this, history.pot);
+
+        players.call(this, history.players);
 
         // console.log(this.canvas.width);
 

@@ -51,6 +51,8 @@ export default class Button {
 
         const { state } = this;
 
+        if (state === states.disabled) return;
+
         const { background } = this.view.images;
 
         this.context.drawImage(background,
