@@ -15,7 +15,7 @@ export const actionAmount = line => {
     return rearValue || 0;
 };
 
-export const getChipIndex = amount => {
+const getChipsValues = () => {
 
     const values = [0.01, 0.05, 0.25, 1];
 
@@ -35,10 +35,62 @@ export const getChipIndex = amount => {
 
     rec(0);
 
-    return values.indexOf(amount);
-}
+    return values;
+};
+
+/**
+ * 
+ * @param {number} amount 
+ * @returns {number}
+ */
+export const getChipIndex = amount => {
+
+    return getChipsValues().indexOf(amount);
+};
+
+/**
+ * Retorma array com o valor das fichas descendente
+ * 
+ * @example
+ * 527 => [500, 25, 1, 1]
+ * 
+ * @param {number} value
+ * @returns {number[]}
+ */
+export const getChips = value => {
+
+    return getChipsValues().reduceRight((acc, cur) => {
+
+        const rec = () => {
+
+            if (acc.remaining >= cur) {
+
+                acc.remaining -= cur;
+                acc.remaining = Number(acc.remaining.toFixed(2));
+                acc.chips.push(cur);
+                rec();
+            }
+        };
+
+        return rec(), acc;
+
+    }, { remaining: value, chips: [] }).chips;
+};
+
+
+/**
+ * 
+ * @param {string} action 
+ * @returns {number}
+ */
+export const getActionIndex = action => {
+
+    return ['bets', 'calls', 'checks', 'raises', 'folds'].indexOf(action);
+};
 
 export default {
 
-
+    getActionIndex,
+    getChipIndex,
+    getChips
 }

@@ -1,5 +1,6 @@
 import View from "../view";
 
+
 /**
  * 
  * @param {any[]} array 
@@ -72,4 +73,5 @@ export default {
 
         return await Promise.all(images);
     },
+
 }

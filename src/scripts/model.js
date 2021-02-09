@@ -20,6 +20,8 @@ export default class Model {
         //TODO:: ver arranjar nome de jogador com \n
         // STOPSHIP:: ver no live-squeezer se envia com 3 enters
 
+        // TODO:: file com noma `Alterada III` em 'HandHistory/Nova Pasta'
+
         const arrayOfHands = sessionLog.split(/\r\n\r\n\r\n\r\n/).filter(Boolean);
 
         const jagged = arrayOfHands.map(x => x.split(/\r\n/));

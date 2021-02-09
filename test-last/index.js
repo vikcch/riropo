@@ -73,7 +73,7 @@ const spawn = require('child_process').spawn;
 
 // const command = 'mocha --require module-alias/register ' + last.fullPath;
 
-const command = 'mocha ' + last.fullPath;
+const command = 'mocha -r jsdom-global/register ' + last.fullPath;
 
 
 // const cmd = spawn('cmd', ['/s', '/c', command], { customFds: [0, 1, 2] });

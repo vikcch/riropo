@@ -13,12 +13,15 @@
     "@babel/register": "^7.12.10",
     "babel-loader": "^8.2.2",
     "babel-plugin-webpack-aliases": "^1.1.3",
+    "canvas": "^2.6.1",
     "chai": "^4.2.0",
     "eslint": "^7.18.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.22.1",
     "esm": "^3.2.25",
     "html-webpack-plugin": "^4.5.1",
+    "jsdom": "16.4.0",
+    "jsdom-global": "3.0.2",
     "mocha": "^8.2.1",
     "module-alias": "^2.2.2",
     "webpack": "^5.15.0",
@@ -46,9 +49,5 @@
     "@root": ".",
     "@@": "src/"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+  "browserslist": "> 0.25%, not dead"
 }

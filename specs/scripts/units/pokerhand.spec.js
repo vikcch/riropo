@@ -1,7 +1,4 @@
-// import { testables } from '@root/src/scripts/units/pokerhand.js';
-// import { testables } from '@@/scripts/units/pokerhand.js';
-// import { testables } from '';
-import { testables } from '../../../src/scripts/units/pokerhand';
+import { testables } from '@/scripts/units/pokerhand.js';
 
 const assert = require('assert');
 
@@ -13,17 +10,23 @@ describe('units-pokerhand', function () {
 
         it('should return 5, the button seat', function () {
 
-            const p = ['', "Table 'Akiyama II' 6-max Seat #5 is the button "];
+            const p = ['', "Table 'Akiyama II' 6-max Seat #5 is the button"];
 
             assert.strictEqual(fn(p), 5);
 
         });
     });
 
-    // describe('#indexOf()', function () {
+    describe('# getTableMax', function () {
 
-    //     it('should return -1 when the value is not present', function () {
-    //         assert.strictEqual([1, 2, 3].indexOf(4), -1);
-    //     });
-    // });
+        const fn = testables.getTableMax;
+
+        it('should return 6, the table max', function () {
+
+            const p = ['', "Table 'Akiyama II' 6-max Seat #5 is the button"];
+
+            assert.strictEqual(fn(p), 6);
+
+        });
+    });
 });

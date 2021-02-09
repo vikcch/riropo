@@ -19,7 +19,8 @@ export const History = function ({
     action = '',
     player,
     line = '',
-    lineIndex = 0
+    lineIndex = 0,
+    nextPlayer = null
 }) {
 
     return {

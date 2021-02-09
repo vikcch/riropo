@@ -137,7 +137,7 @@ export default class Controller {
 
         // const hand = this.model.handHistories[0];
         // console.log(hand);
-        // this.view.render(hand.histories[Controller.c++])
+        // this.view.render(hand.histories[Controller.c++]);
 
         seatPositions(9).forEach((item, i) => {
 
@@ -176,6 +176,16 @@ export default class Controller {
             const { actions } = this.view.images;
             const n2 = Math.floor(Math.random() * 5);
             this.view.context.drawImage(actions[n2], item.action.x, item.action.y);
+
+
+            const textAlign = i < 4 ? 'right' : 'left';
+
+            this.view.context.textAlign = textAlign;
+            this.view.context.textBaseline = 'bottom';
+            this.view.context.fillStyle = 'white';
+
+            this.view.context.fillText('13,623', item.chipsValue.x, item.chipsValue.y);
+
         });
 
     }

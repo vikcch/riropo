@@ -8,7 +8,8 @@ export const Player = ({ name, stack, seat, position, isButton, isHero, bounty }
         isButton,
         isHero,
         bounty,
-        amountOnStreet:0,
+        amountOnStreet: 0,
+        inPlay: true,
 
         clone() {
 

@@ -152,8 +152,6 @@ const activity = (lines, previousHistory, delimiters) => {
 
     const activityLines = getActivityLines(lines, delimiters);
 
-    const clonedPlayers = previousHistory.players.map(x => x.clone());
-
     let pot = previousHistory.pot;
 
     const histories = [];
@@ -163,6 +161,10 @@ const activity = (lines, previousHistory, delimiters) => {
         const { value: line, index: lineIndex } = item;
 
         // TODO:: testar player `vik:` e `vik: cch`
+
+        const lastHistory = rear(histories) ?? previousHistory;
+
+        const clonedPlayers = lastHistory.players.map(x => x.clone());
 
         const find = player => line.startsWith(`${player.name}: `);
 
@@ -189,6 +191,13 @@ const activity = (lines, previousHistory, delimiters) => {
             pot += amount;
             player.amountOnStreet += amount;
         };
+
+        if (action === 'folds') {
+
+            player.inPlay = false;
+        }
+
+        lastHistory.nextPlayer = player;
 
         const history = History({
 

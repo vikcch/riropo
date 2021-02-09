@@ -68,7 +68,7 @@ const getTableMax = lines => {
 
     const match = tableMaxLine.match(/\d+(?=\-max\sSeat\s#\d+\sis\sthe\sbutton$)/gm)
 
-    return head(match);
+    return Number(head(match));
 };
 
 /**
