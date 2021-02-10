@@ -1,4 +1,4 @@
-import { actionAmount } from '@/scripts/units/biz';
+import { actionAmount, getLineCards } from '@/scripts/units/biz';
 import fns, { head, rear } from '@/scripts/units/fns';
 import { pipe } from '@/scripts/units/fxnl';
 import { History, HistoryT } from '@/scripts/units/history';
@@ -199,6 +199,10 @@ const activity = (lines, previousHistory, delimiters) => {
 
         lastHistory.nextPlayer = player;
 
+        // NOTE:: Não faz mal copiar a referencia porque todos os `histories`
+        // sáo apenas desta 'activity', podia dar pau em "redo"
+        const { streetCards } = lastHistory;
+
         const history = History({
 
             players: clonedPlayers,
@@ -206,11 +210,11 @@ const activity = (lines, previousHistory, delimiters) => {
             action,
             player,
             line,
-            lineIndex
+            lineIndex,
+            streetCards
         });
 
         histories.push(history);
-
     });
 
     return histories;
@@ -228,6 +232,8 @@ const street = (lines, previousHistory, delimiters) => {
 
     const streetLine = getStreetLine(lines, delimiters);
 
+    const streetCards = getLineCards(streetLine.value);
+
     const newPlayers = previousHistory.players.map(x => x.cloneResetStreet());
 
     const history = History({
@@ -237,7 +243,8 @@ const street = (lines, previousHistory, delimiters) => {
         action: '',
         player: null,
         line: streetLine.value,
-        lineIndex: streetLine.index
+        lineIndex: streetLine.index,
+        streetCards
     });
 
     return [history];

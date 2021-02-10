@@ -88,9 +88,60 @@ export const getActionIndex = action => {
     return ['bets', 'calls', 'checks', 'raises', 'folds'].indexOf(action);
 };
 
+/**
+ * 
+ * @param {string} line 
+ * @returns {string[]}
+ */
+export const getLineCards = line => {
+
+    // Dealt to vikcch [5d Ad]
+    // *** FLOP *** [Ac 4c Td]
+    // *** TURN *** [Ac 7h 6h] [8s]
+    // *** RIVER *** [Ac 7h 6h 8s] [4c]
+    // pozilgas: shows [Kd 8h] (a pair of Aces)
+    // Seat 6: pozilgas (button) mucked [Qh Th]
+
+    const isTurn = line.startsWith('*** TURN *** [');
+    const isRiver = line.startsWith('*** RIVER *** [');
+
+    const end = isTurn || isRiver ? -4 : Infinity;
+
+    const openBracketIndex = line.slice(0, end).lastIndexOf('[');
+    const closeBracketIndex = line.lastIndexOf(']');
+
+    const bareCards = line.substring(openBracketIndex + 1, closeBracketIndex);
+
+    const cards = bareCards.replace('] [', ' ');
+
+    return cards.split(' ');
+};
+
+/**
+ * 
+ * @param {string} card 
+ * @returns { { suit:number, value:number } }
+ */
+export const getCardIndex = card => {
+
+    const [value, suit] = card;
+
+    return {
+        suit: 'chsd'.indexOf(suit),
+        value: '23456789TJQKA'.indexOf(value)
+    };
+};
+
 export default {
 
     getActionIndex,
     getChipIndex,
-    getChips
+    getChips,
+    getLineCards,
+    getCardIndex
 }
+
+export const testables = {
+    getLineCards
+}
+

@@ -13,7 +13,8 @@ export const imagesNames = {
     dealer: 'dealer',
     status: 'status',
     statusHighlight: 'statusHighlight',
-    actions: 'actions'
+    actions: 'actions',
+    deck: 'deck'
 };
 
 export default {

@@ -3,7 +3,8 @@ import Model from "./model";
 import seatPositions from '@/scripts/units/display-positions';
 import { getChipIndex } from "./units/biz";
 import { imagesNames } from '@/scripts/units/enums';
-
+// TODO:: remover isto
+import { testables } from '@/scripts/eases/view/render/table';
 
 export default class Controller {
 
@@ -127,7 +128,7 @@ export default class Controller {
 
     //#region EmbeddedControls
 
-    static c = 0;
+    static c = -1;
 
     handlerNextAction_onClick = () => {
 
@@ -137,7 +138,7 @@ export default class Controller {
 
         // const hand = this.model.handHistories[0];
         // console.log(hand);
-        // this.view.render(hand.histories[Controller.c++]);
+        // this.view.render(hand.histories[++Controller.c]);
 
         seatPositions(9).forEach((item, i) => {
 
@@ -188,6 +189,9 @@ export default class Controller {
 
         });
 
+        testables.streetCards.call(this.view, ['As', 'Kh', '8s', 'Tc', '2d']);
+        testables.middlePot.call(this.view, { players: [], pot: 2324 });
+        testables.middlePotValue.call(this.view, { players: [], pot: 2324 });
     }
 
     handlerPreviousAction_onClick = () => {
@@ -197,6 +201,11 @@ export default class Controller {
         const index = getChipIndex(25000);
 
         this.view.context.drawImage(this.view.images.chips[index], 0, 100);
+
+
+        // const hand = this.model.handHistories[0];
+        // // console.log(hand);
+        // this.view.render(hand.histories[--Controller.c]);
 
     }
 

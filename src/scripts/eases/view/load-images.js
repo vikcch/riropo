@@ -23,7 +23,8 @@ const files = {
     chips: 'chips-22-484x20.png',
     status: 'status-93x33.png',
     statusHighlight: 'status-highlight-97x37.png',
-    actions: 'actions-300x22.png'
+    actions: 'actions-300x22.png',
+    deck: 'deck-ps-50x70-650x280.png'
 };
 
 
@@ -43,7 +44,8 @@ export default {
                 getImage(files.chips),
                 getImage(files.status),
                 getImage(files.statusHighlight),
-                getImage(files.actions)
+                getImage(files.actions),
+                getImage(files.deck)
             ];
 
             const r = await Promise.all(arrFiles);
@@ -64,6 +66,12 @@ export default {
 
             const actions = await fns.sprites(r[7], 0, 60, 22);
             images[imagesNames.actions] = actions;
+
+            images[imagesNames.deck] = [];
+            for (let i = 0; i < 4; i++) {
+                const deckSuit = await fns.sprites(r[8], i, 50, 70);
+                images[imagesNames.deck][i] = deckSuit;
+            }
 
             console.timeEnd('await total');
 

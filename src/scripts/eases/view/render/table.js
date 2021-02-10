@@ -1,4 +1,4 @@
-import fns, { displayValue } from '@/scripts/units/fns';
+import fns, { displayValue, head } from '@/scripts/units/fns';
 import { HistoryT } from '@/scripts/units/history';
 import { PlayerT } from '@/scripts/units/player';
 import View from '@/scripts/view';
@@ -87,6 +87,10 @@ const players = function (history) {
     });
 }
 
+/**
+ * @this {View}
+ * @param {HistoryT} history 
+ */
 const action = function (history) {
 
     if (!history.action) return;
@@ -207,7 +211,7 @@ const chipsValues = function (players) {
 
         let { x, y } = displayPosition.chipsValue;
 
-        let { seatFixed } = displayPosition;
+        const { seatFixed } = displayPosition;
 
         const value = player.amountOnStreet;
 
@@ -221,6 +225,113 @@ const chipsValues = function (players) {
 
         this.context.fillText(text, x, y);
     });
+};
+
+/**
+ * @this {View}
+ * @param {string[]} streetCards 
+ */
+const streetCards = function (streetCards) {
+
+    if (!streetCards) return;
+
+    const { deck } = this.images;
+
+    streetCards.forEach((card, index) => {
+
+        const { suit, value } = biz.getCardIndex(card);
+
+        const image = deck[suit][value];
+
+        const x = 268 + image.width * index + (index * 4);
+
+        const y = 152;
+
+        this.context.drawImage(image, x, y);
+    });
+}
+
+/**
+ * @this {View}
+ * @param {HistoryT} history 
+ */
+const middlePot = function (history) {
+
+    const streetAmount = history.players.reduce((acc, cur) => acc + cur.amountOnStreet, 0);
+
+    // STOPSHIP::: fix float point error
+    const value = history.pot - streetAmount;
+
+    console.log(value);
+
+    const chipsIndexs = biz.getChips(value)
+        .map(x => biz.getChipIndex(x));
+
+    const { chips } = this.images;
+
+    const chipWidth = head(chips).width;
+    const chipsMargin = 1;
+
+    const uniques = new Set(chipsIndexs);
+
+    // chipsIndexs => [ 5, 5, 1 ]
+
+    // uniques     => [ 5, 1 ]
+
+    // jagged      => [ [ { value: 5, x: 0, y: 0 }, { value: 5, x: 0, y: -4 } ],
+    //                  [ { value: 1, x: 23, y: 0 } ] ]
+
+    // flat        => [ { value: 5, x: 0, y: 0 },
+    //                  { value: 5, x: 0, y: -4 },
+    //                  { value: 1, x: 23, y: 0 } ]
+
+    const jagged = [...uniques].map((v, i) => {
+
+        const values = chipsIndexs.filter(vv => vv === v);
+
+        return values.map((vv, ii) => ({
+            value: vv,
+            x: i * chipWidth + chipsMargin * i,
+            y: - ii * 4
+        }));
+    });
+
+    const flat = jagged.flatMap(x => x);
+
+    const initialPoint = { x: 400, y: 242 };
+
+    flat.forEach(v => {
+
+        const chip = chips[v.value];
+
+        const margin = (uniques.size - 1) * chipsMargin;
+
+        const chipsSpan = uniques.size * chipWidth + margin;
+
+        const x = initialPoint.x - chipsSpan / 2 + v.x;
+
+        const y = initialPoint.y + v.y
+
+        this.context.drawImage(chip, x, y);
+    });
+
+};
+/**
+ * @this {View}
+ * @param {HistoryT} history 
+ */
+const middlePotValue = function (history) {
+
+    const streetAmount = history.players.reduce((acc, cur) => acc + cur.amountOnStreet, 0);
+
+    // STOPSHIP::: fix float point error
+    const value = history.pot - streetAmount;
+
+    // TODO:: return se for zero
+
+    const point = { x: 400, y: 275 };
+
+    drawTextCenter(this.context, value, 'white', point);
 };
 
 export default {
@@ -250,10 +361,25 @@ export default {
 
         chipsValues.call(this, history.players);
 
+        streetCards.call(this, history.streetCards);
+
+        middlePot.call(this, history);
+
+        middlePotValue.call(this, history);
+
         // console.log(this.canvas.width);
 
         console.log(history);
 
         // console.log('render');
+
     }
 }
+
+// TODO:: Remover isto
+export const testables = {
+
+    middlePot,
+    middlePotValue,
+    streetCards
+};

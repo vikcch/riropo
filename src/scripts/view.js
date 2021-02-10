@@ -58,12 +58,14 @@ export default class View {
 
     createEmbeddedControls() {
 
-        const rect = { x: 500, y: 400, width: 50, height: 28 };
+        // OPTIMIZE: rect... ou ease com display positions
+        const rect = { x: 500, y: 450, width: 50, height: 28 };
         this.nextAction = new Button(this, rect);
 
-        const rect2 = { x: 570, y: 400, width: 50, height: 28 };
+        const rect2 = { x: 440, y: 450, width: 50, height: 28 };
 
-        this.previousAction = new Button(this, rect2, 'disabled');
+        // this.previousAction = new Button(this, rect2, 'disabled');
+        this.previousAction = new Button(this, rect2);
     }
 
     bindControls(handlers) {

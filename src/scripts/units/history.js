@@ -6,16 +6,17 @@ import { PlayerT } from '@/scripts/units/player';
  * @param {PlayerT[]} obj.players
  * @param {PlayerT} obj.player
  * @param {number} obj.pot
- * @param {string} obj.streetCards
+ * @param {string[]} obj.streetCards
  * @param {string} obj.action
  * @param {string} obj.line
  * @param {number} obj.lineIndex
+ * @param {PlayerT} obj.nextPlayer
  * 
  */
 export const History = function ({
     players,
     pot = 0,
-    streetCards = '',
+    streetCards = null,
     action = '',
     player,
     line = '',
@@ -25,7 +26,7 @@ export const History = function ({
 
     return {
 
-        players, pot, streetCards, action, player, line, lineIndex
+        players, pot, streetCards, action, player, line, lineIndex, nextPlayer
     };
 }
 
