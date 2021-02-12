@@ -5,6 +5,7 @@ import { getChipIndex } from "./units/biz";
 import { imagesNames } from '@/scripts/units/enums';
 // TODO:: remover isto
 import { testables } from '@/scripts/eases/view/render/table';
+import enums from '@/scripts/units/enums'
 
 export default class Controller {
 
@@ -30,13 +31,21 @@ export default class Controller {
         });
 
         this.view.bindEmbeddedControls({
+            previousHand: {
+                click: this.handlerPreviousHand_onClick,
+            },
+            previousAction: {
+                click: this.handlerPreviousAction_onClick,
+            },
+            play: {
+                click: this.handlerPlay_onClick,
+            },
             nextAction: {
                 click: this.handlerNextAction_onClick,
             },
-
-            previousAction: {
-                click: this.handlerPreviousAction_onClick,
-            }
+            nextHand: {
+                click: this.handlerNextHand_onClick,
+            },
         });
     }
 
@@ -72,6 +81,13 @@ export default class Controller {
 
             this.model.processLog(log);
 
+            const history = this.model.getFirstHistory();
+
+            this.view.render(history);
+
+            const enables = this.model.getNavigationEnables();
+
+            this.view.updateNavigation(enables);
         };
 
         reader.onerror = () => {
@@ -128,17 +144,78 @@ export default class Controller {
 
     //#region EmbeddedControls
 
-    static c = -1;
+    handlerPreviousHand_onClick = () => {
+
+        console.log('foi clicako previous hand');
+
+        const { previousHand } = enums.navigation;
+
+        const { history, enables } = this.model.navigation(previousHand);
+
+        this.view.render(history);
+
+        this.view.updateNavigation(enables);
+    }
+
+
+    handlerPreviousAction_onClick = () => {
+
+        // console.log('foi clicako  previous');
+
+        // const index = getChipIndex(25000);
+
+        // this.view.context.drawImage(this.view.images.chips[index], 0, 100);
+
+        const { previousAction } = enums.navigation;
+
+        const { history, enables } = this.model.navigation(previousAction);
+
+        this.view.render(history);
+
+        this.view.updateNavigation(enables);
+    }
+
+    handlerPlay_onClick = () => {
+
+        console.log('clikado play');
+
+        this.showFakeRender();
+    };
 
     handlerNextAction_onClick = () => {
 
-        console.log('foi clicako  next');
+        console.log('foi clicado next action');
 
         this.view.previousAction.setState = 'normal';
 
-        // const hand = this.model.handHistories[0];
-        // console.log(hand);
-        // this.view.render(hand.histories[++Controller.c]);
+
+        const { nextAction } = enums.navigation;
+
+        const { history, enables } = this.model.navigation(nextAction);
+
+        this.view.render(history);
+
+        this.view.updateNavigation(enables);
+    }
+
+    handlerNextHand_onClick = () => {
+
+        console.log('foi clicado next hand');
+
+        const { nextHand } = enums.navigation;
+
+        const { history, enables } = this.model.navigation(nextHand);
+
+        this.view.render(history);
+
+        this.view.updateNavigation(enables);
+    }
+
+    //#endregion
+
+
+
+    showFakeRender() {
 
         seatPositions(9).forEach((item, i) => {
 
@@ -193,21 +270,4 @@ export default class Controller {
         testables.middlePot.call(this.view, { players: [], pot: 2324 });
         testables.middlePotValue.call(this.view, { players: [], pot: 2324 });
     }
-
-    handlerPreviousAction_onClick = () => {
-
-        console.log('foi clicako  previous');
-
-        const index = getChipIndex(25000);
-
-        this.view.context.drawImage(this.view.images.chips[index], 0, 100);
-
-
-        // const hand = this.model.handHistories[0];
-        // // console.log(hand);
-        // this.view.render(hand.histories[--Controller.c]);
-
-    }
-
-    //#endregion
 }

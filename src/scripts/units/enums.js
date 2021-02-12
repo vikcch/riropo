@@ -17,8 +17,18 @@ export const imagesNames = {
     deck: 'deck'
 };
 
+export const navigation = {
+
+    previousHand: 'previousHand',
+    previousAction: 'previousAction',
+    nextAction: 'nextAction',
+    nextHand: 'nextHand'
+};
+
 export default {
 
     buttonStates,
-    imagesNames
+    imagesNames,
+    navigation
 };
+

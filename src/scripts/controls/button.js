@@ -89,7 +89,9 @@ export default class Button {
 
             if (!this.hitMe(mousePoint)) {
 
-                this.state = states.normal;
+                // NOTE:: Pode acontecer settar a `disabled` e estar `hover`
+                const isEnabled = this.state !== states.disabled
+                if (isEnabled) this.state = states.normal;
                 this.isPressed = false;
                 this.draw();
 
@@ -132,6 +134,8 @@ export default class Button {
     draw() {
 
         const { state } = this;
+
+        // console.log(state);
 
         const { background } = this.view.images;
 

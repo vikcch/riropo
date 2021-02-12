@@ -1,6 +1,8 @@
 import Button from "./controls/button";
 import ease from '@/scripts/eases/view/index';
 import { HistoryT } from '@/scripts/units/history';
+import embeddedRects from '@/scripts/eases/view/embedded-controls-rects';
+import enums, { buttonStates } from '@/scripts/units/enums';
 
 export default class View {
 
@@ -52,20 +54,24 @@ export default class View {
 
         this.context.drawImage(this.images.background, 0, 0);
 
-        await this.nextAction.setImages(this.images.navigation, { row: 3 });
+        await this.previousHand.setImages(this.images.navigation, { row: 0 })
         await this.previousAction.setImages(this.images.navigation, { row: 1 });
+        await this.play.setImages(this.images.navigation, { row: 2 });
+        await this.nextAction.setImages(this.images.navigation, { row: 3 });
+        await this.nextHand.setImages(this.images.navigation, { row: 4 });
     }
 
     createEmbeddedControls() {
 
-        // OPTIMIZE: rect... ou ease com display positions
-        const rect = { x: 500, y: 450, width: 50, height: 28 };
-        this.nextAction = new Button(this, rect);
+        const { navigation: rect } = embeddedRects;
 
-        const rect2 = { x: 440, y: 450, width: 50, height: 28 };
+        const { disabled } = buttonStates;
 
-        // this.previousAction = new Button(this, rect2, 'disabled');
-        this.previousAction = new Button(this, rect2);
+        this.previousHand = new Button(this, rect.previousHand, disabled);
+        this.previousAction = new Button(this, rect.previousAction, disabled);
+        this.play = new Button(this, rect.play);
+        this.nextAction = new Button(this, rect.nextAction, disabled);
+        this.nextHand = new Button(this, rect.nextHand, disabled);
     }
 
     bindControls(handlers) {
@@ -87,8 +93,11 @@ export default class View {
 
     bindEmbeddedControls(handlers) {
 
-        this.nextAction.bind(handlers.nextAction);
+        this.previousHand.bind(handlers.previousHand);
         this.previousAction.bind(handlers.previousAction);
+        this.play.bind(handlers.play);
+        this.nextAction.bind(handlers.nextAction);
+        this.nextHand.bind(handlers.nextHand);
     }
 
     /**
@@ -98,6 +107,20 @@ export default class View {
     render(history) {
 
         ease.render.call(this, history);
+    }
+
+    updateNavigation(enables) {
+
+
+        Object.entries(enables).forEach(([key, enable]) => {
+
+            const states = enums.buttonStates;
+
+            const state = enable ? states.normal : states.disabled;
+
+            this[key].setState = state;
+        });
+
     }
 
 }

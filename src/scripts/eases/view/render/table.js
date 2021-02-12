@@ -1,4 +1,4 @@
-import fns, { displayValue, head } from '@/scripts/units/fns';
+import fns, { displayValue, head, pureValue } from '@/scripts/units/fns';
 import { HistoryT } from '@/scripts/units/history';
 import { PlayerT } from '@/scripts/units/player';
 import View from '@/scripts/view';
@@ -259,10 +259,7 @@ const middlePot = function (history) {
 
     const streetAmount = history.players.reduce((acc, cur) => acc + cur.amountOnStreet, 0);
 
-    // STOPSHIP::: fix float point error
-    const value = history.pot - streetAmount;
-
-    console.log(value);
+    const value = pureValue(history.pot - streetAmount);
 
     const chipsIndexs = biz.getChips(value)
         .map(x => biz.getChipIndex(x));
@@ -324,10 +321,9 @@ const middlePotValue = function (history) {
 
     const streetAmount = history.players.reduce((acc, cur) => acc + cur.amountOnStreet, 0);
 
-    // STOPSHIP::: fix float point error
-    const value = history.pot - streetAmount;
+    const value = pureValue(history.pot - streetAmount);
 
-    // TODO:: return se for zero
+    if (value === 0) return;
 
     const point = { x: 400, y: 275 };
 

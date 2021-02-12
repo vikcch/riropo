@@ -29,6 +29,18 @@ export const displayValue = value => {
     return value.toFixed(2);
 };
 
+/**
+ * 
+ * @param {number} value 
+ * @return {number} 
+ */
+export const pureValue = value => {
+
+    if (Number.isInteger(value)) return value;
+
+    return Number(value.toFixed(2));
+};
+
 
 
 export default {
