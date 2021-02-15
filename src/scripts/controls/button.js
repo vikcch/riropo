@@ -10,11 +10,15 @@ export default class Button {
      * @param { View } view 
      * @param {*} param1 
      */
-    constructor(view, { x, y, width, height }, state = states.normal) {
+    constructor(view, { x, y, width, height }, state = states.normal, is3d = true) {
 
+        // OPTIMIZE:: RECECER ULTIMOS PARAMENTROS COMO OBJECT (OPTIONS)
         view.embeddables.push(this);
 
         this.view = view;
+
+        // No click, move 1 pixel para a sudeste
+        this.is3d = is3d;
 
         this.context = view.context;
         this.x = x;
@@ -51,7 +55,11 @@ export default class Button {
 
         const { state } = this;
 
-        if (state === states.disabled) return;
+        if (state === states.disabled || state === states.hidden) return;
+
+        this.isPressed = true;
+
+        if (this.is3d === false) return;
 
         const { background } = this.view.images;
 
@@ -61,7 +69,6 @@ export default class Button {
 
         this.context.drawImage(this.images[state], this.x + 1, this.y + 1);
 
-        this.isPressed = true;
     }
 
     click() {
@@ -135,14 +142,17 @@ export default class Button {
 
         const { state } = this;
 
-        // console.log(state);
+        if (state === states.hidden) return;
 
         const { background } = this.view.images;
 
-        this.context.drawImage(background,
-            this.x, this.y, this.width + 1, this.height + 1,
-            this.x, this.y, this.width + 1, this.height + 1);
-        this.context.drawImage(this.images[state], this.x, this.y);
+        if (this.is3d) {
 
+            this.context.drawImage(background,
+                this.x, this.y, this.width + 1, this.height + 1,
+                this.x, this.y, this.width + 1, this.height + 1);
+        }
+
+        this.context.drawImage(this.images[state], this.x, this.y);
     }
 }

@@ -24,7 +24,9 @@ const files = {
     status: 'status-93x33.png',
     statusHighlight: 'status-highlight-97x37.png',
     actions: 'actions-300x22.png',
-    deck: 'deck-ps-50x70-650x280.png'
+    deck: 'deck-ps-50x70-650x280.png',
+    chat: 'chat-329x108.png',
+    scrollbarButtons: 'scrollbar-buttons-16x16-32x32.png'
 };
 
 
@@ -45,7 +47,9 @@ export default {
                 getImage(files.status),
                 getImage(files.statusHighlight),
                 getImage(files.actions),
-                getImage(files.deck)
+                getImage(files.deck),
+                getImage(files.chat),
+                getImage(files.scrollbarButtons)
             ];
 
             const r = await Promise.all(arrFiles);
@@ -72,6 +76,9 @@ export default {
                 const deckSuit = await fns.sprites(r[8], i, 50, 70);
                 images[imagesNames.deck][i] = deckSuit;
             }
+
+            images.chat = r[9];
+            images.scrollbarButtons = r[10];
 
             console.timeEnd('await total');
 

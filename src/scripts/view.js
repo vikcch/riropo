@@ -3,6 +3,7 @@ import ease from '@/scripts/eases/view/index';
 import { HistoryT } from '@/scripts/units/history';
 import embeddedRects from '@/scripts/eases/view/embedded-controls-rects';
 import enums, { buttonStates } from '@/scripts/units/enums';
+import Chat from "./controls/chat";
 
 export default class View {
 
@@ -59,6 +60,8 @@ export default class View {
         await this.play.setImages(this.images.navigation, { row: 2 });
         await this.nextAction.setImages(this.images.navigation, { row: 3 });
         await this.nextHand.setImages(this.images.navigation, { row: 4 });
+
+        await this.chat.setImage(this.images.chat);
     }
 
     createEmbeddedControls() {
@@ -72,6 +75,13 @@ export default class View {
         this.play = new Button(this, rect.play);
         this.nextAction = new Button(this, rect.nextAction, disabled);
         this.nextHand = new Button(this, rect.nextHand, disabled);
+
+        const { chat: chatRect } = embeddedRects;
+
+        this.chat = new Chat(this, chatRect);
+
+
+
     }
 
     bindControls(handlers) {

@@ -2,6 +2,7 @@ export const buttonStates = {
     normal: 'normal',
     hover: 'hover',
     disabled: 'disabled',
+    hidden: 'hidden'
 };
 
 export const imagesNames = {

@@ -112,7 +112,7 @@ export default class Controller {
 
         const found = this.view.embeddables.find(v => v.hitMe(mousePoint));
 
-        if (found) found.mousedown();
+        if (found) found.mousedown(mousePoint);
     }
 
     handlerCanvas_onMouseUp = (e) => {
@@ -137,7 +137,7 @@ export default class Controller {
 
         const found = this.view.embeddables.find(v => v.hitMe(mousePoint));
 
-        if (found) found.hover();
+        if (found) found.hover(mousePoint);
 
         this.view.coordsDiv.innerHTML = e.offsetX;
     }
@@ -175,11 +175,28 @@ export default class Controller {
         this.view.updateNavigation(enables);
     }
 
+    static c = 1;
+
     handlerPlay_onClick = () => {
 
         console.log('clikado play');
 
-        this.showFakeRender();
+        // this.showFakeRender();
+
+        this.view.chat.add(Controller.c++);
+        this.view.chat.draw();
+
+
+        // this.view.chat.add('1')
+        // this.view.chat.add('2')
+        // this.view.chat.add('3')
+        // this.view.chat.add('4')
+        // this.view.chat.add('5')
+        // this.view.chat.add('6')
+        // this.view.chat.add('7')
+        // // this.view.chat.add('8')
+        // // this.view.chat.add('9')
+        // // this.view.chat.add('10')
     };
 
     handlerNextAction_onClick = () => {

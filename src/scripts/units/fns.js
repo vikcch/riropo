@@ -41,7 +41,32 @@ export const pureValue = value => {
     return Number(value.toFixed(2));
 };
 
+/**
+ * 
+ * @param {{x:number, y:number}} point 
+ * @param {{x:number, y:number, width:number, height:number}} rect 
+ */
+export const pointInRect = ({ x, y }, rect) => {
 
+    const right = rect.x + rect.width;
+    const bottom = rect.y + rect.height;
+
+    const horizontal = x >= rect.x && x <= right;
+    const vertical = y >= rect.y && y <= bottom;
+
+    return horizontal && vertical;
+};
+
+/**
+ * 
+ * @param {number} min 
+ * @param {number} max 
+ * @param {number} value 
+ */
+export const clamp = (min, max, value) => {
+
+    return Math.min(Math.max(value, min), max);
+};
 
 export default {
 
@@ -85,5 +110,8 @@ export default {
 
         return await Promise.all(images);
     },
+
+    pointInRect,
+    clamp
 
 }
