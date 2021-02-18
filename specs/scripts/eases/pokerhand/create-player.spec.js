@@ -301,4 +301,32 @@ describe('ease-pokerhand', function () {
             assert.deepStrictEqual(fn(lines, 1), anticipate);
         });
     });
+
+    describe('# 1 getDealtedHoleCards', function () {
+
+        const fn = testables.getDealtedHoleCards;
+
+        it('should return array with names and holecards', function () {
+
+            const lines = [
+                '*** HOLE CARDS ***',
+                'Dealt to vik [Ad As]',
+                'Dealted to ri[ta [4d 6s]',
+                'Dealted to joan]a [6s 3d]',
+                'sasdfasdf: folds',
+                'vik: calls 5',
+                'rita: calls 3',
+                'joana: checks',
+                '*** FLOP *** [Ad As Ad]'
+            ];
+
+            const anticipate = [
+                { name: 'vik', holeCards: ['Ad', 'As'] },
+                { name: 'ri[ta', holeCards: ['4d', '6s'] },
+                { name: 'joan]a', holeCards: ['6s', '3d'] }
+            ];
+
+            assert.deepStrictEqual(fn(lines), anticipate);
+        });
+    });
 });

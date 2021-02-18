@@ -8,9 +8,9 @@ export default {
         return loadImagesBridge.loadImages();
     },
 
-    render(history) {
+    render(history, navigation) {
 
-        renderTableBridge.render.call(this, history);
+        renderTableBridge.render.call(this, history, navigation);
 
         this.embeddables.forEach(x => x.draw());
     }

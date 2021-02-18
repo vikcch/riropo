@@ -7,7 +7,7 @@ describe('units-biz', function () {
     describe('# getLineCards', function () {
 
         const fn = testables.getLineCards;
-/* 
+
         it('should return 5d Ad, the cards on an array', function () {
 
             const p = 'Dealt to vikcch [5d Ad]';
@@ -20,7 +20,7 @@ describe('units-biz', function () {
             const p = '*** FLOP *** [Ac 4c Td]';
 
             assert.deepStrictEqual(fn(p), ['Ac', '4c', 'Td']);
-        }); */
+        });
 
         it('should return Ac 7h 6h 8s, the cards on an array', function () {
 
@@ -28,7 +28,7 @@ describe('units-biz', function () {
 
             assert.deepStrictEqual(fn(p), ['Ac', '7h', '6h', '8s']);
         });
-        
+
         it('should return Ac 7h 6h 8s 4c, the cards on an array', function () {
 
             const p = '*** RIVER *** [Ac 7h 6h 8s] [4c]';
@@ -36,7 +36,7 @@ describe('units-biz', function () {
             assert.deepStrictEqual(fn(p), ['Ac', '7h', '6h', '8s', '4c']);
         });
 
-      /*   it('should return Kd 8h, the cards on an array', function () {
+        it('should return Kd 8h, the cards on an array', function () {
 
             const p = 'pozilgas: shows [Kd 8h] (a pair of Aces)';
 
@@ -48,7 +48,34 @@ describe('units-biz', function () {
             const p = 'Seat 6: pozilgas (button) mucked [Qh Th]';
 
             assert.deepStrictEqual(fn(p), ['Qh', 'Th']);
-        }); */
+        });
+    });
+
+    describe('# 2 getConclusionLines', function () {
+
+        const fn = testables.conclusionAmount;
+
+        it('should return the conlusion line value', function () {
+
+            const line = 'PoketAces990 collected €0.04 from pot';
+
+            const anticipate = 0.04;
+
+            assert.strictEqual(fn(line), anticipate);
+
+        });
+
+        it('should return the conlusion line value', function () {
+
+            const line = 'AndréRPoker collected €0.02 from pot';
+
+            const anticipate = 0.02;
+
+            assert.strictEqual(fn(line), anticipate);
+
+        });
+
+
     });
 
 });

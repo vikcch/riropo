@@ -41,6 +41,8 @@ export default class Model {
             // STOPSHIP:: "out of hand" é importantissimo
             // tem tambem: "Chelov18 will be allowed to play after the button"
             // tem tambem: "gporto68 leaves the table"
+            // woddyman89 was removed from the table for failing to post
+            // woddyman89 leaves the table
 
             return pokerHand(hand);
 
@@ -89,7 +91,10 @@ export default class Model {
 
         return {
             history: this.getHistory(),
-            enables: this.getNavigationEnables()
+            enables: this.getNavigationEnables(),
+
+            // Apenas usado no handler do nextAction
+            next: this.tracker.progress === 0 ? 'nextHand' : 'nextAction'
         };
     }
 

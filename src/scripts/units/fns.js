@@ -71,6 +71,7 @@ export const clamp = (min, max, value) => {
 export default {
 
     /**
+     * Tambem remove outros caracteres como '(' ')' usado no 'Uncalled bet'
      * 
      * @param {string} value 
      * @returns {string}

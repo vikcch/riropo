@@ -36,12 +36,7 @@ describe('ease-pokerhand-create-history', function () {
 
             assert.deepStrictEqual(fn(lines, delimiters), anticipate);
         });
-    });
-
-    describe('# 2 getActivityLines', function () {
-
-        const fn = testables.getActivityLines;
-
+ 
         it('should return only activity lines', function () {
 
             const lines = [
@@ -61,9 +56,55 @@ describe('ease-pokerhand-create-history', function () {
 
             assert.deepStrictEqual(fn(lines, delimiters), anticipate);
 
-            // console.log('asddas');
-            // console.log(fn(lines));
         });
+    });
+
+    describe('# 2 getConclusionLines', function () {
+
+        const fn = testables.getConclusionLines;
+
+        it('should return only conlusion lines', function () {
+
+            const lines = [
+                'pestmontijo: folds ',
+                '*** SHOW DOWN ***',
+                'PoketAces990: shows [2d 2s] (two pair, Queens and Deuces)',
+                'vikcch: mucks hand ',
+                'PoketAces990 collected €0.04 from pot',
+                '*** SUMMARY ***',
+                'Total pot €0.02 | Rake €0 '
+            ];
+
+            const anticipate = [
+                'PoketAces990: shows [2d 2s] (two pair, Queens and Deuces)',
+                'vikcch: mucks hand ',
+                'PoketAces990 collected €0.04 from pot',
+            ];
+
+            assert.deepStrictEqual(fn(lines), anticipate);
+
+        });
+
+        it('should return only conlusion lines', function () {
+
+            const lines = [
+                'pestmontijo: folds ',
+                'pestmontijo: folds ',
+                'Uncalled bet (€0.01) returned to AndréRPoker',
+                'AndréRPoker collected €0.02 from pot',
+                '*** SUMMARY ***',
+                'Total pot €0.02 | Rake €0 '
+            ];
+
+            const anticipate = [
+                'Uncalled bet (€0.01) returned to AndréRPoker',
+                'AndréRPoker collected €0.02 from pot',
+            ];
+
+            assert.deepStrictEqual(fn(lines), anticipate);
+
+        });
+
     });
 
 });

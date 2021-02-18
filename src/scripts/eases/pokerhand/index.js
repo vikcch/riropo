@@ -21,7 +21,8 @@ export default {
         // TODO:: make history, sendo cada jogada
 
         const { getPlayersInfoLines, getHeroName, makeTablePositions,
-            getPlayerName, getPlayerStack, getPlayerSeat, getPlayerBounty
+            getPlayerName, getPlayerStack, getPlayerSeat, getPlayerBounty,
+            getDealtedHoleCards
         } = createPlayer;
 
         const playersLines = getPlayersInfoLines(lines);
@@ -30,23 +31,27 @@ export default {
 
         const tablePositions = makeTablePositions(playersLines, buttonSeat);
 
-        const players = playersLines.map(x => {
+        const holeCardsDealted = getDealtedHoleCards(lines);
 
-            const name = getPlayerName(x);
+        const players = playersLines.map(line => {
 
-            const stack = getPlayerStack(x);
+            const name = getPlayerName(line);
 
-            const seat = getPlayerSeat(x);
+            const stack = getPlayerStack(line);
 
-            const bounty = getPlayerBounty(x);
+            const seat = getPlayerSeat(line);
+
+            const bounty = getPlayerBounty(line);
 
             const isButton = seat === buttonSeat;
 
             const isHero = name === heroName;
 
-            const position = tablePositions.find(x => x.seat === seat).position;
+            const { position } = tablePositions.find(x => x.seat === seat);
 
-            return Player({ name, stack, seat, position, bounty, isButton, isHero });
+            const holeCards = holeCardsDealted.find(x => x.name === name)?.holeCards;
+
+            return Player({ name, stack, seat, position, bounty, isButton, isHero, holeCards });
         });
 
         return players;
@@ -79,6 +84,11 @@ export default {
             const rows = createHistory[stage](lines, lastHistory, delimiters);
             histories.push(...rows);
         }
+
+        const lastHistory = rear(histories);
+        const conclusions = createHistory.conclusion(lines, lastHistory);
+        histories.push(...conclusions);
+
 
         // console.log(players);
         // console.log(histories);

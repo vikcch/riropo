@@ -1,4 +1,5 @@
-export const Player = ({ name, stack, seat, position, isButton, isHero, bounty }) => {
+export const Player = ({ name, stack, seat, position, isButton,
+    isHero, bounty, holeCards }) => {
 
     return {
         stack,
@@ -8,8 +9,11 @@ export const Player = ({ name, stack, seat, position, isButton, isHero, bounty }
         isButton,
         isHero,
         bounty,
+        holeCards,
         amountOnStreet: 0,
         inPlay: true,
+        uncalledBet: 0,
+        collect: 0,
 
         clone() {
 

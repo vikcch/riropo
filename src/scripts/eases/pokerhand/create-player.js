@@ -1,3 +1,4 @@
+import biz from '@/scripts/units/biz';
 import fns from '../../units/fns';
 
 /**
@@ -168,6 +169,46 @@ const getHeroName = (lines) => {
     return hero;
 };
 
+/**
+ * 
+ * @param {string[]} lines
+ * @returns { { name:string, holeCards:string[] }[] }
+ */
+const getDealtedHoleCards = lines => {
+
+    // ...
+    // *** HOLE CARDS ***
+    // Dealt to vikcch [5d Qc]
+    // Dealted to rita [4d 6s]
+    // Dealted to joana [8s 3d]
+
+    const holeCardsLineIndex = lines.indexOf('*** HOLE CARDS ***');
+
+    const remain = lines.slice(holeCardsLineIndex + 1);
+
+    return remain.reduce((acc, cur, index) => {
+
+        const inSuccession = index === acc.length;
+        const isTarget = cur.endsWith(']');
+
+        if (inSuccession && isTarget) {
+
+            const bracketIndex = cur.lastIndexOf('[');
+            const startIndex = cur.match(/^Dealt(|ed)\sto\s/gm)[0].length;
+
+            const item = {
+                name: cur.substring(startIndex, bracketIndex - 1),
+                holeCards: biz.getLineCards(cur)
+            };
+
+            acc.push(item);
+        }
+
+        return acc;
+
+    }, []);
+};
+
 export default {
     getPlayersInfoLines,
     getPlayerName,
@@ -175,5 +216,6 @@ export default {
     getPlayerSeat,
     getPlayerBounty,
     makeTablePositions,
-    getHeroName
+    getHeroName,
+    getDealtedHoleCards
 };

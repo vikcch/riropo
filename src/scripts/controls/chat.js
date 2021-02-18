@@ -38,11 +38,48 @@ export default class Chat extends Control {
         this.scrollbar.updateRows({ visible: 6 });
     }
 
+    /**
+     * 
+     * @param {string|string[]} value 
+     */
     add(value) {
 
         this.list.push(value);
 
         this.scrollbar.updateRows({ total: this.list.length });
+
+        this.draw();
+    }
+
+    /**
+     * 
+     * @param {string[]} values 
+     */
+    addRange(values) {
+
+        this.list.push(...values);
+
+        this.scrollbar.updateRows({ total: this.list.length });
+
+        this.draw();
+    }
+
+    remove() {
+
+        this.list.pop();
+
+        this.scrollbar.updateRows({ total: this.list.length });
+
+        this.draw();
+    }
+
+    removeAll() {
+
+        this.list = [];
+
+        this.scrollbar.updateRows({ total: 0 });
+
+        this.draw();
     }
 
     // #region Mandory Methods
@@ -96,7 +133,7 @@ export default class Chat extends Control {
 
         targetItens.forEach((v, i) => {
 
-            const x = this.x + 100;
+            const x = this.x + 12;
             const y = this.y + 7 + 15 * (i + 1);
 
             if (i % 2 == 0) {

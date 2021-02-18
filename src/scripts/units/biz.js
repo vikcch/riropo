@@ -15,6 +15,31 @@ export const actionAmount = line => {
     return rearValue || 0;
 };
 
+/**
+ * 
+ * @param {string} line 
+ * @returns {number}
+ */
+export const conclusionAmount = line => {
+
+    // PoketAces990 collected €0.04 from pot
+    // vikcch collected 2120 from side pot
+    // vikcch collected 14448 from main pot
+    // Uncalled bet (€0.01) returned to AndréRPoker
+
+    const arrSplit = line.split(' ');
+
+    const isUncalled = /^Uncalled\sbet\s\(.+\)\sreturned\sto\s/.test(line);
+
+    const dirtyValue = isUncalled
+        ? arrSplit[2]
+        : rear(arrSplit.filter(x => /\d$/gm.test(x)))
+
+    return pipe(fns.removeMoney, Number)(dirtyValue);
+};
+
+
+
 const getChipsValues = () => {
 
     const values = [0.01, 0.05, 0.25, 1];
@@ -138,10 +163,12 @@ export default {
     getChipIndex,
     getChips,
     getLineCards,
-    getCardIndex
+    getCardIndex,
+    conclusionAmount
 }
 
 export const testables = {
-    getLineCards
+    getLineCards,
+    conclusionAmount
 }
 

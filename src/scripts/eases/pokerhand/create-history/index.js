@@ -1,9 +1,10 @@
-import { actionAmount, getLineCards } from '@/scripts/units/biz';
+import biz, { actionAmount, getLineCards } from '@/scripts/units/biz';
 import fns, { head, rear } from '@/scripts/units/fns';
 import { pipe } from '@/scripts/units/fxnl';
 import { History, HistoryT } from '@/scripts/units/history';
 import { Player, PlayerT } from '@/scripts/units/player';
 import { DelimitersT } from '@/scripts/units/delimiters';
+import easeConclusion from './conclusion'
 
 // TODO:: JSDOCS
 const getPostsLines = lines => {
@@ -99,6 +100,45 @@ const getStreetLine = (lines, delimiters) => {
     };
 };
 
+/**
+ * 
+ * @param {string[]} lines 
+ * @returns {string[]}
+ */
+const getConclusionLines = lines => {
+
+    // *** SHOW DOWN ***
+    // PoketAces990: shows [2d 2s] (two pair, Queens and Deuces)
+    // vikcch: mucks hand 
+    // PoketAces990 collected €0.04 from pot
+    // *** SUMMARY ***
+
+    // ou 
+
+    // pestmontijo: folds 
+    // Uncalled bet (€0.01) returned to AndréRPoker
+    // AndréRPoker collected €0.02 from pot
+    // *** SUMMARY ***
+
+    const showdownIndex = lines.indexOf('*** SHOW DOWN ***');
+    const summaryIndex = lines.indexOf('*** SUMMARY ***');
+
+    const hasShowdown = showdownIndex !== -1;
+
+    const rdc = (acc, cur, index) => {
+
+        if (index >= summaryIndex) return acc;
+
+        const isUncalledLine = cur.startsWith('Uncalled bet (');
+
+        if (isUncalledLine || acc.length) acc.push(cur);
+
+        return acc;
+    };
+
+    if (hasShowdown) return lines.slice(showdownIndex + 1, summaryIndex);
+    else return lines.reduce(rdc, []);
+};
 
 /**
  * 
@@ -112,6 +152,8 @@ const posts = (lines, players) => {
     const newPlayers = players.map(x => x.clone());
 
     let pot = 0;
+
+    const historyLines = [];
 
     postLines.forEach(line => {
 
@@ -130,12 +172,15 @@ const posts = (lines, players) => {
         player.amountOnStreet = isAnte ? 0 : amount;
 
         pot += amount;
+
+        if (!isAnte) historyLines.push(line);
     });
 
     const history = {
 
         players: newPlayers,
         pot,
+        line: historyLines
     };
 
     return History(history);
@@ -250,16 +295,77 @@ const street = (lines, previousHistory, delimiters) => {
     return [history];
 };
 
+/**
+ * 
+ * @param {string[]} lines 
+ * @param {HistoryT} previousHistory
+ * @returns {History[]} 
+ */
+const conclusion = (lines, previousHistory) => {
+
+    // PoketAces990: shows [2d 2s] (two pair, Queens and Deuces)
+    // vikcch: mucks hand 
+    // PoketAces990 collected €0.04 from pot
+
+    // ou 
+
+    // Uncalled bet (€0.01) returned to AndréRPoker
+    // AndréRPoker collected €0.02 from pot
+
+    // se tiver side pot:
+    // vikcch collected 2120 from side pot
+    // vikcch collected 14448 from main pot
+
+    const conclusionLines = getConclusionLines(lines);
+
+    const newPlayers = previousHistory.players.map(x => x.cloneResetStreet());
+
+    const { streetCards } = previousHistory;
+
+    const histories = [];
+
+    conclusionLines.forEach(line => {
+
+        let playersMutated = false;
+
+        playersMutated ||= easeConclusion.shows(line, newPlayers);
+
+        playersMutated ||= easeConclusion.mucks(line, newPlayers, lines);
+
+        playersMutated ||= easeConclusion.collects(line, newPlayers);
+
+        playersMutated ||= easeConclusion.uncalled(line, newPlayers);  
+
+        if (!playersMutated) return;
+
+        const history = History({
+
+            players: newPlayers,
+            pot: previousHistory.pot,
+            action: '',
+            player: null,
+            line: line,
+            lineIndex: null,
+            streetCards
+        });
+
+        histories.push(history);
+    });
+
+    return histories;
+};
 
 
 export default {
 
     posts,
     activity,
-    street
+    street,
+    conclusion
 };
 
 
 export const testables = {
-    getActivityLines
+    getActivityLines,
+    getConclusionLines
 }

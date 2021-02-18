@@ -45,6 +45,15 @@ const easeChipsValue = function () {
     return { x, y };
 };
 
+const easeHoleCards = function () {
+
+    const offSetX = -2;
+    const offSetY = -25;
+    const x = this.action.x + offSetX;
+    const y = this.action.y + offSetY;
+    return { x, y };
+};
+
 
 const seatsPositions = [
     {
@@ -58,6 +67,7 @@ const seatsPositions = [
         inPlay: { x: 536, y: 88 },
         get action() { return easeAction.call(this) },
         get statusHighlight() { return easeStatusHighlight.call(this) },
+        get holeCards() { return easeHoleCards.call(this) },
         emptySeat: { x: 475, y: 0 }
     },
     {
@@ -71,6 +81,7 @@ const seatsPositions = [
         inPlay: { x: 598, y: 115 },
         get action() { return easeAction.call(this) },
         get statusHighlight() { return easeStatusHighlight.call(this) },
+        get holeCards() { return easeHoleCards.call(this) },
         emptySeat: { x: 614, y: 61 }
     },
     {
@@ -84,6 +95,7 @@ const seatsPositions = [
         inPlay: { x: 672, y: 205 },
         get action() { return easeAction.call(this) },
         get statusHighlight() { return easeStatusHighlight.call(this) },
+        get holeCards() { return easeHoleCards.call(this) },
         emptySeat: { x: 693, y: 189 }
     },
     {
@@ -97,6 +109,7 @@ const seatsPositions = [
         inPlay: { x: 588, y: 278 },
         get action() { return easeAction.call(this) },
         get statusHighlight() { return easeStatusHighlight.call(this) },
+        get holeCards() { return easeHoleCards.call(this) },
         emptySeat: { x: 571, y: 305 }
     },
     {
@@ -110,6 +123,7 @@ const seatsPositions = [
         inPlay: { x: 419, y: 314 },
         get action() { return easeAction.call(this) },
         get statusHighlight() { return easeStatusHighlight.call(this) },
+        get holeCards() { return easeHoleCards.call(this) },
         emptySeat: { x: 351, y: 331 }
     },
     {
@@ -123,6 +137,7 @@ const seatsPositions = [
         inPlay: { x: 172, y: 277 },
         get action() { return easeAction.call(this) },
         get statusHighlight() { return easeStatusHighlight.call(this) },
+        get holeCards() { return easeHoleCards.call(this) },
         emptySeat: { x: 139, y: 303 }
     },
     {
@@ -136,6 +151,7 @@ const seatsPositions = [
         inPlay: { x: 102, y: 204 },
         get action() { return easeAction.call(this) },
         get statusHighlight() { return easeStatusHighlight.call(this) },
+        get holeCards() { return easeHoleCards.call(this) },
         emptySeat: { x: 13, y: 189 }
     },
     {
@@ -149,6 +165,7 @@ const seatsPositions = [
         inPlay: { x: 179, y: 114 },
         get action() { return easeAction.call(this) },
         get statusHighlight() { return easeStatusHighlight.call(this) },
+        get holeCards() { return easeHoleCards.call(this) },
         emptySeat: { x: 95, y: 60 }
     },
     {
@@ -162,7 +179,7 @@ const seatsPositions = [
         inPlay: { x: 240, y: 88 },
         get action() { return easeAction.call(this) },
         get statusHighlight() { return easeStatusHighlight.call(this) },
-
+        get holeCards() { return easeHoleCards.call(this) },
         emptySeat: { x: 238, y: 0 }
     },
 ];

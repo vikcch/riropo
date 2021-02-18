@@ -4,6 +4,7 @@ import { PlayerT } from '@/scripts/units/player';
 import View from '@/scripts/view';
 import displayPositions from '@/scripts/units/display-positions';
 import biz from '@/scripts/units/biz';
+import enums from '@/scripts/units/enums';
 
 let inter = null;
 
@@ -21,6 +22,29 @@ const drawTextCenter = function (context, text, color, point) {
 
     context.fillText(text, point.x, point.y);
 };
+
+const drawPlayerCards = function ({ isPLO, point }) {
+
+    const offSetX = 15;
+    const offSetY = 4;
+
+    const outSetX = isPLO ? -offSetX : 0;
+    const outSetY = isPLO ? -offSetY : 0;
+
+    return (card, index) => {
+
+        const { suit, value } = biz.getCardIndex(card);
+
+        const image = this.images.deck[suit][value];
+
+        const x = point.x + offSetX * index + outSetX;
+
+        const y = point.y + offSetY * index + outSetY;
+
+        this.context.drawImage(image, x, y);
+    };
+};
+
 
 /**
  * @this {View}
@@ -61,7 +85,7 @@ const players = function (history) {
         this.context.drawImage(image, point.x, point.y);
     };
 
-
+    const isPLO = players.find(x => x.isHero).holeCards.length === 4;
 
     players.forEach(player => {
 
@@ -83,7 +107,24 @@ const players = function (history) {
         if (player.inPlay) {
 
             drawImage(inPlay, displayPosition.inPlay);
+
+            if (isPLO) {
+
+                const x = displayPosition.inPlay.x + 10;
+                const y = displayPosition.inPlay.y + 4;
+                drawImage(inPlay, { x, y });
+            }
         }
+
+        if (player.holeCards) {
+
+            const point = displayPosition.holeCards;
+
+            const drawPlayerCardsAbsx = drawPlayerCards.call(this, { isPLO, point });
+
+            player.holeCards.forEach(drawPlayerCardsAbsx);
+        }
+
     });
 }
 
@@ -313,6 +354,7 @@ const middlePot = function (history) {
     });
 
 };
+
 /**
  * @this {View}
  * @param {HistoryT} history 
@@ -330,6 +372,30 @@ const middlePotValue = function (history) {
     drawTextCenter(this.context, value, 'white', point);
 };
 
+/**
+ * @this {View}
+ * @param {HistoryT} history 
+ * @param {string} navigation 
+ */
+const chat = function (history, navigation) {
+
+    const work = {
+
+        previousHand: () => {
+            this.chat.removeAll();
+            this.chat.addRange(history.line);
+        },
+        previousAction: () => this.chat.remove(),
+        nextAction: () => this.chat.add(history.line),
+        nextHand: () => {
+            this.chat.removeAll();
+            this.chat.addRange(history.line);
+        }
+    };
+
+    work[navigation].call();
+};
+
 export default {
 
     /**
@@ -337,7 +403,7 @@ export default {
      * @this {View}
      * @param {HistoryT} history 
      */
-    render(history) {
+    render(history, navigation) {
 
         const { width, height } = this.canvas;
 
@@ -363,9 +429,13 @@ export default {
 
         middlePotValue.call(this, history);
 
+        chat.call(this, history, navigation);
+
         // console.log(this.canvas.width);
 
-        console.log(history);
+        // this.chat.add(history.line);
+
+        console.log(history, navigation);
 
         // console.log('render');
 

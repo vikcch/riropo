@@ -114,9 +114,9 @@ export default class View {
      * 
      * @param {HistoryT} history 
      */
-    render(history) {
+    render(history, navigation) {
 
-        ease.render.call(this, history);
+        ease.render.call(this, history, navigation);
     }
 
     updateNavigation(enables) {
