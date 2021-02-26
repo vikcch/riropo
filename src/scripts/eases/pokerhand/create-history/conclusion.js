@@ -32,6 +32,8 @@ export default {
     // vikcch collected 14448 from main pot
 
 
+    // TODO:: em all-ins mostrar logo as cartas
+
     /**
      * 
      * @param {string} lines
@@ -107,9 +109,10 @@ export default {
      * 
      * @param {string} lines
      * @param {PlayerT[]} players 
+     * @param {{value:number}} uncalledBet 
      * @returns {boolea|undefined}
      */
-    uncalled: (line, players) => {
+    uncalled: (line, players, uncalledBet) => {
 
         const isUncalled = /^Uncalled\sbet\s\(.+\)\sreturned\sto\s/.test(line);
 
@@ -123,11 +126,11 @@ export default {
 
             const player = players.find(x => x.name === name);
 
-            player.uncalledBet = biz.conclusionAmount(line);
+            const amount = biz.conclusionAmount(line);
 
-            // TODO:: decidir o que fazer com a uncalled bet, secalhar nem 
-            // preciso da prop... adiciona logo á stack, decidir se mostro no chat
-            // talvez nem criar `history`
+            player.stack += amount;
+
+            uncalledBet.value = amount;
 
             return true;
         }

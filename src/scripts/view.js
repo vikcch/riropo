@@ -33,6 +33,9 @@ export default class View {
         this.context.moveTo(0, 0);
         this.context.lineTo(500, 100);
         this.context.stroke();
+
+        // intervals em table
+        this.inter = null;
     }
 
     async setImages() {

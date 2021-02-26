@@ -74,8 +74,9 @@ const getActivityLines = (lines, delimiters) => {
         const calls = /:\scalls\s(|.+)\d$/.test(v);
         const bets = /:\sbets\s(|.+)\d$/.test(v);
         const raises = /:\sraises\s(|.+)\d$/.test(v);
+        const raisesAllIn = /:\sraises\s(|.+)\sand\sis\sall-in$/.test(v);
 
-        return ends || calls || bets || raises;
+        return ends || calls || bets || raises || raisesAllIn;
     });
 };
 
@@ -318,15 +319,19 @@ const conclusion = (lines, previousHistory) => {
 
     const conclusionLines = getConclusionLines(lines);
 
-    const newPlayers = previousHistory.players.map(x => x.cloneResetStreet());
-
     const { streetCards } = previousHistory;
 
     const histories = [];
 
+    const uncalledBet = { value: 0 };
+
     conclusionLines.forEach(line => {
 
-        let playersMutated = false;
+        const lastHistory = rear(histories) ?? previousHistory;
+
+        const newPlayers = lastHistory.players.map(x => x.cloneResetStreet());
+
+        let playersMutated = 0 || false;
 
         playersMutated ||= easeConclusion.shows(line, newPlayers);
 
@@ -334,14 +339,14 @@ const conclusion = (lines, previousHistory) => {
 
         playersMutated ||= easeConclusion.collects(line, newPlayers);
 
-        playersMutated ||= easeConclusion.uncalled(line, newPlayers);  
+        playersMutated ||= easeConclusion.uncalled(line, newPlayers, uncalledBet);
 
         if (!playersMutated) return;
 
         const history = History({
 
             players: newPlayers,
-            pot: previousHistory.pot,
+            pot: previousHistory.pot - uncalledBet.value,
             action: '',
             player: null,
             line: line,

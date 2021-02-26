@@ -78,4 +78,31 @@ describe('units-biz', function () {
 
     });
 
+    describe('# 3 getConclusionLines', function () {
+
+        const fn = testables.actionAmount;
+
+        it('should return the line value', function () {
+
+            const line = 'guix38100: raises 65446 to 71446 and is all-in';
+
+            const anticipate = 71446;
+
+            assert.strictEqual(fn(line), anticipate);
+
+        });
+
+        it('should return the line value', function () {
+
+            const line = 'maria and is all-in: raises 88450 to 114000 and is all-in';
+
+            const anticipate = 114000;
+
+            assert.strictEqual(fn(line), anticipate);
+
+        });
+
+
+    });
+
 });

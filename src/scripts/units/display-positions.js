@@ -40,8 +40,8 @@ const easeChipsValue = function () {
     const offSetX = leftAlign ? chipsWidth + 4 : -4;
     const offSetY = chipsHeight - 2;
 
-    const x = this.chips.x + offSetX;
-    const y = this.chips.y + offSetY;
+    const x = this.betChips.x + offSetX;
+    const y = this.betChips.y + offSetY;
     return { x, y };
 };
 
@@ -62,7 +62,7 @@ const seatsPositions = [
         get name() { return easeName.call(this) },
         get stack() { return easeStack.call(this) },
         dealer: { x: 513, y: 88 },
-        chips: { x: 480, y: 128 },
+        betChips: { x: 480, y: 128 },
         get chipsValue() { return easeChipsValue.call(this) },
         inPlay: { x: 536, y: 88 },
         get action() { return easeAction.call(this) },
@@ -76,7 +76,7 @@ const seatsPositions = [
         get name() { return easeName.call(this) },
         get stack() { return easeStack.call(this) },
         dealer: { x: 642, y: 156 },
-        chips: { x: 576, y: 168 },
+        betChips: { x: 576, y: 168 },
         get chipsValue() { return easeChipsValue.call(this) },
         inPlay: { x: 598, y: 115 },
         get action() { return easeAction.call(this) },
@@ -90,7 +90,7 @@ const seatsPositions = [
         get name() { return easeName.call(this) },
         get stack() { return easeStack.call(this) },
         dealer: { x: 668, y: 240 },
-        chips: { x: 624, y: 240 },
+        betChips: { x: 624, y: 240 },
         get chipsValue() { return easeChipsValue.call(this) },
         inPlay: { x: 672, y: 205 },
         get action() { return easeAction.call(this) },
@@ -104,7 +104,7 @@ const seatsPositions = [
         get name() { return easeName.call(this) },
         get stack() { return easeStack.call(this) },
         dealer: { x: 550, y: 316 },
-        chips: { x: 528, y: 296 },
+        betChips: { x: 528, y: 296 },
         get chipsValue() { return easeChipsValue.call(this) },
         inPlay: { x: 588, y: 278 },
         get action() { return easeAction.call(this) },
@@ -118,7 +118,7 @@ const seatsPositions = [
         get name() { return easeName.call(this) },
         get stack() { return easeStack.call(this) },
         dealer: { x: 382, y: 316 },
-        chips: { x: 344, y: 290 },
+        betChips: { x: 344, y: 290 },
         get chipsValue() { return easeChipsValue.call(this) },
         inPlay: { x: 419, y: 314 },
         get action() { return easeAction.call(this) },
@@ -132,7 +132,7 @@ const seatsPositions = [
         get name() { return easeName.call(this) },
         get stack() { return easeStack.call(this) },
         dealer: { x: 233, y: 316 },
-        chips: { x: 240, y: 292 },
+        betChips: { x: 240, y: 292 },
         get chipsValue() { return easeChipsValue.call(this) },
         inPlay: { x: 172, y: 277 },
         get action() { return easeAction.call(this) },
@@ -146,7 +146,7 @@ const seatsPositions = [
         get name() { return easeName.call(this) },
         get stack() { return easeStack.call(this) },
         dealer: { x: 107, y: 242 },
-        chips: { x: 144, y: 240 },
+        betChips: { x: 144, y: 240 },
         get chipsValue() { return easeChipsValue.call(this) },
         inPlay: { x: 102, y: 204 },
         get action() { return easeAction.call(this) },
@@ -160,7 +160,7 @@ const seatsPositions = [
         get name() { return easeName.call(this) },
         get stack() { return easeStack.call(this) },
         dealer: { x: 128, y: 146 },
-        chips: { x: 208, y: 168 },
+        betChips: { x: 208, y: 168 },
         get chipsValue() { return easeChipsValue.call(this) },
         inPlay: { x: 179, y: 114 },
         get action() { return easeAction.call(this) },
@@ -174,7 +174,7 @@ const seatsPositions = [
         get name() { return easeName.call(this) },
         get stack() { return easeStack.call(this) },
         dealer: { x: 271, y: 88 },
-        chips: { x: 296, y: 128 },
+        betChips: { x: 296, y: 128 },
         get chipsValue() { return easeChipsValue.call(this) },
         inPlay: { x: 240, y: 88 },
         get action() { return easeAction.call(this) },

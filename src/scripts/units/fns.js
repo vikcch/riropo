@@ -62,11 +62,29 @@ export const pointInRect = ({ x, y }, rect) => {
  * @param {number} min 
  * @param {number} max 
  * @param {number} value 
+ * @returns {number}
  */
 export const clamp = (min, max, value) => {
 
     return Math.min(Math.max(value, min), max);
 };
+
+/**
+ * 
+ * @param {number} min 
+ * @param {number} max 
+ * @param {number} norm normalmente entre 0 e 1
+ * @returns {number}
+ */
+export const lerp = (min, max, norm) => {
+
+    return (max - min) * norm + min;
+};
+
+
+
+
+
 
 export default {
 
@@ -113,6 +131,6 @@ export default {
     },
 
     pointInRect,
-    clamp
-
+    clamp,
+    lerp
 }

@@ -8,7 +8,7 @@ import { pipe } from '@/scripts/units/fxnl';
  */
 export const actionAmount = line => {
 
-    const arrSplit = line.split(' ');
+    const arrSplit = line.replace(/\sand\sis\sall-in$/gm, '').split(' ');
 
     const rearValue = pipe(rear, fns.removeMoney, Number)(arrSplit);
 
@@ -169,6 +169,7 @@ export default {
 
 export const testables = {
     getLineCards,
-    conclusionAmount
+    conclusionAmount,
+    actionAmount
 }
 

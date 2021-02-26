@@ -5,8 +5,7 @@ import View from '@/scripts/view';
 import displayPositions from '@/scripts/units/display-positions';
 import biz from '@/scripts/units/biz';
 import enums from '@/scripts/units/enums';
-
-let inter = null;
+import easeMiddlePot from './middle-pot';
 
 /**
  * 
@@ -157,8 +156,6 @@ const action = function (history) {
  */
 const waitingToAct = function (history) {
 
-    clearInterval(inter);
-
     if (!history.nextPlayer) return;
 
     const findPlayer = x => history.nextPlayer.seat === x.seatAjusted;
@@ -197,7 +194,7 @@ const waitingToAct = function (history) {
         count++;
     };
 
-    inter = setInterval(drawStatus, 500);
+    this.inter = setInterval(drawStatus, 500);
 
     drawStatus();
 };
@@ -206,7 +203,7 @@ const waitingToAct = function (history) {
  * @this {View}
  * @param {PlayerT[]} players 
  */
-const chips = function (players) {
+const betChips = function (players) {
 
     const { chips } = this.images;
 
@@ -218,7 +215,7 @@ const chips = function (players) {
 
         const displayPosition = displayPositions(6).find(findPlayer);
 
-        let { x, y } = displayPosition.chips;
+        let { x, y } = displayPosition.betChips;
 
         const value = player.amountOnStreet;
 
@@ -292,68 +289,7 @@ const streetCards = function (streetCards) {
     });
 }
 
-/**
- * @this {View}
- * @param {HistoryT} history 
- */
-const middlePot = function (history) {
 
-    const streetAmount = history.players.reduce((acc, cur) => acc + cur.amountOnStreet, 0);
-
-    const value = pureValue(history.pot - streetAmount);
-
-    const chipsIndexs = biz.getChips(value)
-        .map(x => biz.getChipIndex(x));
-
-    const { chips } = this.images;
-
-    const chipWidth = head(chips).width;
-    const chipsMargin = 1;
-
-    const uniques = new Set(chipsIndexs);
-
-    // chipsIndexs => [ 5, 5, 1 ]
-
-    // uniques     => [ 5, 1 ]
-
-    // jagged      => [ [ { value: 5, x: 0, y: 0 }, { value: 5, x: 0, y: -4 } ],
-    //                  [ { value: 1, x: 23, y: 0 } ] ]
-
-    // flat        => [ { value: 5, x: 0, y: 0 },
-    //                  { value: 5, x: 0, y: -4 },
-    //                  { value: 1, x: 23, y: 0 } ]
-
-    const jagged = [...uniques].map((v, i) => {
-
-        const values = chipsIndexs.filter(vv => vv === v);
-
-        return values.map((vv, ii) => ({
-            value: vv,
-            x: i * chipWidth + chipsMargin * i,
-            y: - ii * 4
-        }));
-    });
-
-    const flat = jagged.flatMap(x => x);
-
-    const initialPoint = { x: 400, y: 242 };
-
-    flat.forEach(v => {
-
-        const chip = chips[v.value];
-
-        const margin = (uniques.size - 1) * chipsMargin;
-
-        const chipsSpan = uniques.size * chipWidth + margin;
-
-        const x = initialPoint.x - chipsSpan / 2 + v.x;
-
-        const y = initialPoint.y + v.y
-
-        this.context.drawImage(chip, x, y);
-    });
-
-};
 
 /**
  * @this {View}
@@ -405,6 +341,9 @@ export default {
      */
     render(history, navigation) {
 
+        // NOTE:: `inter` usado em `waitingToAct` e `middlePot`
+        clearInterval(this.inter);
+
         const { width, height } = this.canvas;
 
         this.context.clearRect(0, 0, width, height);
@@ -419,13 +358,13 @@ export default {
 
         waitingToAct.call(this, history);
 
-        chips.call(this, history.players);
+        betChips.call(this, history.players);
 
         chipsValues.call(this, history.players);
 
         streetCards.call(this, history.streetCards);
 
-        middlePot.call(this, history);
+        easeMiddlePot.call(this, history);
 
         middlePotValue.call(this, history);
 
@@ -445,7 +384,6 @@ export default {
 // TODO:: Remover isto
 export const testables = {
 
-    middlePot,
     middlePotValue,
     streetCards
 };
