@@ -140,6 +140,13 @@ export default class Controller {
         if (found) found.hover(mousePoint);
 
         this.view.coordsDiv.innerHTML = e.offsetX;
+
+        const { hero } = this.model;
+
+        if (this.view.hoverHero(hero, mousePoint)) {
+
+            this.view.showHeroFolderHoleCards(hero);
+        }
     }
 
     //#region EmbeddedControls

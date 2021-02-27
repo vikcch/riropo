@@ -22,7 +22,14 @@ const drawTextCenter = function (context, text, color, point) {
     context.fillText(text, point.x, point.y);
 };
 
-const drawPlayerCards = function ({ isPLO, point }) {
+/**
+ * @this {View}
+ * @param {object} obj 
+ * @param {boolean} obj.isPLO
+ * @param {{x:number,y:number}} obj.point
+ * @param {number} [obj.alpha=1]
+ */
+export const drawPlayerCards = function ({ isPLO, point, alpha }) {
 
     const offSetX = 15;
     const offSetY = 4;
@@ -40,7 +47,9 @@ const drawPlayerCards = function ({ isPLO, point }) {
 
         const y = point.y + offSetY * index + outSetY;
 
+        this.context.globalAlpha = alpha;
         this.context.drawImage(image, x, y);
+        this.context.globalAlpha = 1;
     };
 };
 
@@ -115,7 +124,7 @@ const players = function (history) {
             }
         }
 
-        if (player.holeCards) {
+        if (player.holeCards && player.inPlay) {
 
             const point = displayPosition.holeCards;
 
@@ -123,7 +132,6 @@ const players = function (history) {
 
             player.holeCards.forEach(drawPlayerCardsAbsx);
         }
-
     });
 }
 

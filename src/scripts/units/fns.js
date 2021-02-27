@@ -81,10 +81,19 @@ export const lerp = (min, max, norm) => {
     return (max - min) * norm + min;
 };
 
+/**
+ * 
+ * @param {{x:number,y:number}} point 
+ * @param {number} left 
+ * @param {number} top 
+ */
+export const movePoint = (point, left, top) => {
 
-
-
-
+    return {
+        x: point.x + left,
+        y: point.y + top,
+    };
+};
 
 export default {
 
@@ -132,5 +141,6 @@ export default {
 
     pointInRect,
     clamp,
-    lerp
+    lerp,
+    movePoint
 }

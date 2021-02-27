@@ -132,4 +132,15 @@ export default class Model {
 
         return head(hand.histories);
     }
+
+    get hero() {
+
+        if (!this.handHistories.length) return;
+
+        const history = this.getHistory();
+
+        return history.players.find(v => v.isHero);
+    }
+
+
 }

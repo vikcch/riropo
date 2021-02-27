@@ -4,6 +4,8 @@ import { HistoryT } from '@/scripts/units/history';
 import embeddedRects from '@/scripts/eases/view/embedded-controls-rects';
 import enums, { buttonStates } from '@/scripts/units/enums';
 import Chat from "./controls/chat";
+import displayPositions from "./units/display-positions";
+import { pointInRect } from "./units/fns";
 
 export default class View {
 
@@ -122,8 +124,32 @@ export default class View {
         ease.render.call(this, history, navigation);
     }
 
-    updateNavigation(enables) {
+    hoverHero(hero, mousePoint) {
 
+        if (!hero) return;
+
+        // STOPSHIP :: hardcoded
+        const displayPosition = displayPositions(6).find(x => hero.seat === x.seatAjusted);
+
+        const heroRect = {
+
+            x: displayPosition.emptySeat.x,
+            y: displayPosition.emptySeat.y,
+            width: this.images.emptySeat.width,
+            height: this.images.emptySeat.height
+        };
+
+        return pointInRect(mousePoint, heroRect);
+    }
+
+    showHeroFolderHoleCards(hero) {
+
+        if (hero.inPlay) return;
+
+        ease.showHeroFoldedHoleCards.call(this, hero);
+    }
+
+    updateNavigation(enables) {
 
         Object.entries(enables).forEach(([key, enable]) => {
 
