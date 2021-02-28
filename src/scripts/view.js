@@ -103,6 +103,8 @@ export default class View {
 
             // TODO:: deselecionar (hover) todos
         });
+
+        this.canvas.addEventListener('keyup', handlers.canvasKeyUp);
     }
 
 
@@ -142,11 +144,11 @@ export default class View {
         return pointInRect(mousePoint, heroRect);
     }
 
-    showHeroFolderHoleCards(hero) {
+    showHeroFolderHoleCards(hero, model) {
 
         if (hero.inPlay) return;
 
-        ease.showHeroFoldedHoleCards.call(this, hero);
+        ease.showHeroFoldedHoleCards.call(this, hero, model);
     }
 
     updateNavigation(enables) {

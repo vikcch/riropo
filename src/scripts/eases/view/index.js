@@ -16,8 +16,8 @@ export default {
         this.embeddables.forEach(x => x.draw());
     },
 
-    showHeroFoldedHoleCards(hero) {
+    showHeroFoldedHoleCards(hero, model) {
 
-        heroFoldedHoleCardsBridge.showHeroFoldedHoleCards.call(this, hero);
+        heroFoldedHoleCardsBridge.showHeroFoldedHoleCards.call(this, hero, model);
     }
 };

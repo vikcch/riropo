@@ -5,14 +5,23 @@ import displayPositions from '@/scripts/units/display-positions';
 import { drawPlayerCards } from '@/scripts/eases/view/render/table/index';
 import fns from '@/scripts/units/fns';
 
-
-const intervalCallBack = function (hero, noCards, point) {
+/**
+ * @this {View}
+ * @param {PlayerT} hero 
+ * @param {ImageData} noCards 
+ * @param {{x:number,y:number}} point 
+ */
+const intervalCallBack = function (hero, noCards, point, model) {
 
     const mousePoint = Controller.mousePoint;
 
     if (!this.hoverHero(hero, mousePoint)) {
 
-        this.context.putImageData(noCards, point.x, point.y);
+        // Para o caso de navegar a ação pelo teclado (model.hero = current)
+        if (hero === model.hero) {
+
+            this.context.putImageData(noCards, point.x, point.y);
+        }
 
         clearInterval(hero.holeCards.inter);
 
@@ -26,9 +35,7 @@ export default {
      * @this {View}
      * @param {PlayerT} hero 
      */
-    showHeroFoldedHoleCards(hero) {
-
-        // TODO:: testar quando se muda de hand com o teclado (implementar)
+    showHeroFoldedHoleCards(hero, model) {
 
         if (hero.holeCards.inter) return;
 
@@ -50,7 +57,7 @@ export default {
 
         hero.holeCards.forEach(drawPlayerCardsAbsx);
 
-        const binded = intervalCallBack.bind(this, hero, noCards, ploPoint);
+        const binded = intervalCallBack.bind(this, hero, noCards, ploPoint, model);
 
         hero.holeCards.inter = setInterval(binded, 30);
     }

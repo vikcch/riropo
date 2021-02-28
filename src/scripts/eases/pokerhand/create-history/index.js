@@ -216,6 +216,8 @@ const activity = (lines, previousHistory, delimiters) => {
 
         const player = clonedPlayers.find(find);
 
+        lastHistory.nextPlayer = player.clone();
+
         const startAt = `${player.name}: `.length;
 
         const remainLine = line.substring(startAt);
@@ -242,8 +244,6 @@ const activity = (lines, previousHistory, delimiters) => {
 
             player.inPlay = false;
         }
-
-        lastHistory.nextPlayer = player;
 
         // NOTE:: Não faz mal copiar a referencia porque todos os `histories`
         // sáo apenas desta 'activity', podia dar pau em "redo"

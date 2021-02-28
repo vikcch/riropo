@@ -95,6 +95,18 @@ export const movePoint = (point, left, top) => {
     };
 };
 
+/**
+ * 
+ * @param {string} value 
+ */
+export const capitalize = value => {
+
+    const headCapitalized = head(value).toUpperCase();
+
+    return headCapitalized + value.substring(1);
+};
+
+
 export default {
 
     /**
@@ -142,5 +154,6 @@ export default {
     pointInRect,
     clamp,
     lerp,
-    movePoint
+    movePoint,
+    capitalize
 }

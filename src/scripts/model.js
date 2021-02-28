@@ -108,6 +108,8 @@ export default class Model {
 
     getNavigationEnables() {
 
+        if (!this.handHistories.length) return {};
+
         const lastHandIndex = this.handHistories.length - 1;
 
         const lastHandMaxProgress = rear(this.handHistories).histories.length - 1;

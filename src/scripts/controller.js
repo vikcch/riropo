@@ -5,7 +5,8 @@ import { getChipIndex } from "./units/biz";
 import { imagesNames } from '@/scripts/units/enums';
 // TODO:: remover isto
 import { testables } from '@/scripts/eases/view/render/table';
-import enums from '@/scripts/units/enums'
+import enums from '@/scripts/units/enums';
+import fns from '@/scripts/units/fns'
 
 export default class Controller {
 
@@ -28,6 +29,7 @@ export default class Controller {
             canvasMouseDown: this.handlerCanvas_onMouseDown,
             canvasMouseUp: this.handlerCanvas_onMouseUp,
             canvasMouseMove: this.handlerCanvas_onMouseMove,
+            canvasKeyUp: this.handlerCanvas_onKeyUp
         });
 
         this.view.bindEmbeddedControls({
@@ -145,9 +147,36 @@ export default class Controller {
 
         if (this.view.hoverHero(hero, mousePoint)) {
 
-            this.view.showHeroFolderHoleCards(hero);
+            this.view.showHeroFolderHoleCards(hero, this.model);
         }
     }
+
+    /**
+     * 
+     * @param {KeyboardEvent} e 
+     */
+    handlerCanvas_onKeyUp = (e) => {
+
+        const enables = this.model.getNavigationEnables();
+
+        const map = {
+
+            ArrowUp: 'previousHand',
+            ArrowLeft: 'previousAction',
+            ArrowRight: 'nextAction',
+            ArrowDown: 'nextHand'
+        };
+
+        const buttonLabel = map[e.code];
+
+        if (enables[buttonLabel]) {
+
+            const capitalised = fns.capitalize(buttonLabel);
+
+            this[`handler${capitalised}_onClick`]();
+        }
+    }
+
 
     //#region EmbeddedControls
 
@@ -182,6 +211,7 @@ export default class Controller {
         this.view.updateNavigation(enables);
     }
 
+    // TODO:: remover isto
     static c = 1;
 
     handlerPlay_onClick = () => {
