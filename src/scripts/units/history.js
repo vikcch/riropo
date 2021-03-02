@@ -11,6 +11,8 @@ import { PlayerT } from '@/scripts/units/player';
  * @param {string} obj.line
  * @param {number} obj.lineIndex
  * @param {PlayerT} obj.nextPlayer
+ * @param {boolean} obj.allIn não é copiado, procurar pelo primeiro..
+ * @param {string} obj.phase 
  * 
  */
 export const History = function ({
@@ -21,12 +23,15 @@ export const History = function ({
     player,
     line = '',
     lineIndex = 0,
-    nextPlayer = null
+    nextPlayer = null,
+    allIn = false,
+    phase = ''
 }) {
 
     return {
 
-        players, pot, streetCards, action, player, line, lineIndex, nextPlayer
+        players, pot, streetCards, action, player,
+        line, lineIndex, nextPlayer, allIn, phase
     };
 }
 

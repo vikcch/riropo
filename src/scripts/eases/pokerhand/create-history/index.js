@@ -31,7 +31,7 @@ const getPostsLines = lines => {
  * @param {string[]} lines 
  * @returns {{value: string, index: number}[]}
  */
-const getActivityLines = (lines, delimiters) => {
+const getDirtyActivityLines = (lines, delimiters) => {
 
     // *** HOLE CARDS ***
     // Dealt to vik [Ad As]
@@ -64,7 +64,10 @@ const getActivityLines = (lines, delimiters) => {
 
     const bareActivityLines = remainLines.slice(0, delimiterLineIndex + 1);
 
-    const classify = (value, i) => ({ value, index: delimiterLineIndexStart + 1 + i });
+    const classify = (value, i) => ({
+        value,
+        index: delimiterLineIndexStart + 1 + i
+    });
 
     return bareActivityLines.map(classify).filter(x => {
 
@@ -75,8 +78,9 @@ const getActivityLines = (lines, delimiters) => {
         const bets = /:\sbets\s(|.+)\d$/.test(v);
         const raises = /:\sraises\s(|.+)\d$/.test(v);
         const raisesAllIn = /:\sraises\s(|.+)\sand\sis\sall-in$/.test(v);
+        const uncalledBet = biz.isUncalledBet(v);
 
-        return ends || calls || bets || raises || raisesAllIn;
+        return ends || calls || bets || raises || raisesAllIn || uncalledBet;
     });
 };
 
@@ -121,18 +125,31 @@ const getConclusionLines = lines => {
     // AndréRPoker collected €0.02 from pot
     // *** SUMMARY ***
 
+    // ou 
+
+    // Uncalled bet (88450) returned to VctemoA?
+    // *** FLOP *** [4h 9d 2h]
+    // *** TURN *** [4h 9d 2h] [Qh]
+    // *** RIVER *** [4h 9d 2h Qh] [4c]
+    // *** SHOW DOWN ***
+    // vikcch: shows [Ah Ks] (a pair of Fours)
+    // VctemoA?: shows [Ac Qd] (two pair, Queens and Fours)
+    // VctemoA? collected 57850 from pot
+    // vikcch finished the tournament in 1710th place and received €28.00.
+    // *** SUMMARY ***
+
     const showdownIndex = lines.indexOf('*** SHOW DOWN ***');
     const summaryIndex = lines.indexOf('*** SUMMARY ***');
+    const uncalledIndex = lines.findIndex(v => biz.isUncalledBet(v));
 
     const hasShowdown = showdownIndex !== -1;
 
+    // Quando não tem "showdown" há sempre 'Uncalled bet' antes de conclusion
     const rdc = (acc, cur, index) => {
 
         if (index >= summaryIndex) return acc;
 
-        const isUncalledLine = cur.startsWith('Uncalled bet (');
-
-        if (isUncalledLine || acc.length) acc.push(cur);
+        if (index > uncalledIndex) acc.push(cur);
 
         return acc;
     };
@@ -196,7 +213,19 @@ const posts = (lines, players) => {
  */
 const activity = (lines, previousHistory, delimiters) => {
 
-    const activityLines = getActivityLines(lines, delimiters);
+    const dirtyActivityLines = getDirtyActivityLines(lines, delimiters);
+
+    if (!dirtyActivityLines.length) {
+
+        previousHistory.allIn = true;
+        return [];
+    }
+
+    const hasUncalledBet = biz.isUncalledBet(rear(dirtyActivityLines).value);
+
+    const activityLines = hasUncalledBet
+        ? dirtyActivityLines.slice(0, -1)
+        : dirtyActivityLines;
 
     let pot = previousHistory.pot;
 
@@ -263,8 +292,45 @@ const activity = (lines, previousHistory, delimiters) => {
         histories.push(history);
     });
 
+    if (hasUncalledBet) closeActivity(histories, rear(dirtyActivityLines).value);
+
     return histories;
 };
+
+const closeActivity = (histories, uncalledBetLine) => {
+
+    const amount = biz.uncalledAmount(uncalledBetLine);
+
+    const lastHistory = rear(histories);
+
+    const returnedToIndex = uncalledBetLine.indexOf('returned to');
+
+    const start = returnedToIndex + 'returned to '.length;
+
+    const name = uncalledBetLine.substring(start);
+
+    const newPlayers = lastHistory.players.map(x => x.cloneResetStreet());
+
+    const player = newPlayers.find(x => x.name === name);
+
+    player.stack += amount;
+
+    const { streetCards } = lastHistory;
+
+    const history = History({
+
+        players: newPlayers,
+        pot: lastHistory.pot - amount,
+        action: '',
+        player: null,
+        line: uncalledBetLine,
+        lineIndex: null,
+        streetCards
+    });
+
+    histories.push(history);
+};
+
 
 
 /**
@@ -304,6 +370,8 @@ const street = (lines, previousHistory, delimiters) => {
  */
 const conclusion = (lines, previousHistory) => {
 
+    // NOTE:: "Uncalled bet" pertence a `closeActivity`
+
     // PoketAces990: shows [2d 2s] (two pair, Queens and Deuces)
     // vikcch: mucks hand 
     // PoketAces990 collected €0.04 from pot
@@ -323,35 +391,32 @@ const conclusion = (lines, previousHistory) => {
 
     const histories = [];
 
-    const uncalledBet = { value: 0 };
-
     conclusionLines.forEach(line => {
 
         const lastHistory = rear(histories) ?? previousHistory;
 
         const newPlayers = lastHistory.players.map(x => x.cloneResetStreet());
 
-        let playersMutated = 0 || false;
+        let phase;
 
-        playersMutated ||= easeConclusion.shows(line, newPlayers);
+        phase ||= easeConclusion.shows(line, newPlayers);
 
-        playersMutated ||= easeConclusion.mucks(line, newPlayers, lines);
+        phase ||= easeConclusion.mucks(line, newPlayers, lines);
 
-        playersMutated ||= easeConclusion.collects(line, newPlayers);
+        phase ||= easeConclusion.collects(line, newPlayers);
 
-        playersMutated ||= easeConclusion.uncalled(line, newPlayers, uncalledBet);
-
-        if (!playersMutated) return;
+        if (!phase) return;
 
         const history = History({
 
             players: newPlayers,
-            pot: previousHistory.pot - uncalledBet.value,
+            pot: previousHistory.pot,
             action: '',
             player: null,
             line: line,
             lineIndex: null,
-            streetCards
+            streetCards,
+            phase
         });
 
         histories.push(history);
@@ -371,6 +436,6 @@ export default {
 
 
 export const testables = {
-    getActivityLines,
+    getDirtyActivityLines,
     getConclusionLines
 }

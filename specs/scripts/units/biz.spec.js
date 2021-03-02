@@ -51,34 +51,35 @@ describe('units-biz', function () {
         });
     });
 
-    describe('# 2 getConclusionLines', function () {
+    describe('# 2 collectedAmount', function () {
 
-        const fn = testables.conclusionAmount;
+        const fn = testables.collectedAmount;
 
-        it('should return the conlusion line value', function () {
+        it('should return the collected value', function () {
 
             const line = 'PoketAces990 collected €0.04 from pot';
 
             const anticipate = 0.04;
 
             assert.strictEqual(fn(line), anticipate);
-
         });
-
-        it('should return the conlusion line value', function () {
-
-            const line = 'AndréRPoker collected €0.02 from pot';
-
-            const anticipate = 0.02;
-
-            assert.strictEqual(fn(line), anticipate);
-
-        });
-
-
     });
 
-    describe('# 3 getConclusionLines', function () {
+    describe('# 3 uncalledAmount', function () {
+
+        const fn = testables.uncalledAmount;
+
+        it('should return the uncalled amount', function () {
+
+            const line = 'Uncalled bet (€0.01) returned to AndréRPoker';
+
+            const anticipate = 0.01;
+
+            assert.strictEqual(fn(line), anticipate);
+        });
+    });
+
+    describe('# 4 actionAmount', function () {
 
         const fn = testables.actionAmount;
 

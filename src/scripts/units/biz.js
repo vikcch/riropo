@@ -20,24 +20,42 @@ export const actionAmount = line => {
  * @param {string} line 
  * @returns {number}
  */
-export const conclusionAmount = line => {
+const collectedAmount = line => {
 
     // PoketAces990 collected €0.04 from pot
     // vikcch collected 2120 from side pot
     // vikcch collected 14448 from main pot
-    // Uncalled bet (€0.01) returned to AndréRPoker
 
     const arrSplit = line.split(' ');
 
-    const isUncalled = /^Uncalled\sbet\s\(.+\)\sreturned\sto\s/.test(line);
-
-    const dirtyValue = isUncalled
-        ? arrSplit[2]
-        : rear(arrSplit.filter(x => /\d$/gm.test(x)))
+    const dirtyValue = rear(arrSplit.filter(x => /\d$/gm.test(x)));
 
     return pipe(fns.removeMoney, Number)(dirtyValue);
 };
 
+/**
+ * 
+ * @param {string} line 
+ * @returns {number}
+ */
+const uncalledAmount = line => {
+
+    // Uncalled bet (€0.01) returned to AndréRPoker
+
+    const dirtyValue = line.split(' ')[2];
+
+    return pipe(fns.removeMoney, Number)(dirtyValue);
+};
+
+/**
+ * 
+ * @param {string} value 
+ * @returns {boolean}
+ */
+const isUncalledBet = value => {
+
+    return /^Uncalled\sbet\s\(.+\)\sreturned\sto\s/.test(value);
+};
 
 
 const getChipsValues = () => {
@@ -164,12 +182,15 @@ export default {
     getChips,
     getLineCards,
     getCardIndex,
-    conclusionAmount
+    collectedAmount,
+    uncalledAmount,
+    isUncalledBet
 }
 
 export const testables = {
     getLineCards,
-    conclusionAmount,
+    collectedAmount,
+    uncalledAmount,
     actionAmount
 }
 

@@ -1,4 +1,5 @@
 import biz from '@/scripts/units/biz';
+import { phase } from '@/scripts/units/enums';
 import { PlayerT } from '@/scripts/units/player';
 
 /**
@@ -52,7 +53,7 @@ export default {
 
             player.holeCards = biz.getLineCards(line);
 
-            return true;
+            return phase.conclusionShows;
         }
     },
 
@@ -79,7 +80,7 @@ export default {
 
             player.holeCards = biz.getLineCards(muckedLine);
 
-            return true;
+            return phase.conclusionMucks;
         }
     },
 
@@ -99,40 +100,9 @@ export default {
 
             const player = players.find(x => x.name === name);
 
-            player.collect = biz.conclusionAmount(line);
+            player.collect = biz.collectedAmount(line);
 
-            return true;
-        }
-    },
-
-    /**
-     * 
-     * @param {string} lines
-     * @param {PlayerT[]} players 
-     * @param {{value:number}} uncalledBet 
-     * @returns {boolea|undefined}
-     */
-    uncalled: (line, players, uncalledBet) => {
-
-        const isUncalled = /^Uncalled\sbet\s\(.+\)\sreturned\sto\s/.test(line);
-
-        if (isUncalled) {
-
-            const returnedToIndex = line.indexOf('returned to');
-
-            const start = returnedToIndex + 'returned to '.length;
-
-            const name = line.substring(start);
-
-            const player = players.find(x => x.name === name);
-
-            const amount = biz.conclusionAmount(line);
-
-            player.stack += amount;
-
-            uncalledBet.value = amount;
-
-            return true;
+            return phase.conclusionCollects;
         }
     }
 };

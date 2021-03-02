@@ -112,7 +112,7 @@ const players = function (history) {
             drawImage(dealer, displayPosition.dealer);
         }
 
-        if (player.inPlay) {
+        if (player.inPlay && !player.holeCards) {
 
             drawImage(inPlay, displayPosition.inPlay);
 

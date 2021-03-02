@@ -1,12 +1,52 @@
 import { Player, PlayerT } from '@/scripts/units/player';
 
-import { History } from '@/scripts/units/history';
+import { History, HistoryT } from '@/scripts/units/history';
 
 import createPlayer from './create-player';
 import createHistory from './create-history';
 import { rear } from '@/scripts/units/fns';
 
 import { Delimiters } from '@/scripts/units/delimiters';
+import { phase } from '@/scripts/units/enums';
+
+
+/**
+ * 
+ * @param {HistoryT[]} histories 
+ */
+const fixShowCardsOnAllIn = histories => {
+
+    const allInIndex = histories.findIndex(v => v.allIn);
+
+    const finalHistory = rear(histories);
+
+    const finalplayers = finalHistory.players.filter(v => v.holeCards);
+
+    const newHistories = histories.map((history, i) => {
+
+        if (i < allInIndex) return history;
+
+        finalplayers.forEach(finalplayer => {
+
+            const found = history.players.find(v => v.seat === finalplayer.seat);
+
+            found.holeCards = finalplayer.holeCards;
+        });
+
+        if (history.phase === phase.conclusionShows) return;
+        else return history;
+    });
+
+    const historyShowCards = {
+        ...newHistories[allInIndex - 1],
+        players: newHistories[allInIndex].players,
+        line: 'Showing cards'
+    };
+
+    newHistories.splice(allInIndex, 0, historyShowCards);
+
+    return newHistories.filter(Boolean);
+};
 
 export default {
 
@@ -62,7 +102,7 @@ export default {
      * 
      * @param {string[]} lines 
      * @param {Player[]} players 
-     * @returns {History[]}
+     * @returns {HistoryT[]}
      */
     createHistories(lines, players) {
 
@@ -70,6 +110,7 @@ export default {
 
         const posts = createHistory.posts(lines, players, delimiters);
 
+        /** @type {HistoryT[]} */
         const histories = [posts];
 
         const a = 'activity', s = 'street';
@@ -89,13 +130,9 @@ export default {
         const conclusions = createHistory.conclusion(lines, lastHistory);
         histories.push(...conclusions);
 
+        const hasAllin = histories.some(v => v.allIn);
 
-        // console.log(players);
-        // console.log(histories);
-        // console.log('+++++++');
-
-
-        return histories;
-        // console.log(delimiters);
+        if (hasAllin) return fixShowCardsOnAllIn(histories);
+        else return histories;
     }
 }

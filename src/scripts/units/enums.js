@@ -26,10 +26,18 @@ export const navigation = {
     nextHand: 'nextHand'
 };
 
+export const phase = {
+
+    conclusionShows: 'conclusionShows',
+    conclusionMucks: 'conclusionMucks',
+    conclusionCollects: 'conclusionCollects'
+};
+
 export default {
 
     buttonStates,
     imagesNames,
-    navigation
+    navigation,
+    phase
 };
 

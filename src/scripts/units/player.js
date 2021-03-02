@@ -12,7 +12,6 @@ export const Player = ({ name, stack, seat, position, isButton,
         holeCards,
         amountOnStreet: 0,
         inPlay: true,
-        uncalledBet: 0,
         collect: 0,
 
         clone() {
