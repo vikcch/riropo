@@ -61,14 +61,7 @@ export default class Button {
 
         if (this.is3d === false) return;
 
-        const { background } = this.view.images;
-
-        this.context.drawImage(background,
-            this.x, this.y, this.width, this.height,
-            this.x, this.y, this.width, this.height);
-
-        this.context.drawImage(this.images[state], this.x + 1, this.y + 1);
-
+        this.draw();
     }
 
     click() {
@@ -86,9 +79,9 @@ export default class Button {
 
         if (this.state !== states.normal) return;
 
-        this.context.drawImage(this.images.hover, this.x, this.y);
-
         this.state = states.hover;
+
+        this.draw();
 
         const inter = setInterval(() => {
 
@@ -106,8 +99,6 @@ export default class Button {
             }
 
         }, 30);
-
-        console.log('dentro da class');
     }
 
     hitMe({ x, y }) {
@@ -144,15 +135,22 @@ export default class Button {
 
         if (state === states.hidden) return;
 
+        this.context.setTransform(1, 0, 0, 1, 0, 0);
+
         const { background } = this.view.images;
 
         if (this.is3d) {
 
+            const outsize = this.isPressed ? 0 : 1;
+
             this.context.drawImage(background,
-                this.x, this.y, this.width + 1, this.height + 1,
-                this.x, this.y, this.width + 1, this.height + 1);
+                this.x, this.y, this.width + outsize, this.height + outsize,
+                this.x, this.y, this.width + outsize, this.height + outsize);
         }
 
-        this.context.drawImage(this.images[state], this.x, this.y);
+        const x = this.x + (this.isPressed ? 1 : 0);
+        const y = this.y + (this.isPressed ? 1 : 0);
+
+        this.context.drawImage(this.images[state], x, y);
     }
 }

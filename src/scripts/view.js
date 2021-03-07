@@ -2,10 +2,12 @@ import Button from "./controls/button";
 import ease from '@/scripts/eases/view/index';
 import { HistoryT } from '@/scripts/units/history';
 import embeddedRects from '@/scripts/eases/view/embedded-controls-rects';
+import easeRender from '@/scripts/eases/view/render/index'
 import enums, { buttonStates } from '@/scripts/units/enums';
 import Chat from "./controls/chat";
 import displayPositions from "./units/display-positions";
 import { pointInRect } from "./units/fns";
+
 
 export default class View {
 
@@ -22,19 +24,15 @@ export default class View {
         this.canvas = document.querySelector('#canvas');
         this.context = this.canvas.getContext('2d');
 
-        this.canvas.width = 792;
-        this.canvas.height = 555;
+        const { table, handsList } = easeRender.rects;
+        this.canvas.width = handsList.width + table.width;
+        this.canvas.height = handsList.height;
 
         this.embeddables = [];
         this.createEmbeddedControls();
 
         this.images = {};
         this.setImages();
-
-        this.context.beginPath();
-        this.context.moveTo(0, 0);
-        this.context.lineTo(500, 100);
-        this.context.stroke();
 
         // intervals em table
         this.inter = null;
@@ -58,7 +56,8 @@ export default class View {
 
     async setEmbeddedControlsImages() {
 
-        this.context.drawImage(this.images.background, 0, 0);
+        const { table } = easeRender.rects;
+        this.context.drawImage(this.images.background, table.x, table.y);
 
         await this.previousHand.setImages(this.images.navigation, { row: 0 })
         await this.previousAction.setImages(this.images.navigation, { row: 1 });
@@ -118,12 +117,35 @@ export default class View {
     }
 
     /**
+     * @param {HistoryT} history 
+     * @param {string} navigation enums.navigation
+     */
+    updateChat(history, navigation) {
+
+        const work = {
+
+            previousHand: () => {
+                this.chat.removeAll();
+                this.chat.addRange(history.line);
+            },
+            previousAction: () => this.chat.remove(),
+            nextAction: () => this.chat.add(history.line),
+            nextHand: () => {
+                this.chat.removeAll();
+                this.chat.addRange(history.line);
+            }
+        };
+
+        work[navigation].call();
+    };
+
+    /**
      * 
      * @param {HistoryT} history 
      */
-    render(history, navigation) {
+    render(history) {
 
-        ease.render.call(this, history, navigation);
+        ease.render.call(this, history);
     }
 
     hoverHero(hero, mousePoint) {
@@ -133,10 +155,12 @@ export default class View {
         // STOPSHIP :: hardcoded
         const displayPosition = displayPositions(6).find(x => hero.seat === x.seatAjusted);
 
+        const { table: tableRect } = easeRender.rects;
+
         const heroRect = {
 
-            x: displayPosition.emptySeat.x,
-            y: displayPosition.emptySeat.y,
+            x: displayPosition.emptySeat.x + tableRect.x,
+            y: displayPosition.emptySeat.y + tableRect.y,
             width: this.images.emptySeat.width,
             height: this.images.emptySeat.height
         };

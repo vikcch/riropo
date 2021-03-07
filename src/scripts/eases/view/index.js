@@ -1,6 +1,6 @@
 import loadImagesBridge from '@/scripts/eases/view/load-images';
-import renderTableBridge from '@/scripts/eases/view/render/table';
 import heroFoldedHoleCardsBridge from '@/scripts/eases/view/hero-folder-hole-cards';
+import renderBridge from '@/scripts/eases/view/render/index';
 
 export default {
 
@@ -9,11 +9,9 @@ export default {
         return loadImagesBridge.loadImages();
     },
 
-    render(history, navigation) {
+    render(history) {
 
-        renderTableBridge.render.call(this, history, navigation);
-
-        this.embeddables.forEach(x => x.draw());
+        renderBridge.render.call(this, history)
     },
 
     showHeroFoldedHoleCards(hero, model) {

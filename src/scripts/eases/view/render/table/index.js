@@ -6,6 +6,7 @@ import displayPositions from '@/scripts/units/display-positions';
 import biz from '@/scripts/units/biz';
 import enums from '@/scripts/units/enums';
 import easeMiddlePot from './middle-pot';
+import easeRender from '@/scripts/eases/view/render/index'
 
 /**
  * 
@@ -63,9 +64,11 @@ const pot = function (value) {
     const amount = displayValue(value);
     const text = `Pot: ${amount}`;
 
-    const textWidth = this.context.measureText(text).width
+    const textWidth = this.context.measureText(text).width;
 
-    const center = this.canvas.width / 2;
+    const { table: tableRect } = easeRender.rects;
+
+    const center = tableRect.width / 2;
     const verticalPadding = 16;
     const boxWidth = textWidth + verticalPadding;
     const x = center - textWidth / 2 - verticalPadding / 2;
@@ -171,41 +174,51 @@ const waitingToAct = function (history) {
     // STOPSHIP:: MUDAR O HARCODED 6
     const displayPosition = displayPositions(6).find(findPlayer);
 
-    // console.log('next', history.nextPlayer);
-
-    const { statusHighlight } = this.images;
+    const { statusHighlight: statusHighlightBare } = this.images;
 
     const { x, y } = displayPosition.statusHighlight;
 
-    const { width, height } = statusHighlight;
+    const { width, height } = statusHighlightBare;
 
-    const statusNormal = this.context.getImageData(x, y, width, height);
+    const { table: tableRect } = easeRender.rects;
+
+    // NOTE:: Os metodos translate() e setTransform() não afectam
+    // getImageData e putImageData
+    const xReal = tableRect.x + x;
+    const yReal = tableRect.y + y;
+
+    const statusNormal = this.context.getImageData(xReal, yReal, width, height);
 
     let count = 0;
 
+    const drawHighlight = () => {
+
+        this.context.drawImage(statusHighlightBare, x, y);
+
+        const { name, stack } = history.nextPlayer;
+
+        drawTextCenter(this.context, name, 'black', displayPosition.name);
+        drawTextCenter(this.context, stack, 'black', displayPosition.stack);
+
+        return this.context.getImageData(xReal, yReal, width, height);
+    };
+
     const drawStatus = () => {
 
-        const isHighlight = count % 2 === 0;
+        const isHighlight = count % 2 === 1;
 
-        if (isHighlight) {
+        const statusImage = isHighlight ? statusHighlight : statusNormal;
 
-            this.context.drawImage(statusHighlight, x, y);
-
-            const { name, stack } = history.nextPlayer;
-
-            drawTextCenter(this.context, name, 'black', displayPosition.name);
-            drawTextCenter(this.context, stack, 'black', displayPosition.stack);
-        }
-
-        else this.context.putImageData(statusNormal, x, y);
+        this.context.putImageData(statusImage, xReal, yReal);
 
         count++;
     };
 
-    this.inter = setInterval(drawStatus, 500);
+    const statusHighlight = drawHighlight();
 
-    drawStatus();
+    this.inter = setInterval(drawStatus, 500);
 };
+
 
 /**
  * @this {View}
@@ -316,30 +329,6 @@ const middlePotValue = function (history) {
     drawTextCenter(this.context, value, 'white', point);
 };
 
-/**
- * @this {View}
- * @param {HistoryT} history 
- * @param {string} navigation 
- */
-const chat = function (history, navigation) {
-
-    const work = {
-
-        previousHand: () => {
-            this.chat.removeAll();
-            this.chat.addRange(history.line);
-        },
-        previousAction: () => this.chat.remove(),
-        nextAction: () => this.chat.add(history.line),
-        nextHand: () => {
-            this.chat.removeAll();
-            this.chat.addRange(history.line);
-        }
-    };
-
-    work[navigation].call();
-};
-
 export default {
 
     /**
@@ -347,12 +336,17 @@ export default {
      * @this {View}
      * @param {HistoryT} history 
      */
-    render(history, navigation) {
+    render(history) {
 
         // NOTE:: `inter` usado em `waitingToAct` e `middlePot`
+        // Preciso do translate nos asyncs
         clearInterval(this.inter);
 
         const { width, height } = this.canvas;
+
+        const { table: tableRect } = easeRender.rects;
+
+        this.context.setTransform(1, 0, 0, 1, tableRect.x, tableRect.y);
 
         this.context.clearRect(0, 0, width, height);
 
@@ -376,16 +370,7 @@ export default {
 
         middlePotValue.call(this, history);
 
-        chat.call(this, history, navigation);
-
-        // console.log(this.canvas.width);
-
-        // this.chat.add(history.line);
-
-        console.log(history, navigation);
-
-        // console.log('render');
-
+        console.log(history);
     }
 }
 

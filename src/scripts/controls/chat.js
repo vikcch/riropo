@@ -122,6 +122,8 @@ export default class Chat extends Control {
      */
     draw() {
 
+        this.context.setTransform(1, 0, 0, 1, 0, 0);
+
         this.context.drawImage(this.image, this.x, this.y);
 
         const start = this.scrollbar.hidden ? 0 : this.scrollbar.rows.index;

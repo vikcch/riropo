@@ -3,3 +3,7 @@
 Riropo will be an HTML5 version of [Winning Poker HUD Replayer](http://replayer.winningpokerhud.com/) made in ActionScript 3
 
 ![PLAYERS-INFO](./docs/replayer-online.jpeg)
+
+Available Poker Sites at the moment:
+
+* PokerStars

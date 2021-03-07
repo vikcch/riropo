@@ -4,6 +4,8 @@ import { PlayerT } from '@/scripts/units/player';
 import displayPositions from '@/scripts/units/display-positions';
 import { drawPlayerCards } from '@/scripts/eases/view/render/table/index';
 import fns from '@/scripts/units/fns';
+import easeRender from '@/scripts/eases/view/render/index'
+
 
 /**
  * @this {View}
@@ -44,7 +46,9 @@ export default {
         // STOPSHIP :: hardcoded
         const displayPosition = displayPositions(6).find(x => hero.seat === x.seatAjusted);
 
-        const point = displayPosition.holeCards;
+        const { table: tableRect } = easeRender.rects;
+
+        const point = fns.movePoint(displayPosition.holeCards, tableRect.x, tableRect.y);
 
         const ploPoint = fns.movePoint(point, -15, -4);
 

@@ -4,6 +4,8 @@ import { PlayerT } from '@/scripts/units/player';
 import View from '@/scripts/view';
 import displayPositions from '@/scripts/units/display-positions';
 import biz from '@/scripts/units/biz';
+import easeRender from '@/scripts/eases/view/render/index'
+
 
 const frames = 10;
 
@@ -135,11 +137,20 @@ const draw = function (makeChipsOffSetsAbsx, amount, winner) {
 
     let count = 0;
 
-    const background = winner ? this.context.getImageData(0, 0, 792, 400) : null;
+    // NOTE:: Os metodos translate() e setTransform() não afectam
+    // getImageData e putImageData
+    const { table: tableRect } = easeRender.rects;
+
+    const background = winner
+        ? this.context.getImageData(tableRect.x, tableRect.y, 792, 400)
+        : null;
 
     const seatFixed = getDisplayPosition(winner)?.seatFixed;
 
     return () => {
+
+        // NOTE:: Em `count === 0` tem o setTransform() sync, pot parado.
+        // Os restantes (setInterval) pot animado
 
         if (count >= frames) clearInterval(this.inter);
 
@@ -147,7 +158,9 @@ const draw = function (makeChipsOffSetsAbsx, amount, winner) {
 
         if (count > 0) {
 
-            this.context.putImageData(background, 0, 0);
+            this.context.putImageData(background, tableRect.x, tableRect.y);
+
+            this.context.setTransform(1, 0, 0, 1, tableRect.x, tableRect.y);
 
             drawDragValue.call(this, chipsOffSets, text, seatFixed);
         }

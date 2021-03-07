@@ -85,7 +85,9 @@ export default class Controller {
 
             const history = this.model.getFirstHistory();
 
-            this.view.render(history, enums.navigation.nextHand);
+            this.view.updateChat(history, enums.navigation.nextHand);
+
+            this.view.render(history);
 
             const enables = this.model.getNavigationEnables();
 
@@ -188,7 +190,9 @@ export default class Controller {
 
         const { history, enables } = this.model.navigation(previousHand);
 
-        this.view.render(history, previousHand);
+        this.view.updateChat(history, previousHand);
+
+        this.view.render(history);
 
         this.view.updateNavigation(enables);
     }
@@ -206,7 +210,9 @@ export default class Controller {
 
         const { history, enables } = this.model.navigation(previousAction);
 
-        this.view.render(history, previousAction);
+        this.view.updateChat(history, previousAction);
+
+        this.view.render(history);
 
         this.view.updateNavigation(enables);
     }
@@ -247,7 +253,9 @@ export default class Controller {
         const { history, enables, next } = this.model.navigation(nextAction);
 
         // NOTE:: Náo é sempre 'nextAction', caso seja o ultimo progress da hand
-        this.view.render(history, next);
+        this.view.updateChat(history, next);
+
+        this.view.render(history);
 
         this.view.updateNavigation(enables);
     }
@@ -260,7 +268,9 @@ export default class Controller {
 
         const { history, enables } = this.model.navigation(nextHand);
 
-        this.view.render(history, nextHand);
+        this.view.updateChat(history, nextHand);
+
+        this.view.render(history);
 
         this.view.updateNavigation(enables);
     }
