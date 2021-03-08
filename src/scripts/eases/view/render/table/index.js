@@ -91,9 +91,11 @@ const players = function (history) {
 
     const { players } = history
 
-    const drawImage = (image, point) => {
+    const drawImage = (image, point, alpha = 1) => {
 
+        this.context.globalAlpha = alpha;
         this.context.drawImage(image, point.x, point.y);
+        this.context.globalAlpha = 1;
     };
 
     const isPLO = players.find(x => x.isHero).holeCards.length === 4;
@@ -104,7 +106,8 @@ const players = function (history) {
 
         const { emptySeat, status, dealer, inPlay } = this.images;
 
-        drawImage(emptySeat, displayPosition.emptySeat);
+        const emptySeatAlpha = player.inPlay ? 1 : .4;
+        drawImage(emptySeat, displayPosition.emptySeat, emptySeatAlpha);
         drawImage(status, displayPosition.status);
 
         drawTextCenter(this.context, player.name, 'white', displayPosition.name);
@@ -347,6 +350,8 @@ export default {
         const { table: tableRect } = easeRender.rects;
 
         this.context.setTransform(1, 0, 0, 1, tableRect.x, tableRect.y);
+
+        this.context.font = '11px Arial';
 
         this.context.clearRect(0, 0, width, height);
 

@@ -74,16 +74,23 @@ const getTableMax = lines => {
 /**
  * 
  * @param {string[]} lines 
+ * @param {number} index
+ * @param {number} count 
  */
-export default function (lines) {
+export default function (lines, index, count) {
 
     const buttonSeat = getButtonSeat(lines);
+
+    const mainInfo = ease.createMainInfo(lines, index, count);
 
     const players = ease.createPlayers(lines, buttonSeat);
 
     const histories = ease.createHistories(lines, players);
 
-    // TODO:: table max, date, stakes, table name, room, hand id
+    // TODO:: date, stakes, table name, room, hand id
+
+    // room - game    - hand id    - blinds
+    // date - stakes  - table name  - pot
 
     return {
 
@@ -91,6 +98,7 @@ export default function (lines) {
         buttonSeat,
         gameMode: getGameMode(lines),
         tableMax: getTableMax(lines),
+        mainInfo,
         players,
         histories
     };

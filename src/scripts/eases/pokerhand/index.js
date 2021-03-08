@@ -4,10 +4,13 @@ import { History, HistoryT } from '@/scripts/units/history';
 
 import createPlayer from './create-player';
 import createHistory from './create-history';
+import createMainInfoAssist from './create-main-info';
+
 import { rear } from '@/scripts/units/fns';
 
 import { Delimiters } from '@/scripts/units/delimiters';
 import { phase } from '@/scripts/units/enums';
+import { MainInfo, MainInfoT } from '@/scripts/units/main-info';
 
 
 /**
@@ -49,6 +52,36 @@ const fixShowCardsOnAllIn = histories => {
 };
 
 export default {
+
+    /**
+     * 
+     * @param {string[]} lines 
+     * @returns {MainInfoT}
+     * @param {number} index
+     * @param {number} count 
+     */
+    createMainInfo(lines, index, count) {
+
+        const { getBlinds, getDate, getGame, getHandId,
+            getRoom, getStakes, getTableName, getIsTournament
+        } = createMainInfoAssist;
+
+        const sessionProgress = {
+            current: index + 1, count
+        };
+
+        return MainInfo({
+            room: getRoom(lines),
+            date: getDate(lines),
+            game: getGame(lines),
+            stakes: getStakes(lines),
+            handId: getHandId(lines),
+            tableName: getTableName(lines),
+            blinds: getBlinds(lines),
+            isTournament: getIsTournament(lines),
+            sessionProgress
+        });
+    },
 
     /**
      * 

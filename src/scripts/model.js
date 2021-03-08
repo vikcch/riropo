@@ -21,6 +21,12 @@ export default class Model {
      */
     processLog(sessionLog) {
 
+        // STOPSHIP:: file do ticket dá erro (maior)
+        // HH20210306 T3126039768 No Limit Hold'em Ticket
+
+        // STOPSHIP:: FILE COM ERRO 
+        // HH20200928 Isabella IV - €0.01-€0.02 - EUR No Limit Hold'em
+
         // TODO:: 10 max é invalido
 
 
@@ -35,7 +41,7 @@ export default class Model {
 
         // console.log(jagged);
 
-        this.handHistories = jagged.map(hand => {
+        this.handHistories = jagged.map((hand, index) => {
 
             // TODO:: LIMPAR HAND (EX: remover playes "out of hand", comentarios, etc)
             // STOPSHIP:: "out of hand" é importantissimo
@@ -44,7 +50,11 @@ export default class Model {
             // woddyman89 was removed from the table for failing to post
             // woddyman89 leaves the table
 
-            return pokerHand(hand);
+            // HH20210307 Grogler - \HandHistory\vikcch PokerStars Hand #224559150508:
+            // No meio dos "Seats"
+            // pokeralho3x: is sitting out 
+
+            return pokerHand(hand, index, jagged.length);
 
         });
 
@@ -144,5 +154,11 @@ export default class Model {
         return history.players.find(v => v.isHero);
     }
 
+    get mainInfo() {
+
+        const hand = this.handHistories[this.tracker.hand];
+
+        return hand.mainInfo;
+    }
 
 }

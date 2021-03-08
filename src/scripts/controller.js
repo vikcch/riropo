@@ -87,7 +87,7 @@ export default class Controller {
 
             this.view.updateChat(history, enums.navigation.nextHand);
 
-            this.view.render(history);
+            this.view.render(history, this.model.mainInfo);
 
             const enables = this.model.getNavigationEnables();
 
@@ -106,8 +106,6 @@ export default class Controller {
             if (singleFile) reader.readAsText(loadHH.files[0]);
             else alert('Please select only one file!');
         }
-
-
     }
 
     handlerCanvas_onMouseDown = (e) => {
@@ -192,7 +190,7 @@ export default class Controller {
 
         this.view.updateChat(history, previousHand);
 
-        this.view.render(history);
+        this.view.render(history, this.model.mainInfo);
 
         this.view.updateNavigation(enables);
     }
@@ -255,7 +253,9 @@ export default class Controller {
         // NOTE:: Náo é sempre 'nextAction', caso seja o ultimo progress da hand
         this.view.updateChat(history, next);
 
-        this.view.render(history);
+        const mainInfoOrNull = next === nextAction ? null : this.model.mainInfo;
+
+        this.view.render(history, mainInfoOrNull);
 
         this.view.updateNavigation(enables);
     }
@@ -270,7 +270,7 @@ export default class Controller {
 
         this.view.updateChat(history, nextHand);
 
-        this.view.render(history);
+        this.view.render(history, this.model.mainInfo);
 
         this.view.updateNavigation(enables);
     }

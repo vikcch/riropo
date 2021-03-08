@@ -142,10 +142,11 @@ export default class View {
     /**
      * 
      * @param {HistoryT} history 
+     * @param {MainInfoT} [mainInfo=null]
      */
-    render(history) {
+    render(history, mainInfo = null) {
 
-        ease.render.call(this, history);
+        ease.render.call(this, history, mainInfo);
     }
 
     hoverHero(hero, mousePoint) {
