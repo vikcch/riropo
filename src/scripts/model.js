@@ -1,5 +1,6 @@
 import { head, rear } from "./units/fns";
 import pokerHand from "./units/pokerhand";
+import { MainInfoT } from "@/scripts/units/main-info";
 
 export default class Model {
 
@@ -26,6 +27,7 @@ export default class Model {
 
         // STOPSHIP:: FILE COM ERRO 
         // HH20200928 Isabella IV - €0.01-€0.02 - EUR No Limit Hold'em
+        // LukyMetoo joins the table at seat #4 (ultima hand)
 
         // TODO:: 10 max é invalido
 
@@ -33,13 +35,13 @@ export default class Model {
         //TODO:: ver arranjar nome de jogador com \n
         // STOPSHIP:: ver no live-squeezer se envia com 3 enters
 
+        // TODO:: experimentar user com nome de comentário 'says:' ou 'said:'
+
         // TODO:: file com noma `Alterada III` em 'HandHistory/Nova Pasta'
 
         const arrayOfHands = sessionLog.split(/\r\n\r\n\r\n\r\n/).filter(Boolean);
 
         const jagged = arrayOfHands.map(x => x.split(/\r\n/));
-
-        // console.log(jagged);
 
         this.handHistories = jagged.map((hand, index) => {
 
@@ -57,8 +59,6 @@ export default class Model {
             return pokerHand(hand, index, jagged.length);
 
         });
-
-        // console.log(this.handHistories);
 
         this.resetTracker();
     }
@@ -154,11 +154,14 @@ export default class Model {
         return history.players.find(v => v.isHero);
     }
 
+    /**
+     * @returns {MainInfoT}
+     */
     get mainInfo() {
 
         const hand = this.handHistories[this.tracker.hand];
 
-        return hand.mainInfo;
+        return hand?.mainInfo;
     }
 
 }

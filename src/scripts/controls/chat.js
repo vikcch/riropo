@@ -96,10 +96,7 @@ export default class Chat extends Control {
     /**
      * @override
      */
-    hover() {
-
-        console.log('hover chat');
-    }
+    hover() { }
 
     /**
      * @override

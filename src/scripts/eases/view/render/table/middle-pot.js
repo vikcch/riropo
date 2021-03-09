@@ -6,23 +6,21 @@ import displayPositions from '@/scripts/units/display-positions';
 import biz from '@/scripts/units/biz';
 import easeRender from '@/scripts/eases/view/render/index'
 
-
 const frames = 10;
-
-// STOPSHIP:: displayPositions(6) <- hardcoded
 
 /**
  * 
  * @param {PlayerT} player 
+ * @param {number} tableMax
  * @returns {object|undefined}
  */
-const getDisplayPosition = player => {
+const getDisplayPosition = (player, tableMax) => {
 
     if (!player) return;
 
     const findPlayer = x => player.seat === x.seatAjusted;
 
-    const displayPosition = displayPositions(6).find(findPlayer);
+    const displayPosition = displayPositions(tableMax).find(findPlayer);
 
     return displayPosition;
 };
@@ -128,8 +126,9 @@ const drawDragValue = function (chipsOffSets, text, seatFixed) {
  * @param {*} makeChipsOffSetsAbsx 
  * @param {number} amount 
  * @param {PlayerT} winner
+ * @param {number} tableMax
  */
-const draw = function (makeChipsOffSetsAbsx, amount, winner) {
+const draw = function (makeChipsOffSetsAbsx, amount, winner, tableMax) {
 
     const { chips } = this.images;
 
@@ -145,7 +144,7 @@ const draw = function (makeChipsOffSetsAbsx, amount, winner) {
         ? this.context.getImageData(tableRect.x, tableRect.y, 792, 400)
         : null;
 
-    const seatFixed = getDisplayPosition(winner)?.seatFixed;
+    const seatFixed = getDisplayPosition(winner, tableMax)?.seatFixed;
 
     return () => {
 
@@ -179,8 +178,9 @@ const draw = function (makeChipsOffSetsAbsx, amount, winner) {
 /**
  * @this {View}
  * @param {HistoryT} history 
+ * @param {number} tableMax
  */
-export default function (history) {
+export default function (history, tableMax) {
 
     const { chips } = this.images;
 
@@ -195,11 +195,11 @@ export default function (history) {
 
     const winner = history.players.find(v => v.collect);
 
-    const target = getDisplayPosition(winner)?.betChips;
+    const target = getDisplayPosition(winner, tableMax)?.betChips;
 
     const makeChipsOffSetsAbsx = makeChipsOffSets(chipsOutSets, chipStyle, target);
 
-    const drawAbsx = draw.call(this, makeChipsOffSetsAbsx, amount, winner);
+    const drawAbsx = draw.call(this, makeChipsOffSetsAbsx, amount, winner, tableMax);
 
     if (winner) this.inter = setInterval(drawAbsx, 30);
 

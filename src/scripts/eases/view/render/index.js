@@ -20,9 +20,11 @@ export default {
      */
     render(history, mainInfo) {
 
+        const { tableMax } = mainInfo;
+
         mainInfoBridge.render.call(this, mainInfo);
 
-        tableBridge.render.call(this, history);
+        tableBridge.render.call(this, history, tableMax);
 
         this.embeddables.forEach(x => x.draw());
     },

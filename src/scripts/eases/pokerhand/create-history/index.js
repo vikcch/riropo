@@ -73,14 +73,15 @@ const getDirtyActivityLines = (lines, delimiters) => {
 
         const v = x.value.trim();
 
-        const ends = v.endsWith(': checks') || v.endsWith(': folds');
+        const lineEnds = [': checks', ': folds', ' and is all-in'];
+        const ends = lineEnds.some(vv => v.endsWith(vv));
+
         const calls = /:\scalls\s(|.+)\d$/.test(v);
         const bets = /:\sbets\s(|.+)\d$/.test(v);
         const raises = /:\sraises\s(|.+)\d$/.test(v);
-        const raisesAllIn = /:\sraises\s(|.+)\sand\sis\sall-in$/.test(v);
         const uncalledBet = biz.isUncalledBet(v);
 
-        return ends || calls || bets || raises || raisesAllIn || uncalledBet;
+        return ends || calls || bets || raises || uncalledBet;
     });
 };
 

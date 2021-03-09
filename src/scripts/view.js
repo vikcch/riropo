@@ -142,19 +142,18 @@ export default class View {
     /**
      * 
      * @param {HistoryT} history 
-     * @param {MainInfoT} [mainInfo=null]
+     * @param {MainInfoT} mainInfo
      */
-    render(history, mainInfo = null) {
+    render(history, mainInfo) {
 
         ease.render.call(this, history, mainInfo);
     }
 
-    hoverHero(hero, mousePoint) {
+    hoverHero(hero, mousePoint, tableMax) {
 
-        if (!hero) return;
+        if (!hero && !tableMax) return;
 
-        // STOPSHIP :: hardcoded
-        const displayPosition = displayPositions(6).find(x => hero.seat === x.seatAjusted);
+        const displayPosition = displayPositions(tableMax).find(x => hero.seat === x.seatAjusted);
 
         const { table: tableRect } = easeRender.rects;
 

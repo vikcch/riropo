@@ -199,6 +199,23 @@ const getIsTournament = lines => {
     return firstLine.includes('Tournament #');
 };
 
+/**
+ * @param {string[]} lines
+ * @returns {number}
+ */
+ const getTableMax = lines => {
+
+    // ...
+    // Table 'Akiyama II' 6-max Seat #5 is the button
+
+    const tableMaxLine = lines[1];
+
+    const match = tableMaxLine.match(/\d+(?=\-max\sSeat\s#\d+\sis\sthe\sbutton$)/gm)
+
+    return Number(head(match));
+};
+
+
 export default {
 
     getRoom,
@@ -208,5 +225,6 @@ export default {
     getHandId,
     getBlinds,
     getTableName,
-    getIsTournament
+    getIsTournament,
+    getTableMax
 };

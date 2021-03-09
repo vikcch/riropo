@@ -1,11 +1,11 @@
 import View from '@/scripts/view';
+import Model from '@/scripts/model';
 import Controller from '@/scripts/controller';
 import { PlayerT } from '@/scripts/units/player';
 import displayPositions from '@/scripts/units/display-positions';
 import { drawPlayerCards } from '@/scripts/eases/view/render/table/index';
 import fns from '@/scripts/units/fns';
 import easeRender from '@/scripts/eases/view/render/index'
-
 
 /**
  * @this {View}
@@ -36,6 +36,7 @@ export default {
     /**
      * @this {View}
      * @param {PlayerT} hero 
+     * @param {Model} model 
      */
     showHeroFoldedHoleCards(hero, model) {
 
@@ -43,8 +44,9 @@ export default {
 
         const isPLO = hero.holeCards.length === 4;
 
-        // STOPSHIP :: hardcoded
-        const displayPosition = displayPositions(6).find(x => hero.seat === x.seatAjusted);
+        const { tableMax } = model.mainInfo;
+
+        const displayPosition = displayPositions(tableMax).find(x => hero.seat === x.seatAjusted);
 
         const { table: tableRect } = easeRender.rects;
 

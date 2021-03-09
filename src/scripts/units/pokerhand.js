@@ -56,22 +56,6 @@ const getGameMode = lines => {
 };
 
 /**
- * @param {string[]} lines
- * @returns {number}
- */
-const getTableMax = lines => {
-
-    // ...
-    // Table 'Akiyama II' 6-max Seat #5 is the button
-
-    const tableMaxLine = lines[1];
-
-    const match = tableMaxLine.match(/\d+(?=\-max\sSeat\s#\d+\sis\sthe\sbutton$)/gm)
-
-    return Number(head(match));
-};
-
-/**
  * 
  * @param {string[]} lines 
  * @param {number} index
@@ -87,27 +71,18 @@ export default function (lines, index, count) {
 
     const histories = ease.createHistories(lines, players);
 
-    // TODO:: date, stakes, table name, room, hand id
-
-    // room - game    - hand id    - blinds
-    // date - stakes  - table name  - pot
-
     return {
 
         playersCount: countPlayers(lines),
         buttonSeat,
         gameMode: getGameMode(lines),
-        tableMax: getTableMax(lines),
         mainInfo,
         players,
         histories
     };
-
-
 }
 
 export const testables = {
     getButtonSeat,
     getGameMode,
-    getTableMax
 }

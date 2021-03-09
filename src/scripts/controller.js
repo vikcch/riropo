@@ -144,8 +144,9 @@ export default class Controller {
         this.view.coordsDiv.innerHTML = e.offsetX;
 
         const { hero } = this.model;
+        const { tableMax } = { ...this.model.mainInfo };
 
-        if (this.view.hoverHero(hero, mousePoint)) {
+        if (this.view.hoverHero(hero, mousePoint, tableMax)) {
 
             this.view.showHeroFolderHoleCards(hero, this.model);
         }
@@ -182,8 +183,6 @@ export default class Controller {
 
     handlerPreviousHand_onClick = () => {
 
-        console.log('foi clicako previous hand');
-
         const { previousHand } = enums.navigation;
 
         const { history, enables } = this.model.navigation(previousHand);
@@ -198,8 +197,6 @@ export default class Controller {
 
     handlerPreviousAction_onClick = () => {
 
-        // console.log('foi clicako  previous');
-
         // const index = getChipIndex(25000);
 
         // this.view.context.drawImage(this.view.images.chips[index], 0, 100);
@@ -210,7 +207,7 @@ export default class Controller {
 
         this.view.updateChat(history, previousAction);
 
-        this.view.render(history);
+        this.view.render(history, this.model.mainInfo);
 
         this.view.updateNavigation(enables);
     }
@@ -219,8 +216,6 @@ export default class Controller {
     static c = 1;
 
     handlerPlay_onClick = () => {
-
-        console.log('clikado play');
 
         // this.showFakeRender();
 
@@ -242,8 +237,6 @@ export default class Controller {
 
     handlerNextAction_onClick = () => {
 
-        console.log('foi clicado next action');
-
         this.view.previousAction.setState = 'normal';
 
         const { nextAction } = enums.navigation;
@@ -253,16 +246,12 @@ export default class Controller {
         // NOTE:: Náo é sempre 'nextAction', caso seja o ultimo progress da hand
         this.view.updateChat(history, next);
 
-        const mainInfoOrNull = next === nextAction ? null : this.model.mainInfo;
-
-        this.view.render(history, mainInfoOrNull);
+        this.view.render(history, this.model.mainInfo);
 
         this.view.updateNavigation(enables);
     }
 
     handlerNextHand_onClick = () => {
-
-        console.log('foi clicado next hand');
 
         const { nextHand } = enums.navigation;
 

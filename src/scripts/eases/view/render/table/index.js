@@ -86,8 +86,9 @@ const pot = function (value) {
 /**
  * @this {View}
  * @param {HistoryT} history 
+ * @param {number} tableMax
  */
-const players = function (history) {
+const players = function (history, tableMax) {
 
     const { players } = history
 
@@ -102,7 +103,7 @@ const players = function (history) {
 
     players.forEach(player => {
 
-        const displayPosition = displayPositions(6).find(x => player.seat === x.seatAjusted);
+        const displayPosition = displayPositions(tableMax).find(x => player.seat === x.seatAjusted);
 
         const { emptySeat, status, dealer, inPlay } = this.images;
 
@@ -144,8 +145,9 @@ const players = function (history) {
 /**
  * @this {View}
  * @param {HistoryT} history 
+ * @param {number} tableMax 
  */
-const action = function (history) {
+const action = function (history, tableMax) {
 
     if (!history.action) return;
 
@@ -153,7 +155,7 @@ const action = function (history) {
 
     const findPlayer = x => player.seat === x.seatAjusted;
 
-    const displayPosition = displayPositions(6).find(findPlayer);
+    const displayPosition = displayPositions(tableMax).find(findPlayer);
 
     const { actions } = this.images;
 
@@ -167,15 +169,15 @@ const action = function (history) {
 /**
  * @this {View}
  * @param {number} value 
+ * @param {number} tableMax
  */
-const waitingToAct = function (history) {
+const waitingToAct = function (history, tableMax) {
 
     if (!history.nextPlayer) return;
 
     const findPlayer = x => history.nextPlayer.seat === x.seatAjusted;
 
-    // STOPSHIP:: MUDAR O HARCODED 6
-    const displayPosition = displayPositions(6).find(findPlayer);
+    const displayPosition = displayPositions(tableMax).find(findPlayer);
 
     const { statusHighlight: statusHighlightBare } = this.images;
 
@@ -222,12 +224,12 @@ const waitingToAct = function (history) {
     this.inter = setInterval(drawStatus, 500);
 };
 
-
 /**
  * @this {View}
  * @param {PlayerT[]} players 
+ * @param {number} tableMax
  */
-const betChips = function (players) {
+const betChips = function (players, tableMax) {
 
     const { chips } = this.images;
 
@@ -237,7 +239,7 @@ const betChips = function (players) {
 
         const findPlayer = x => player.seat === x.seatAjusted;
 
-        const displayPosition = displayPositions(6).find(findPlayer);
+        const displayPosition = displayPositions(tableMax).find(findPlayer);
 
         let { x, y } = displayPosition.betChips;
 
@@ -260,8 +262,9 @@ const betChips = function (players) {
 /**
  * @this {View}
  * @param {PlayerT[]} players 
+ * @param {number} tableMax
  */
-const chipsValues = function (players) {
+const chipsValues = function (players, tableMax) {
 
     players.forEach(player => {
 
@@ -269,7 +272,7 @@ const chipsValues = function (players) {
 
         const findPlayer = x => player.seat === x.seatAjusted;
 
-        const displayPosition = displayPositions(6).find(findPlayer);
+        const displayPosition = displayPositions(tableMax).find(findPlayer);
 
         let { x, y } = displayPosition.chipsValue;
 
@@ -311,9 +314,7 @@ const streetCards = function (streetCards) {
 
         this.context.drawImage(image, x, y);
     });
-}
-
-
+};
 
 /**
  * @this {View}
@@ -338,8 +339,9 @@ export default {
      * 
      * @this {View}
      * @param {HistoryT} history 
+     * @param {number} tableMax 
      */
-    render(history) {
+    render(history, tableMax) {
 
         // NOTE:: `inter` usado em `waitingToAct` e `middlePot`
         // Preciso do translate nos asyncs
@@ -359,19 +361,19 @@ export default {
 
         pot.call(this, history.pot);
 
-        players.call(this, history);
+        players.call(this, history, tableMax);
 
-        action.call(this, history);
+        action.call(this, history, tableMax);
 
-        waitingToAct.call(this, history);
+        waitingToAct.call(this, history, tableMax);
 
-        betChips.call(this, history.players);
+        betChips.call(this, history.players, tableMax);
 
-        chipsValues.call(this, history.players);
+        chipsValues.call(this, history.players, tableMax);
 
         streetCards.call(this, history.streetCards);
 
-        easeMiddlePot.call(this, history);
+        easeMiddlePot.call(this, history, tableMax);
 
         middlePotValue.call(this, history);
 

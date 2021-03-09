@@ -252,8 +252,17 @@ describe('ease-pokerhand', function () {
 
             assert.deepStrictEqual(fn(lines), anticipate);
         });
-
     });
 
+    describe('#8 getTableMax', function () {
 
+        const fn = testables.getTableMax;
+
+        it('should return 6, the table max', function () {
+
+            const p = ['', "Table 'Akiyama II' 6-max Seat #5 is the button"];
+
+            assert.strictEqual(fn(p), 6);
+        });
+    });
 });
