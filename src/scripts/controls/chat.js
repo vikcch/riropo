@@ -104,8 +104,7 @@ export default class Chat extends Control {
      */
     hitMe({ x, y }) {
 
-        // 50 => desconto da scrollbar mais a margem de erro (pressedError)
-        const right = this.x + this.width - 50;
+        const right = this.x + this.width - this.scrollbar.width;
         const bottom = this.y + this.height;
 
         const horizontal = x >= this.x && x <= right;
@@ -126,7 +125,9 @@ export default class Chat extends Control {
 
         const start = this.scrollbar.hidden ? 0 : this.scrollbar.rows.index;
 
-        const targetItens = this.list.slice(start, start + 6)
+        const { visible: visibleRowsCount } = this.scrollbar.rows;
+        
+        const targetItens = this.list.slice(start, start + visibleRowsCount);
 
         this.context.textAlign = 'start';
         this.context.textBaseline = 'middle';

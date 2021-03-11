@@ -2,7 +2,6 @@ import View from "./view";
 import Model from "./model";
 import seatPositions from '@/scripts/units/display-positions';
 import { getChipIndex } from "./units/biz";
-import { imagesNames } from '@/scripts/units/enums';
 // TODO:: remover isto
 import { testables } from '@/scripts/eases/view/render/table';
 import enums from '@/scripts/units/enums';
@@ -48,6 +47,9 @@ export default class Controller {
             nextHand: {
                 click: this.handlerNextHand_onClick,
             },
+            handsList: {
+                click: this.handlerHandsList_onClick,
+            },
         });
     }
 
@@ -84,6 +86,8 @@ export default class Controller {
             this.model.processLog(log);
 
             const history = this.model.getFirstHistory();
+
+            this.view.handsList.addRange(this.model.handsList);
 
             this.view.updateChat(history, enums.navigation.nextHand);
 
@@ -123,7 +127,7 @@ export default class Controller {
 
         const found = this.view.embeddables.find(v => v.hitMe(mousePoint));
 
-        if (found) found.click();
+        if (found) found.click(mousePoint);
     }
 
 
@@ -181,6 +185,22 @@ export default class Controller {
 
     //#region EmbeddedControls
 
+    handlerHandsList_onClick = handIndex => {
+
+        const { nextHand } = enums.navigation;
+
+        const { history, enables } = this.model.navigateTo(handIndex);
+
+        this.view.updateChat(history, nextHand);
+
+        this.view.render(history, this.model.mainInfo);
+
+        this.view.updateNavigation(enables);
+
+        console.log({ handIndex });
+    }
+
+
     handlerPreviousHand_onClick = () => {
 
         const { previousHand } = enums.navigation;
@@ -219,20 +239,20 @@ export default class Controller {
 
         // this.showFakeRender();
 
-        this.view.chat.add(Controller.c++);
-        this.view.chat.draw();
+        const hl = [
+            { holeCards: ['2s', 'Ad'], isButton: false },
+            { holeCards: ['2s', 'Kd'], isButton: false },
+            { holeCards: ['2s', 'Qd'], isButton: false },
+            { holeCards: ['2s', 'Ah'], isButton: true },
+            { holeCards: ['2s', 'Ad'], isButton: false },
+            { holeCards: ['2s', 'Ad'], isButton: false },
+            { holeCards: ['2s', 'Ah'], isButton: false },
+            { holeCards: ['2s', '6c'], isButton: true },
+            { holeCards: ['2s', 'Ad'], isButton: false },
+            { holeCards: ['2s', '7d'], isButton: false },
+        ]
 
-
-        // this.view.chat.add('1')
-        // this.view.chat.add('2')
-        // this.view.chat.add('3')
-        // this.view.chat.add('4')
-        // this.view.chat.add('5')
-        // this.view.chat.add('6')
-        // this.view.chat.add('7')
-        // // this.view.chat.add('8')
-        // // this.view.chat.add('9')
-        // // this.view.chat.add('10')
+        this.view.handsList.addRange(hl);
     };
 
     handlerNextAction_onClick = () => {

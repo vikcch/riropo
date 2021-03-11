@@ -20,7 +20,7 @@ export default class Sb extends Control {
             y: rect.y + parent.y
         }
 
-        super(view, pureRect);
+        super(view, pureRect, { isScrollBar: true });
 
         this.parent = parent;
 
@@ -81,7 +81,7 @@ export default class Sb extends Control {
 
         this.rows.visible = visible ?? this.rows.visible;
         this.rows.total = total ?? this.rows.total;
-        this.rows.index = this.rows.total - this.rows.visible;
+        this.rows.index = Math.max(this.rows.total - this.rows.visible, 0);
 
         this.ajustThumbSize();
 
@@ -259,7 +259,7 @@ export default class Sb extends Control {
         // NOTE:: Caso não fizesse "hit" na thumb, ficaria vazio para acionar 
         // os buttons (usa find() no controller) que pertencem á scrollbar
 
-        const pressedError = this.thumb.pressed ? 25 : 0;
+        const pressedError = this.thumb.pressed ? 2500 : 0;
 
         const pureThumb = {
             x: this.x - pressedError,
@@ -292,6 +292,7 @@ export default class Sb extends Control {
 
     hover(point) {
 
+        // OPTIMIZE:: só fazer draw de for difente (1px de move pode não fazer diferença)
         if (this.thumb.pressed) {
 
             this.thumb.y = point.y - this.thumb.diffStart;

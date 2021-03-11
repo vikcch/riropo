@@ -8,7 +8,7 @@ const rects = {
 
     mainInfo: { x: 96, y: 0, width: 792, height: 40 },
     table: { x: 96, y: 40, width: 792, height: 555 },
-    handsList: { x: 0, y: 0, width: 96, height: 603 }
+    handsList: { x: 0, y: 0, width: 96, height: 595 }
 };
 
 export default {

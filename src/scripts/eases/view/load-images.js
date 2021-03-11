@@ -1,5 +1,4 @@
 import fns, { head } from "@/scripts/units/fns";
-import { imagesNames } from '@/scripts/units/enums';
 
 const getImage = async function (file) {
 
@@ -26,7 +25,8 @@ const files = {
     actions: 'actions-300x22.png',
     deck: 'deck-ps-50x70-650x280.png',
     chat: 'chat-329x108.png',
-    scrollbarButtons: 'scrollbar-buttons-16x16-32x32.png'
+    scrollbarButtons: 'scrollbar-buttons-16x16-32x32.png',
+    smallDeck: 'deck-small-16x20-208-80.png'
 };
 
 
@@ -49,36 +49,43 @@ export default {
                 getImage(files.actions),
                 getImage(files.deck),
                 getImage(files.chat),
-                getImage(files.scrollbarButtons)
+                getImage(files.scrollbarButtons),
+                getImage(files.smallDeck)
             ];
 
             const r = await Promise.all(arrFiles);
 
             // TODO:: enum images
             const images = {};
-            images[imagesNames.background] = r[0];
-            images[imagesNames.navigation] = r[1];
-            images[imagesNames.emptySeat] = r[2];
-            images[imagesNames.inPlay] = r[3];
+            images.background = r[0];
+            images.navigation = r[1];
+            images.emptySeat = r[2];
+            images.inPlay = r[3];
 
             const chips = await fns.sprites(r[4], 0, 22, 20);
-            images[imagesNames.dealer] = head(chips);
-            images[imagesNames.chips] = chips.slice(1);
+            images.dealer = head(chips);
+            images.chips = chips.slice(1);
 
-            images[imagesNames.status] = r[5];
-            images[imagesNames.statusHighlight] = r[6];
+            images.status = r[5];
+            images.statusHighlight = r[6];
 
             const actions = await fns.sprites(r[7], 0, 60, 22);
-            images[imagesNames.actions] = actions;
+            images.actions = actions;
 
-            images[imagesNames.deck] = [];
+            images.deck = [];
             for (let i = 0; i < 4; i++) {
                 const deckSuit = await fns.sprites(r[8], i, 50, 70);
-                images[imagesNames.deck][i] = deckSuit;
+                images.deck[i] = deckSuit;
             }
 
             images.chat = r[9];
             images.scrollbarButtons = r[10];
+
+            images.smallDeck = [];
+            for (let i = 0; i < 4; i++) {
+                const deckSuit = await fns.sprites(r[11], i, 16, 20);
+                images.smallDeck[i] = deckSuit;
+            }
 
             console.timeEnd('await total');
 

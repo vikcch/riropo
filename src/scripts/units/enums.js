@@ -5,19 +5,6 @@ export const buttonStates = {
     hidden: 'hidden'
 };
 
-export const imagesNames = {
-    background: 'background',
-    navigation: 'navigation',
-    emptySeat: 'emptySeat',
-    inPlay: 'inPlay',
-    chips: 'chips',
-    dealer: 'dealer',
-    status: 'status',
-    statusHighlight: 'statusHighlight',
-    actions: 'actions',
-    deck: 'deck'
-};
-
 export const navigation = {
 
     previousHand: 'previousHand',
@@ -36,7 +23,6 @@ export const phase = {
 export default {
 
     buttonStates,
-    imagesNames,
     navigation,
     phase
 };

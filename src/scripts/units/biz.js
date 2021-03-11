@@ -184,7 +184,8 @@ export default {
     getCardIndex,
     collectedAmount,
     uncalledAmount,
-    isUncalledBet
+    isUncalledBet,
+    actionAmount
 }
 
 export const testables = {

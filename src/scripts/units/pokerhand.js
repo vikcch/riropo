@@ -71,6 +71,8 @@ export default function (lines, index, count) {
 
     const histories = ease.createHistories(lines, players);
 
+    const handsListItem = ease.createHandsListItem(histories);
+
     return {
 
         playersCount: countPlayers(lines),
@@ -78,7 +80,8 @@ export default function (lines, index, count) {
         gameMode: getGameMode(lines),
         mainInfo,
         players,
-        histories
+        histories,
+        handsListItem
     };
 }
 

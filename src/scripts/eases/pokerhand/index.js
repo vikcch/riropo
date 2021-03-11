@@ -6,7 +6,7 @@ import createPlayer from './create-player';
 import createHistory from './create-history';
 import createMainInfoAssist from './create-main-info';
 
-import { rear } from '@/scripts/units/fns';
+import { head, rear } from '@/scripts/units/fns';
 
 import { Delimiters } from '@/scripts/units/delimiters';
 import { phase } from '@/scripts/units/enums';
@@ -168,5 +168,26 @@ export default {
 
         if (hasAllin) return fixShowCardsOnAllIn(histories);
         else return histories;
+    },
+
+    /**
+     * 
+     * @param {HistoryT[]} histories 
+     */
+    createHandsListItem(histories) {
+
+        /**@type {HistoryT}*/
+        const firstHistory = head(histories);
+        const hero = firstHistory.players.find(v => v.isHero);
+
+        const { holeCards, isButton } = hero;
+
+        // TODO:: profit - last hand com a stack actualizada collects menos inicial
+        // devo ter de meter a collect a zero em lastWinnerCollects
+
+        return {
+
+            holeCards, isButton
+        }
     }
 }

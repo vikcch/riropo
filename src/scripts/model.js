@@ -108,6 +108,16 @@ export default class Model {
         };
     }
 
+    navigateTo(handIndex) {
+
+        this.tracker.hand = handIndex;
+        this.tracker.progress = 0;
+
+        return {
+            history: this.getHistory(),
+            enables: this.getNavigationEnables(),
+        };
+    }
 
     getHistory() {
 
@@ -164,4 +174,8 @@ export default class Model {
         return hand?.mainInfo;
     }
 
+    get handsList() {
+
+        return this.handHistories.map(v => v.handsListItem);
+    }
 }

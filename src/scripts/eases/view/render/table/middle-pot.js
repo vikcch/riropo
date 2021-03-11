@@ -184,16 +184,16 @@ export default function (history, tableMax) {
 
     const { chips } = this.images;
 
-    const amount = getMiddlePotAmount(history);
-
     const chipStyle = {
         width: head(chips).width,
         margin: 1
     };
 
-    const chipsOutSets = makeChipsOutSets(amount, chipStyle);
-
     const winner = history.players.find(v => v.collect);
+
+    const amount = winner?.collect ?? getMiddlePotAmount(history);
+
+    const chipsOutSets = makeChipsOutSets(amount, chipStyle);
 
     const target = getDisplayPosition(winner, tableMax)?.betChips;
 

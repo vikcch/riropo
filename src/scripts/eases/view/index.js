@@ -4,7 +4,7 @@ import renderBridge from '@/scripts/eases/view/render/index';
 
 export default {
 
-    loadImages() {
+    async loadImages() {
 
         return loadImagesBridge.loadImages();
     },

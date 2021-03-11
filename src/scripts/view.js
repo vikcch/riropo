@@ -5,6 +5,7 @@ import embeddedRects from '@/scripts/eases/view/embedded-controls-rects';
 import easeRender from '@/scripts/eases/view/render/index'
 import enums, { buttonStates } from '@/scripts/units/enums';
 import Chat from "./controls/chat";
+import HandsList from "./controls/hand-list";
 import displayPositions from "./units/display-positions";
 import { pointInRect } from "./units/fns";
 
@@ -66,6 +67,9 @@ export default class View {
         await this.nextHand.setImages(this.images.navigation, { row: 4 });
 
         await this.chat.setImage(this.images.chat);
+
+        // NOTE:: carrega as imagens da scrollbar internamente
+        await this.handsList.setImage();
     }
 
     createEmbeddedControls() {
@@ -84,7 +88,10 @@ export default class View {
 
         this.chat = new Chat(this, chatRect);
 
+        // OPTIMIZE:: ser embeddedRects em vez de easeRender.rects
+        const { handsList: handsListRect } = easeRender.rects;
 
+        this.handsList = new HandsList(this, handsListRect);
 
     }
 
@@ -114,6 +121,7 @@ export default class View {
         this.play.bind(handlers.play);
         this.nextAction.bind(handlers.nextAction);
         this.nextHand.bind(handlers.nextHand);
+        this.handsList.bind(handlers.handsList);
     }
 
     /**

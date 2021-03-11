@@ -7,13 +7,15 @@ export default class Control {
      * 
      * @param { View } view 
      * @param {*} rect 
+     * @param {boolean} [isScrollBar={}] Para testar o hover primeiro (hitMe)
      */
-    constructor(view, rect) {
+    constructor(view, rect, { isScrollBar } = {}) {
 
         this.view = view;
         this.context = view.context;
 
-        view.embeddables.push(this);
+        const insertMethod = isScrollBar ? 'unshift' : 'push';
+        view.embeddables[insertMethod](this);
 
         this.x = rect.x;
         this.y = rect.y;
@@ -32,7 +34,7 @@ export default class Control {
         return fns.pointInRect(point, this.rect);
     }
 
-    click() {
+    click(point) {
 
         throw new Error('You have to implement the method click!');
     }

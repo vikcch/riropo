@@ -4,7 +4,8 @@ import { pipe } from '@/scripts/units/fxnl';
 import { History, HistoryT } from '@/scripts/units/history';
 import { Player, PlayerT } from '@/scripts/units/player';
 import { DelimitersT } from '@/scripts/units/delimiters';
-import easeConclusion from './conclusion'
+import easeConclusion from './conclusion';
+import enums from '@/scripts/units/enums';
 
 // TODO:: JSDOCS
 const getPostsLines = lines => {
@@ -22,7 +23,7 @@ const getPostsLines = lines => {
     // Não inclui a linha '*** HOLE CARDS ***'
     const barePostsLines = lines.slice(2, holeCardsLineCount);
 
-    return barePostsLines.filter(x => /:\sposts\s.+\d$/gm.test(x));
+    return barePostsLines.filter(x => /:\sposts\s.+\d(|\sand\sis\sall-in)$/gm.test(x));
 };
 
 
@@ -180,9 +181,7 @@ const posts = (lines, players) => {
 
         const player = newPlayers.find(find);
 
-        const arrSplit = line.split(' ');
-
-        const amount = pipe(rear, fns.removeMoney, Number)(arrSplit);
+        const amount = biz.actionAmount(line);
 
         player.stack -= amount;
 
@@ -407,6 +406,11 @@ const conclusion = (lines, previousHistory) => {
         phase ||= easeConclusion.collects(line, newPlayers);
 
         if (!phase) return;
+
+        if (phase === enums.phase.conclusionCollects) {
+
+            easeConclusion.lastWinnerCollects(lastHistory, newPlayers);
+        }
 
         const history = History({
 

@@ -1,6 +1,7 @@
 import biz from '@/scripts/units/biz';
 import { phase } from '@/scripts/units/enums';
 import { PlayerT } from '@/scripts/units/player';
+import { HistoryT } from '@/scripts/units/history';
 
 /**
  * 
@@ -39,7 +40,7 @@ export default {
      * 
      * @param {string} lines
      * @param {PlayerT[]} players 
-     * @returns {boolea|undefined}
+     * @returns {boolean|undefined}
      */
     shows: (line, players) => {
 
@@ -103,6 +104,25 @@ export default {
             player.collect = biz.collectedAmount(line);
 
             return phase.conclusionCollects;
+        }
+    },
+
+
+    /**
+     * Actualiza a stack do ultimo winner em side pots
+     * 
+     * @param {HistoryT} lastHistory 
+     * @param {PlayerT[]} newPlayers 
+     */
+    lastWinnerCollects: (lastHistory, newPlayers) => {
+
+        const lastWinner = lastHistory.players.find(v => v.collect);
+
+        if (lastWinner) {
+
+            const player = newPlayers.find(v => v.seat === lastWinner.seat);
+
+            player.stack += lastWinner.collect;
         }
     }
 };
