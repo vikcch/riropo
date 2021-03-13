@@ -82,6 +82,11 @@ export default class Chat extends Control {
         this.draw();
     }
 
+    unpressScrollBar() {
+
+        this.scrollbar.thumb.pressed = false;
+    }
+
     // #region Mandory Methods
     /**
      * @override
@@ -126,7 +131,7 @@ export default class Chat extends Control {
         const start = this.scrollbar.hidden ? 0 : this.scrollbar.rows.index;
 
         const { visible: visibleRowsCount } = this.scrollbar.rows;
-        
+
         const targetItens = this.list.slice(start, start + visibleRowsCount);
 
         this.context.textAlign = 'start';

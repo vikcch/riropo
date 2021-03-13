@@ -1,4 +1,5 @@
 import View from '@/scripts/view';
+import Controller from '@/scripts/controller';
 import biz from '../units/biz';
 import Control from './control';
 import Scrollbar from './scrollbar';
@@ -21,6 +22,8 @@ export default class HandsList extends Control {
         this.handlers = {
             click: null
         };
+
+        this.hoverIndexFixed = -1;
 
         this.createScrollbar();
     }
@@ -46,6 +49,11 @@ export default class HandsList extends Control {
         this.handlers = { ...handlers };
     }
 
+    unpressScrollBar() {
+
+        this.scrollbar.thumb.pressed = false;
+    }
+
     /**
      * 
      * @param {string|string[]} value 
@@ -69,6 +77,8 @@ export default class HandsList extends Control {
 
         this.scrollbar.updateRows({ total: this.list.length });
 
+        this.scrollbar.roolToTop();
+
         this.draw();
     }
 
@@ -81,6 +91,14 @@ export default class HandsList extends Control {
         this.draw();
     }
 
+    drawBackgroundItem(profitBBs, itemRect) {
+
+        const { x, y, width, height } = itemRect;
+
+        this.context.fillStyle = biz.getColorScale(profitBBs);
+        this.context.fillRect(x, y + 1, width, height);
+    }
+
     drawCards(cards, itemRect) {
 
         cards.forEach((strCard, index) => {
@@ -91,7 +109,7 @@ export default class HandsList extends Control {
 
             const y = itemRect.y + 3;
 
-            this.context.drawImage(card, index * 18, y);
+            this.context.drawImage(card, 2 + index * 18, y);
         });
     }
 
@@ -122,6 +140,101 @@ export default class HandsList extends Control {
             62, y, dWidth, dHeight);
     }
 
+    drawHover() {
+
+        // TODO:: ir buscar os valores (2 ultimos)
+        this.context.setTransform(1, 0, 0, 1, 0, 0);
+
+        this.context.fillStyle = 'white';
+        this.context.globalAlpha = .3;
+
+        const y = this.hoverIndexFixed * this.itemHeight;
+        const width = this.width - (this.scrollbar.hidden ? 0 : 16);
+
+        this.context.fillRect(0, y, width, this.itemHeight);
+        this.context.globalAlpha = 1;
+    };
+
+    cleanToolTip() {
+
+        const { width, height } = this.view.canvasToolTip;
+        const { contextToolTip: ctxToolTip } = this.view;
+
+        ctxToolTip.clearRect(0, 0, width, height);
+    }
+
+    drawToolTip(mousePoint) {
+
+        const { contextToolTip: ctxToolTip } = this.view;
+
+        const itemIndex = this.scrollbar.rows.index + this.hoverIndexFixed;
+
+        const item = this.list[itemIndex];
+
+        this.cleanToolTip();
+
+        const padding = 4;
+        const space = 10;
+
+        const position = `[${item.position}]`;
+
+        // TODO:: format separador de milhares
+        const profit = item.profit;
+
+        // TODO:: format separador de milhares
+        const profitBBs = `(${item.profitBBs} BBs)`;
+
+        const { blinds } = item;
+
+        ctxToolTip.font = '12px Arial';
+        const positionMeasure = ctxToolTip.measureText(position);
+        const profitMeasure = ctxToolTip.measureText(profit);
+        const profitBBsMeasure = ctxToolTip.measureText(profitBBs);
+
+        ctxToolTip.font = '10px Arial';
+        const measureBottom = ctxToolTip.measureText(blinds);
+
+        const topWidth = positionMeasure.width + profitMeasure.width +
+            profitBBsMeasure.width + padding * 2 + space * 2;
+
+        const width = Math.max(topWidth, measureBottom.width + padding * 2);
+        const height = 36;
+
+        const x = mousePoint.x + 20;
+        const y = Math.min(mousePoint.y + 20, this.height - height);
+
+        ctxToolTip.textBaseline = 'middle';
+        ctxToolTip.fillStyle = 'black';
+        ctxToolTip.fillRect(x, y, width, height);
+
+        ctxToolTip.fillStyle = '#ffffe1';
+        ctxToolTip.fillRect(x + 1, y + 1, width - 2, height - 2);
+
+        ctxToolTip.font = '12px Arial';
+        ctxToolTip.fillStyle = 'black';
+        const xPosition = x + padding;
+        ctxToolTip.fillText(position, xPosition, y + height * .25);
+
+        ctxToolTip.fillStyle = biz.getColorScale(item.profitBBs);
+        const xProfit = xPosition + positionMeasure.width + space;
+        ctxToolTip.fillText(profit, xProfit, y + height * .25);
+
+        ctxToolTip.fillStyle = 'black';
+        const xProfitBBs = xProfit + profitMeasure.width + space;
+        ctxToolTip.fillText(profitBBs, xProfitBBs, y + height * .25);
+
+        ctxToolTip.font = '10px Arial';
+        ctxToolTip.fillStyle = 'gray';
+        ctxToolTip.fillText(blinds, x + padding, y + height * .75);
+    }
+
+    clearHover() {
+
+        this.hoverIndexFixed = -1;
+        this.draw();
+        this.cleanToolTip();
+    };
+
     // #region Mandory Methods
     /**
      * @override
@@ -135,6 +248,8 @@ export default class HandsList extends Control {
         if (itemIndex >= this.list.length) return;
 
         this.handlers.click(itemIndex);
+
+        console.log(this.list[itemIndex]);
     }
 
     /**
@@ -145,7 +260,45 @@ export default class HandsList extends Control {
     /**
      * @override
      */
-    hover() { }
+    hover(mousePoint) {
+
+        const itemIndexFixed = Math.floor(mousePoint.y / this.itemHeight);
+
+        const isBelowLastItem = itemIndexFixed >= this.scrollbar.rows.shown;
+
+        if (isBelowLastItem) {
+
+            // Evita que desenhe sempre que está abaixo dos items
+            if (this.hoverIndexFixed === -1) return;
+
+            this.clearHover();
+
+            return;
+        }
+
+        if (itemIndexFixed === this.hoverIndexFixed) return;
+
+        this.hoverIndexFixed = itemIndexFixed;
+
+        this.draw();
+
+        this.drawHover();
+
+        this.drawToolTip(mousePoint);
+
+        const inter = setInterval(() => {
+
+            const mousePoint = Controller.mousePoint;
+
+            if (!this.hitMe(mousePoint)) {
+
+                this.clearHover();
+
+                clearInterval(inter);
+            }
+
+        }, 30);
+    }
 
     /**
      * @override
@@ -177,7 +330,7 @@ export default class HandsList extends Control {
 
         const targetItens = this.list.slice(start, start + visibleRowsCount);
 
-        targetItens.forEach((v, i) => {
+        targetItens.forEach((item, i) => {
 
             const itemRect = {
                 x: 0,
@@ -186,9 +339,11 @@ export default class HandsList extends Control {
                 height: this.itemHeight
             };
 
-            this.drawCards(v.holeCards, itemRect);
+            this.drawBackgroundItem(item.profitBBs, itemRect);
 
-            this.drawDealer(v.isButton, itemRect);
+            this.drawCards(item.holeCards, itemRect);
+
+            this.drawDealer(item.isButton, itemRect);
 
             this.drawSeparator(itemRect);
         });

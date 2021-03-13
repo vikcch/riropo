@@ -54,9 +54,38 @@ const uncalledAmount = line => {
  */
 const isUncalledBet = value => {
 
+    // Uncalled bet (€0.01) returned to AndréRPoker
+
     return /^Uncalled\sbet\s\(.+\)\sreturned\sto\s/.test(value);
 };
 
+/**
+ * 
+ * @param {string} value 
+ * @returns {number}
+ */
+export const getBigBlind = value => {
+
+    // "1000/2000(+45)"
+    // "100/200(+5)[400][800]"
+    // "100/200[400][800]"
+    // "€0.01/€0.02"
+
+    const targetPart = rear(value.split('/'));
+
+    const rdc = (acc, cur) => {
+
+        if (cur === '(' || cur === '[') acc.break = true;
+
+        if (!acc.break) acc.value += cur;
+
+        return acc;
+    };
+
+    const dirty = [...targetPart].reduce(rdc, { value: '', break: false });
+
+    return pipe(fns.removeMoney, Number)(dirty.value);
+};
 
 const getChipsValues = () => {
 
@@ -175,6 +204,23 @@ export const getCardIndex = card => {
     };
 };
 
+/**
+ * 
+ * @param {number} profitBBs
+ * @returns {string} hex color 
+ */
+export const getColorScale = profitBBs => {
+
+    if (profitBBs >= 20) return '#2e6b61';
+    if (profitBBs >= 10) return '#5aa492';
+    if (profitBBs >= 2) return '#7cc8b5';
+    if (profitBBs > -2) return '#999987'; // gray
+    if (profitBBs > 10) return '#ff8282';
+    if (profitBBs > 20) return '#b86a72';
+    return '#7a3956'
+};
+
+
 export default {
 
     getActionIndex,
@@ -185,13 +231,16 @@ export default {
     collectedAmount,
     uncalledAmount,
     isUncalledBet,
-    actionAmount
+    actionAmount,
+    getBigBlind,
+    getColorScale
 }
 
 export const testables = {
     getLineCards,
     collectedAmount,
     uncalledAmount,
-    actionAmount
+    actionAmount,
+    getBigBlind
 }
 

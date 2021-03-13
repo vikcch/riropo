@@ -83,6 +83,8 @@ export default class Controller {
             // TODO:: ver se é um hand history valido
             const log = reader.result;
 
+            this.view.handsList.removeAll();
+
             this.model.processLog(log);
 
             const history = this.model.getFirstHistory();
@@ -129,7 +131,6 @@ export default class Controller {
 
         if (found) found.click(mousePoint);
     }
-
 
     /**
      * 

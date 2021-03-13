@@ -122,7 +122,9 @@ export default {
 
             const player = newPlayers.find(v => v.seat === lastWinner.seat);
 
-            player.stack += lastWinner.collect;
+            // NOTE:: Não usa prop `stack` para facilitar as contas no profit.
+            // Necessário para em side pots ter a stack visualmente actualizada
+            player.gatherStack += lastWinner.collect;
         }
     }
 };

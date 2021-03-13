@@ -8,9 +8,20 @@
     <link rel="shortcut icon" href="data:" type="image/x-icon">
 
     <style>
-        canvas {
-            /* width: 300px; */
+        div#canvas-container {
+            position: relative;
+        }
 
+        #canvas {
+            /* width: 300px; */
+            /* position: absolute; */
+        }
+
+        #canvas-tool-tip {
+            position: absolute;
+            /* background-color: rebeccapurple; */
+            z-index: 10;
+            pointer-events: none;
         }
     </style>
 
@@ -18,13 +29,16 @@
 
 <body>
 
-    <canvas id="canvas" tabindex="0"></canvas>
+    <div id="canvas-wrapper">
 
+        <div id="canvas-container">
+            <canvas id="canvas-tool-tip"></canvas>
+        </div>
+
+        <canvas id="canvas" tabindex="0"> </canvas>
+    </div>
 
     <div>
-
-
-
         <input id="load-hand-history" type="file">
 
         <button id="next-action">next</button>

@@ -73,7 +73,7 @@ const pot = function (value) {
     const boxWidth = textWidth + verticalPadding;
     const x = center - textWidth / 2 - verticalPadding / 2;
 
-    this.context.fillStyle = 'yellow';
+    this.context.fillStyle = '#ffffe1';
     this.context.fillRect(x, 8, boxWidth, 16);
 
     this.context.textAlign = 'center';
@@ -112,7 +112,7 @@ const players = function (history, tableMax) {
         drawImage(status, displayPosition.status);
 
         drawTextCenter(this.context, player.name, 'white', displayPosition.name);
-        drawTextCenter(this.context, player.stack, 'white', displayPosition.stack);
+        drawTextCenter(this.context, player.mergedStack(), 'white', displayPosition.stack);
 
         if (player.isButton) {
 

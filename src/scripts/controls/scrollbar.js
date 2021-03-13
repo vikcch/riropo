@@ -25,11 +25,14 @@ export default class Sb extends Control {
         this.parent = parent;
 
         this.rows = {
-            visible: 0,
+            visible: 0, // Maximo de rows visiveis
             total: 0,
             index: 0,
-            maxHiddenRule: 8 // Apenas para controlar o tamanho de decremento
+            maxHiddenRule: 8, // Apenas para controlar o tamanho de decremento
             //  do height da thumb, tamanhos possiveis da thumb (excluindo completa)
+            get shown() {
+                return Math.min(this.visible, this.total);
+            }
         };
 
         this.createButtons();
@@ -75,6 +78,12 @@ export default class Sb extends Control {
 
         await this.up.setImages(this.view.images.scrollbarButtons, { row: 0 });
         await this.down.setImages(this.view.images.scrollbarButtons, { row: 1 });
+    }
+
+    roolToTop() {
+
+        this.rows.index = 0;
+        this.thumb.y = 0;
     }
 
     updateRows({ visible, total }) {

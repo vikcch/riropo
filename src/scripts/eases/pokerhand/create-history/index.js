@@ -23,11 +23,12 @@ const getPostsLines = lines => {
     // Não inclui a linha '*** HOLE CARDS ***'
     const barePostsLines = lines.slice(2, holeCardsLineCount);
 
-    return barePostsLines.filter(x => /:\sposts\s.+\d(|\sand\sis\sall-in)$/gm.test(x));
+    return barePostsLines.filter(x => /:\sposts\s.*\d(|\sand\sis\sall-in)$/gm.test(x));
 };
 
 
 /**
+ *  Dirty porque pode trazes o "Uncalled bet..."
  * 
  * @param {string[]} lines 
  * @returns {{value: string, index: number}[]}
@@ -77,9 +78,9 @@ const getDirtyActivityLines = (lines, delimiters) => {
         const lineEnds = [': checks', ': folds', ' and is all-in'];
         const ends = lineEnds.some(vv => v.endsWith(vv));
 
-        const calls = /:\scalls\s(|.+)\d$/.test(v);
-        const bets = /:\sbets\s(|.+)\d$/.test(v);
-        const raises = /:\sraises\s(|.+)\d$/.test(v);
+        const calls = /:\scalls\s(|.*)\d$/.test(v);
+        const bets = /:\sbets\s(|.*)\d$/.test(v);
+        const raises = /:\sraises\s(|.*)\d$/.test(v);
         const uncalledBet = biz.isUncalledBet(v);
 
         return ends || calls || bets || raises || uncalledBet;

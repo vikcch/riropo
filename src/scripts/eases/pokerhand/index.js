@@ -11,7 +11,7 @@ import { head, rear } from '@/scripts/units/fns';
 import { Delimiters } from '@/scripts/units/delimiters';
 import { phase } from '@/scripts/units/enums';
 import { MainInfo, MainInfoT } from '@/scripts/units/main-info';
-
+import biz from '@/scripts/units/biz';
 
 /**
  * 
@@ -171,23 +171,38 @@ export default {
     },
 
     /**
+     * Recebe `players` porque o `head(histories).players` desconta as antes
      * 
+     * @param {PlayerT[]} players 
+     * @param {HistoryT[]} histories 
      * @param {HistoryT[]} histories 
      */
-    createHandsListItem(histories) {
+    createHandsListItem(players, histories, mainInfo) {
+
+        const initialHero = players.find(v => v.isHero);
+
+        const { holeCards, isButton, position, stack: initalStack } = initialHero;
+
+        const heroCollects = histories
+            .map(v => v.players.find(p => p.isHero))
+            .filter(p => p.collect)
+            .reduce((acc, cur) => acc + cur.collect, 0);
 
         /**@type {HistoryT}*/
-        const firstHistory = head(histories);
-        const hero = firstHistory.players.find(v => v.isHero);
+        const lastHistory = rear(histories);
+        const lastHero = lastHistory.players.find(v => v.isHero);
 
-        const { holeCards, isButton } = hero;
+        const profit = (lastHero.stack + heroCollects) - initalStack;
 
-        // TODO:: profit - last hand com a stack actualizada collects menos inicial
-        // devo ter de meter a collect a zero em lastWinnerCollects
+        const { blinds } = mainInfo;
+
+        const bigBlind = biz.getBigBlind(blinds);
+
+        const profitBBs = profit / bigBlind;
 
         return {
 
-            holeCards, isButton
+            holeCards, isButton, profit, position, blinds, profitBBs
         }
     }
 }

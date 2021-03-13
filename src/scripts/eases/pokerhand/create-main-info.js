@@ -149,6 +149,7 @@ const getBlinds = lines => {
     // dirty - cash (USD) => "$0.01/$0.02 USD"
     const dirty = firstLine.substring(startIndex + 1, endIndex);
 
+    // TODO:: format separador de milhares
     return head(dirty.split(' ')) + getAnteFormated(lines);
 };
 
@@ -159,7 +160,7 @@ const getBlinds = lines => {
  */
 const getAnteFormated = lines => {
 
-    const found = lines.find(x => /:\sposts\sthe\sante\s.+\d$/gm.test(x));
+    const found = lines.find(x => /:\sposts\sthe\sante\s.*\d$/gm.test(x));
 
     if (!found) return '';
 
@@ -203,7 +204,7 @@ const getIsTournament = lines => {
  * @param {string[]} lines
  * @returns {number}
  */
- const getTableMax = lines => {
+const getTableMax = lines => {
 
     // ...
     // Table 'Akiyama II' 6-max Seat #5 is the button

@@ -8,7 +8,8 @@ describe('ease-pokerhand-create-history', function () {
 
     describe('# 1 getActivityLines', function () {
 
-        const fn = testables.getActivityLines;
+        // dirty porque pode trazes o "Uncalled bet..."
+        const fn = testables.getDirtyActivityLines;
 
         it('should return only activity lines', function () {
 
@@ -97,7 +98,6 @@ describe('ease-pokerhand-create-history', function () {
             ];
 
             const anticipate = [
-                'Uncalled bet (€0.01) returned to AndréRPoker',
                 'AndréRPoker collected €0.02 from pot',
             ];
 

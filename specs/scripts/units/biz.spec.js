@@ -106,4 +106,49 @@ describe('units-biz', function () {
 
     });
 
+    // "1000/2000(+45)"
+    // "100/200(+5)[400][800]"
+    // "100/200[400][800]"
+    // "€0.01/€0.02"
+    describe('#5 getBigBlind', function () {
+
+        const fn = testables.getBigBlind;
+
+        it('should return the big blind value', function () {
+
+            const line = '1000/2000(+45)';
+
+            const anticipate = 2000;
+
+            assert.strictEqual(fn(line), anticipate);
+        });
+
+        it('should return the big blind value', function () {
+
+            const line = '100/200(+5)[400][800]';
+
+            const anticipate = 200;
+
+            assert.strictEqual(fn(line), anticipate);
+        });
+
+        it('should return the big blind value', function () {
+
+            const line = '100/200[400][800]';
+
+            const anticipate = 200;
+
+            assert.strictEqual(fn(line), anticipate);
+        });
+
+        it('should return the big blind value', function () {
+
+            const line = '€0.01/€0.02';
+
+            const anticipate = 0.02;
+
+            assert.strictEqual(fn(line), anticipate);
+        });      
+    });
+
 });

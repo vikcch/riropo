@@ -29,8 +29,8 @@
     "webpack-dev-server": "^3.11.2"
   },
   "scripts": {
-    "test": "mocha --require module-alias/register './specs/**/-pokerhand.spec.js'",
-    "test-all": "mocha './specs/**/*.spec.js'",
+    "test": "mocha -r jsdom-global/register './specs/**/pokerhand.spec.js'",
+    "test-all": "mocha -r jsdom-global/register './specs/**/*.spec.js'",
     "serve": "webpack serve --mode development",
     "build": "webpack --mode production",
     "test-last": "node ./test-last/index.js"

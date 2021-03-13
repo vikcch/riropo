@@ -29,6 +29,12 @@ export default class View {
         this.canvas.width = handsList.width + table.width;
         this.canvas.height = handsList.height;
 
+        /** @type {HTMLCanvasElement} */
+        this.canvasToolTip = document.querySelector('#canvas-tool-tip');
+        this.contextToolTip = this.canvasToolTip.getContext('2d');
+        this.canvasToolTip.width = this.canvas.width;
+        this.canvasToolTip.height = this.canvas.height;
+
         this.embeddables = [];
         this.createEmbeddedControls();
 
@@ -37,6 +43,8 @@ export default class View {
 
         // intervals em table
         this.inter = null;
+
+        this.setCallOffEmbeddedControls();
     }
 
     async setImages() {
@@ -97,22 +105,13 @@ export default class View {
 
     bindControls(handlers) {
 
+        // this.coordsDiv.innerHTML = e.offsetX
         this.loadHH.addEventListener('change', handlers.loadHandHistory);
         this.canvas.addEventListener('mousemove', handlers.canvasMouseMove);
-
-        // this.coordsDiv.innerHTML = e.offsetX
-
         this.canvas.addEventListener('mousedown', handlers.canvasMouseDown);
-
         this.canvas.addEventListener('mouseup', handlers.canvasMouseUp);
-        this.canvas.addEventListener('mouseout', (e) => {
-
-            // TODO:: deselecionar (hover) todos
-        });
-
         this.canvas.addEventListener('keyup', handlers.canvasKeyUp);
     }
-
 
     bindEmbeddedControls(handlers) {
 
@@ -122,6 +121,20 @@ export default class View {
         this.nextAction.bind(handlers.nextAction);
         this.nextHand.bind(handlers.nextHand);
         this.handsList.bind(handlers.handsList);
+    }
+
+    setCallOffEmbeddedControls() {
+
+        this.canvas.addEventListener('mouseout', (e) => {
+
+            this.handsList.clearHover();
+        });
+
+        window.addEventListener('mouseup', () => {
+
+            this.handsList.unpressScrollBar();
+            this.chat.unpressScrollBar();
+        });
     }
 
     /**
@@ -194,6 +207,12 @@ export default class View {
             this[key].setState = state;
         });
 
+    }
+
+    unpressScrollBars() {
+
+        this.handsList.unpressScrollBar();
+        this.chat.unpressScrollBar();
     }
 
 }
