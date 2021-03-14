@@ -215,8 +215,8 @@ export const getColorScale = profitBBs => {
     if (profitBBs >= 10) return '#5aa492';
     if (profitBBs >= 2) return '#7cc8b5';
     if (profitBBs > -2) return '#999987'; // gray
-    if (profitBBs > 10) return '#ff8282';
-    if (profitBBs > 20) return '#b86a72';
+    if (profitBBs > -10) return '#ff8282';
+    if (profitBBs > -20) return '#b86a72';
     return '#7a3956'
 };
 

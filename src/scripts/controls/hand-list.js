@@ -20,12 +20,18 @@ export default class HandsList extends Control {
         this.itemHeight = 25;
 
         this.handlers = {
-            click: null
+            click: null,
+            tracker: null
         };
 
         this.hoverIndexFixed = -1;
 
         this.createScrollbar();
+    }
+
+    get listItemIndex() {
+
+        return this.handlers.tracker.hand;
     }
 
     async setImage() {
@@ -91,6 +97,30 @@ export default class HandsList extends Control {
         this.draw();
     }
 
+    /**
+     * Obriga a manter 4 ou 5 itens no inicio e fim da lista  
+     * Chamado inicialmente pelos buttons de navegaçao
+     */
+    adjustRowsIndex() {
+
+        const { index: rowsIndex, visible: rowsVisible, total: rowsTotal }
+            = this.scrollbar.rows;
+
+        if (rowsIndex !== 0 && this.listItemIndex < rowsIndex + 5) {
+
+            this.scrollbar.rows.index = this.listItemIndex - 5;
+        }
+
+        const hasMoreRows = rowsIndex + rowsVisible < rowsTotal;
+
+        if (hasMoreRows && this.listItemIndex > rowsIndex + rowsVisible - 5) {
+
+            this.scrollbar.rows.index = this.listItemIndex - (rowsVisible - 5);
+        }
+
+        this.scrollbar.adjustThumbLocation();
+    }
+
     drawBackgroundItem(profitBBs, itemRect) {
 
         const { x, y, width, height } = itemRect;
@@ -111,6 +141,32 @@ export default class HandsList extends Control {
 
             this.context.drawImage(card, 2 + index * 18, y);
         });
+    }
+
+    drawMarker() {
+
+        if (this.listItemIndex === null) return;
+
+        const x = 0;
+        const width = this.scrollbar.hidden ? this.width : this.width - 16;
+        const height = this.itemHeight;
+
+
+        const y = (this.listItemIndex - this.scrollbar.rows.index) * height;
+
+        const offBoundaries = y < 0 || y >= this.scrollbar.rows.visible * height;
+        if (offBoundaries) return;
+
+        this.context.fillStyle = 'yellow';
+        this.context.globalAlpha = .15;
+        this.context.fillRect(x, y, width, height);
+        this.context.globalAlpha = 1;
+
+        this.context.fillStyle = 'red';
+        this.context.fillRect(x, y, width, 2);
+        this.context.fillRect(x, y + height - 1, width, 2);
+        this.context.fillRect(x, y, 2, height);
+        this.context.fillRect(width - 2, y, 2, height);
     }
 
     drawSeparator(itemRect) {
@@ -249,7 +305,7 @@ export default class HandsList extends Control {
 
         this.handlers.click(itemIndex);
 
-        console.log(this.list[itemIndex]);
+        this.drawMarker();
     }
 
     /**
@@ -347,6 +403,8 @@ export default class HandsList extends Control {
 
             this.drawSeparator(itemRect);
         });
+
+        this.drawMarker();
 
         this.scrollbar.draw();
     }

@@ -215,4 +215,9 @@ export default class View {
         this.chat.unpressScrollBar();
     }
 
+    adjustHandsList() {
+
+        this.handsList.adjustRowsIndex();
+    }
+
 }

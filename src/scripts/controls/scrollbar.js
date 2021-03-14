@@ -105,7 +105,7 @@ export default class Sb extends Control {
 
         this.parent.draw();
 
-        this.ajustThumbLocation();
+        this.adjustThumbLocation();
 
         this.draw();
     }
@@ -116,7 +116,7 @@ export default class Sb extends Control {
 
         this.rows.index = Math.min(++this.rows.index, max);
 
-        this.ajustThumbLocation();
+        this.adjustThumbLocation();
 
         this.parent.draw();
     }
@@ -141,7 +141,7 @@ export default class Sb extends Control {
     }
 
     /**
-     * Chamado pelos buttons
+     * Chamado pelos buttons da scrollbar ou `adjustRowsIndex()` do parent
      * 
      * @example
      * trackAvailable = 70
@@ -152,7 +152,7 @@ export default class Sb extends Control {
      * after = 6 * 70 / 14 => 30 ('Não é preciso')
      * 
      */
-    ajustThumbLocation() {
+    adjustThumbLocation() {
 
         const trackAvailable = this.height - 16 * 2 - this.thumb.height;
 

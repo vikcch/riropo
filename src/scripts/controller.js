@@ -49,6 +49,7 @@ export default class Controller {
             },
             handsList: {
                 click: this.handlerHandsList_onClick,
+                tracker: this.model.tracker
             },
         });
     }
@@ -210,6 +211,8 @@ export default class Controller {
 
         this.view.updateChat(history, previousHand);
 
+        this.view.adjustHandsList();
+
         this.view.render(history, this.model.mainInfo);
 
         this.view.updateNavigation(enables);
@@ -267,6 +270,8 @@ export default class Controller {
         // NOTE:: Náo é sempre 'nextAction', caso seja o ultimo progress da hand
         this.view.updateChat(history, next);
 
+        if (next !== nextAction) this.view.adjustHandsList();
+
         this.view.render(history, this.model.mainInfo);
 
         this.view.updateNavigation(enables);
@@ -279,6 +284,8 @@ export default class Controller {
         const { history, enables } = this.model.navigation(nextHand);
 
         this.view.updateChat(history, nextHand);
+
+        this.view.adjustHandsList();
 
         this.view.render(history, this.model.mainInfo);
 
