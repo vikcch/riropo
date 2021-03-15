@@ -1,6 +1,7 @@
 import { head, rear } from "./units/fns";
 import pokerHand from "./units/pokerhand";
 import { MainInfoT } from "@/scripts/units/main-info";
+import biz from "./units/biz";
 
 export default class Model {
 
@@ -22,20 +23,9 @@ export default class Model {
      */
     processLog(sessionLog) {
 
-        // STOPSHIP:: file do ticket dá erro (maior)
-        // HH20210306 T3126039768 No Limit Hold'em Ticket
-
-        // STOPSHIP:: FILE COM ERRO 
-        // HH20200928 Isabella IV - €0.01-€0.02 - EUR No Limit Hold'em
-        // LukyMetoo joins the table at seat #4 (ultima hand)
-
         // TODO:: 10 max é invalido
 
-
-        //TODO:: ver arranjar nome de jogador com \n
         // STOPSHIP:: ver no live-squeezer se envia com 3 enters
-
-        // TODO:: experimentar user com nome de comentário 'says:' ou 'said:'
 
         // TODO:: file com noma `Alterada III` em 'HandHistory/Nova Pasta'
 
@@ -45,19 +35,9 @@ export default class Model {
 
         this.handHistories = jagged.map((hand, index) => {
 
-            // TODO:: LIMPAR HAND (EX: remover playes "out of hand", comentarios, etc)
-            // STOPSHIP:: "out of hand" é importantissimo
-            // tem tambem: "Chelov18 will be allowed to play after the button"
-            // tem tambem: "gporto68 leaves the table"
-            // woddyman89 was removed from the table for failing to post
-            // woddyman89 leaves the table
+            const lines = biz.filterAllowedLines(hand);
 
-            // HH20210307 Grogler - \HandHistory\vikcch PokerStars Hand #224559150508:
-            // No meio dos "Seats"
-            // pokeralho3x: is sitting out 
-
-            return pokerHand(hand, index, jagged.length);
-
+            return pokerHand(lines, index, jagged.length);
         });
 
         this.resetTracker();

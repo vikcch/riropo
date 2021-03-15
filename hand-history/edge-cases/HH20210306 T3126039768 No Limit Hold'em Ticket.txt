@@ -1,0 +1,48 @@
+﻿PokerStars Hand #224530469728: Tournament #3126039768, Freeroll  Hold'em No Limit - Level XII (150/300) - 2021/03/06 21:02:53 WET [2021/03/06 16:02:53 ET]
+Table '3126039768 26' 9-max Seat #9 is the button
+Seat 1: NBrochado (582 in chips) out of hand (moved from another table into small blind)
+Seat 2: wufeng (5569 in chips) 
+Seat 3: vikcch (3533 in chips) 
+Seat 4: ricky1973821 (2009 in chips) 
+Seat 5: n0w-I-kn0w (4537 in chips) 
+Seat 6: sscg2002 (2269 in chips) 
+Seat 7: jmsg66 (8056 in chips) 
+Seat 8: Tef-10 (3900 in chips) 
+Seat 9: @rhadamanthe42 (2910 in chips) 
+NBrochado will be allowed to play after the button
+wufeng: posts the ante 40
+vikcch: posts the ante 40
+ricky1973821: posts the ante 40
+n0w-I-kn0w: posts the ante 40
+sscg2002: posts the ante 40
+jmsg66: posts the ante 40
+Tef-10: posts the ante 40
+@rhadamanthe42: posts the ante 40
+wufeng: posts small blind 150
+vikcch: posts big blind 300
+*** HOLE CARDS ***
+Dealt to vikcch [Jc 3s]
+ricky1973821: folds 
+n0w-I-kn0w: folds 
+sscg2002: raises 1929 to 2229 and is all-in
+jmsg66: folds 
+Tef-10: folds 
+@rhadamanthe42: folds 
+wufeng: folds 
+vikcch: folds 
+Uncalled bet (1929) returned to sscg2002
+sscg2002 collected 1070 from pot
+sscg2002: doesn't show hand 
+*** SUMMARY ***
+Total pot 1070 | Rake 0 
+Seat 2: wufeng (small blind) folded before Flop
+Seat 3: vikcch (big blind) folded before Flop
+Seat 4: ricky1973821 folded before Flop (didn't bet)
+Seat 5: n0w-I-kn0w folded before Flop (didn't bet)
+Seat 6: sscg2002 collected (1070)
+Seat 7: jmsg66 folded before Flop (didn't bet)
+Seat 8: Tef-10 folded before Flop (didn't bet)
+Seat 9: @rhadamanthe42 (button) folded before Flop (didn't bet)
+
+
+

@@ -1,0 +1,35 @@
+﻿PokerStars Hand #224559150508:  Hold'em No Limit (€0.01/€0.02 EUR) - 2021/03/07 17:03:09 WET [2021/03/07 12:03:09 ET]
+Table 'Grogler' 6-max Seat #2 is the button
+Seat 2: Vasco Dark (€2.55 in chips) 
+Seat 3: vikcch (€3.04 in chips) 
+Seat 6: mu30jo (€2 in chips) 
+vikcch: posts small blind €0.01
+pokeralho3x: is sitting out 
+mu30jo: posts big blind €0.02
+*** HOLE CARDS ***
+Dealt to vikcch [7h 5h]
+Vasco Dark: folds 
+vikcch: raises €0.03 to €0.05
+pokeralho3x leaves the table
+mu30jo: calls €0.03
+*** FLOP *** [3c 2c 5d]
+vikcch: bets €0.05
+mu30jo: calls €0.05
+*** TURN *** [3c 2c 5d] [2d]
+vikcch: bets €0.10
+mu30jo: calls €0.10
+*** RIVER *** [3c 2c 5d 2d] [8d]
+vikcch: checks 
+mu30jo: bets €0.38
+vikcch: folds 
+Uncalled bet (€0.38) returned to mu30jo
+mu30jo collected €0.38 from pot
+mu30jo: doesn't show hand 
+*** SUMMARY ***
+Total pot €0.40 | Rake €0.02 
+Board [3c 2c 5d 2d 8d]
+Seat 2: Vasco Dark (button) folded before Flop (didn't bet)
+Seat 3: vikcch (small blind) folded on the River
+Seat 6: mu30jo (big blind) collected (€0.38)
+
+

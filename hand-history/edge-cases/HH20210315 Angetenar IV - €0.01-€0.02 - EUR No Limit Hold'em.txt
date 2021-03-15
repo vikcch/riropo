@@ -1,0 +1,43 @@
+﻿PokerStars Hand #224830776340:  Hold'em No Limit (€0.01/€0.02 EUR) - 2021/03/15 11:51:27 WET [2021/03/15 7:51:27 ET]
+Table 'Angetenar IV' 6-max Seat #5 is the button
+Seat 1: vikcch (€2 in chips) 
+Seat 2: varzim1977 (€1.04 in chips) 
+Seat 5: PauloSC5 (€1.80 in chips) 
+vikcch: posts small blind €0.01
+varzim1977: posts big blind €0.02
+KINGVAMPI610: sits out 
+nun0000 is connected 
+nun0000: sits out 
+*** HOLE CARDS ***
+Dealt to vikcch [4s 6h]
+PauloSC5: raises €0.02 to €0.04
+vikcch: calls €0.03
+varzim1977: calls €0.02
+*** FLOP *** [6c Ks Jc]
+vikcch: checks 
+varzim1977: checks 
+PauloSC5: checks 
+*** TURN *** [6c Ks Jc] [8h]
+jipypedro joins the table at seat #6 
+vikcch: bets €0.03
+varzim1977: calls €0.03
+PauloSC5: calls €0.03
+*** RIVER *** [6c Ks Jc 8h] [Ah]
+vikcch said, "hey"
+vikcch: checks 
+varzim1977: checks 
+PauloSC5: checks 
+*** SHOW DOWN ***
+vikcch: shows [4s 6h] (a pair of Sixes)
+varzim1977: shows [6d 7d] (a pair of Sixes)
+PauloSC5: shows [3s 8s] (a pair of Eights)
+PauloSC5 collected €0.20 from pot
+*** SUMMARY ***
+Total pot €0.21 | Rake €0.01 
+Board [6c Ks Jc 8h Ah]
+Seat 1: vikcch (small blind) showed [4s 6h] and lost with a pair of Sixes
+Seat 2: varzim1977 (big blind) showed [6d 7d] and lost with a pair of Sixes
+Seat 5: PauloSC5 (button) showed [3s 8s] and won (€0.20) with a pair of Eights
+
+
+

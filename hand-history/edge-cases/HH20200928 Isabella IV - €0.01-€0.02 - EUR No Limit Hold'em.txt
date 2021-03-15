@@ -1,0 +1,35 @@
+﻿PokerStars Hand #218894291251:  Hold'em No Limit (€0.01/€0.02 EUR) - 2020/09/29 0:59:15 WET [2020/09/28 19:59:15 ET]
+Table 'Isabella IV' 6-max Seat #3 is the button
+Seat 1: greenville81 (€1.84 in chips) 
+Seat 2: diogobarata9 (€2.75 in chips) 
+Seat 3: vikcch (€2 in chips) 
+Seat 6: lisbon123 (€4.97 in chips) 
+lisbon123: posts small blind €0.01
+greenville81: posts big blind €0.02
+*** HOLE CARDS ***
+Dealt to vikcch [5c 5h]
+LukyMetoo joins the table at seat #4 
+diogobarata9: raises €0.08 to €0.10
+vikcch: calls €0.10
+lisbon123: folds 
+edsr1980 joins the table at seat #5 
+greenville81: folds 
+*** FLOP *** [2h 4h 9s]
+diogobarata9: bets €0.10
+vikcch: calls €0.10
+*** TURN *** [2h 4h 9s] [4c]
+diogobarata9: bets €0.20
+vikcch: folds 
+Uncalled bet (€0.20) returned to diogobarata9
+diogobarata9 collected €0.41 from pot
+diogobarata9: doesn't show hand 
+*** SUMMARY ***
+Total pot €0.43 | Rake €0.02 
+Board [2h 4h 9s 4c]
+Seat 1: greenville81 (big blind) folded before Flop
+Seat 2: diogobarata9 collected (€0.41)
+Seat 3: vikcch (button) folded on the Turn
+Seat 6: lisbon123 (small blind) folded before Flop
+
+
+

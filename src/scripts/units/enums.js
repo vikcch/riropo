@@ -17,7 +17,8 @@ export const phase = {
 
     conclusionShows: 'conclusionShows',
     conclusionMucks: 'conclusionMucks',
-    conclusionCollects: 'conclusionCollects'
+    conclusionCollects: 'conclusionCollects',
+    conclusionShowsTease: 'conclusionShowsTease', // Mostra depois de ganhar o pot
 };
 
 export default {

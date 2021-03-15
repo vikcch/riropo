@@ -1,0 +1,35 @@
+﻿PokerStars Hand #222443502968:  Hold'em No Limit (€0.01/€0.02 EUR) - 2021/01/10 0:42:51 WET [2021/01/09 19:42:51 ET]
+Table 'Lyyli' 6-max Seat #4 is the button
+Seat 2: kovacs silva (€2.44 in chips) 
+Seat 3: kikoreis1992 (€2 in chips) 
+Seat 4: vikcch (€2.14 in chips) 
+Seat 5: xdye17 (€2.30 in chips) 
+xdye17: posts small blind €0.01
+kovacs silva: posts big blind €0.02
+*** HOLE CARDS ***
+Dealt to vikcch [Ts 8d]
+kikoreis1992: folds 
+vikcch: raises €0.02 to €0.04
+xdye17: calls €0.03
+kovacs silva: folds 
+*** FLOP *** [Ks 7h Jh]
+xdye17: checks 
+vikcch: checks 
+*** TURN *** [Ks 7h Jh] [9c]
+xdye17: checks 
+vikcch: bets €0.10
+xdye17: folds 
+Uncalled bet (€0.10) returned to vikcch
+vikcch collected €0.10 from pot
+levezinho32 was removed from the table for failing to post
+levezinho32 leaves the table
+vikcch: doesn't show hand 
+*** SUMMARY ***
+Total pot €0.10 | Rake €0 
+Board [Ks 7h Jh 9c]
+Seat 2: kovacs silva (big blind) folded before Flop
+Seat 3: kikoreis1992 folded before Flop (didn't bet)
+Seat 4: vikcch (button) collected (€0.10)
+Seat 5: xdye17 (small blind) folded on the Turn
+
+

@@ -78,9 +78,9 @@ const getDirtyActivityLines = (lines, delimiters) => {
         const lineEnds = [': checks', ': folds', ' and is all-in'];
         const ends = lineEnds.some(vv => v.endsWith(vv));
 
-        const calls = /:\scalls\s(|.*)\d$/.test(v);
-        const bets = /:\sbets\s(|.*)\d$/.test(v);
-        const raises = /:\sraises\s(|.*)\d$/.test(v);
+        const calls = /\:\scalls\s(|.*)\d$/.test(v);
+        const bets = /\:\sbets\s(|.*)\d$/.test(v);
+        const raises = /\:\sraises\s(|.*)\d$/.test(v);
         const uncalledBet = biz.isUncalledBet(v);
 
         return ends || calls || bets || raises || uncalledBet;
@@ -310,7 +310,7 @@ const closeActivity = (histories, uncalledBetLine) => {
 
     const name = uncalledBetLine.substring(start);
 
-    const newPlayers = lastHistory.players.map(x => x.cloneResetStreet());
+    const newPlayers = lastHistory.players.map(x => x.cloneReset());
 
     const player = newPlayers.find(x => x.name === name);
 
@@ -347,7 +347,7 @@ const street = (lines, previousHistory, delimiters) => {
 
     const streetCards = getLineCards(streetLine.value);
 
-    const newPlayers = previousHistory.players.map(x => x.cloneResetStreet());
+    const newPlayers = previousHistory.players.map(x => x.cloneReset());
 
     const history = History({
 
@@ -396,7 +396,7 @@ const conclusion = (lines, previousHistory) => {
 
         const lastHistory = rear(histories) ?? previousHistory;
 
-        const newPlayers = lastHistory.players.map(x => x.cloneResetStreet());
+        const newPlayers = lastHistory.players.map(x => x.cloneReset());
 
         let phase;
 
@@ -408,15 +408,13 @@ const conclusion = (lines, previousHistory) => {
 
         if (!phase) return;
 
-        if (phase === enums.phase.conclusionCollects) {
-
-            easeConclusion.lastWinnerCollects(lastHistory, newPlayers);
-        }
+        const isTeasing = phase === enums.phase.conclusionShowsTease;
+        const pot = isTeasing ? 0 : previousHistory.pot;
 
         const history = History({
 
             players: newPlayers,
-            pot: previousHistory.pot,
+            pot,
             action: '',
             player: null,
             line: line,

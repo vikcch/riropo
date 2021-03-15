@@ -44,6 +44,8 @@ export default {
      */
     shows: (line, players) => {
 
+        // NOTE:: Em caso de all-ins esta linha de cada player e suprimida.
+        // Resultando em linha unica `Showing cards`
         const showsIndex = line.lastIndexOf(': shows [');
 
         if (showsIndex !== -1) {
@@ -54,7 +56,9 @@ export default {
 
             player.holeCards = biz.getLineCards(line);
 
-            return phase.conclusionShows;
+            const isTeasing = player.gatherStack > 0;
+
+            return isTeasing ? phase.conclusionShowsTease : phase.conclusionShows;
         }
     },
 
@@ -103,28 +107,9 @@ export default {
 
             player.collect = biz.collectedAmount(line);
 
+            player.gatherStack += player.collect;
+
             return phase.conclusionCollects;
-        }
-    },
-
-
-    /**
-     * Actualiza a stack do ultimo winner em side pots
-     * 
-     * @param {HistoryT} lastHistory 
-     * @param {PlayerT[]} newPlayers 
-     */
-    lastWinnerCollects: (lastHistory, newPlayers) => {
-
-        const lastWinner = lastHistory.players.find(v => v.collect);
-
-        if (lastWinner) {
-
-            const player = newPlayers.find(v => v.seat === lastWinner.seat);
-
-            // NOTE:: Não usa prop `stack` para facilitar as contas no profit.
-            // Necessário para em side pots ter a stack visualmente actualizada
-            player.gatherStack += lastWinner.collect;
         }
     }
 };

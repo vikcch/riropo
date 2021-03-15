@@ -366,14 +366,14 @@ export default {
         action.call(this, history, tableMax);
 
         waitingToAct.call(this, history, tableMax);
+        
+        chipsValues.call(this, history.players, tableMax);
+        
+        streetCards.call(this, history.streetCards);
+        
+        easeMiddlePot.call(this, history, tableMax);
 
         betChips.call(this, history.players, tableMax);
-
-        chipsValues.call(this, history.players, tableMax);
-
-        streetCards.call(this, history.streetCards);
-
-        easeMiddlePot.call(this, history, tableMax);
 
         middlePotValue.call(this, history);
 

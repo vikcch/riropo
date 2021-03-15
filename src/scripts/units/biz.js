@@ -220,6 +220,50 @@ export const getColorScale = profitBBs => {
     return '#7a3956'
 };
 
+/**
+ * 
+ * @param {string[]} lines
+ * @returns {string[]} 
+ */
+const filterAllowedLines = lines => {
+
+    // NOTE:: Noise lines em _riropo/hand-history/edge-cases_ (ver index.md)
+
+    const summaryIndex = lines.indexOf('*** SUMMARY ***');
+
+    return lines.filter((line, index) => {
+
+        const allowedRegex = [
+            /^Seat\s\d:\s.+\)\s(|is\ssitting\sout)$/m,      // Seat x
+            /\:\sposts\s.*\d(|\sand\sis\sall-in)$/m,        // post
+            /^Dealt(|ed)\sto\s.+\]$/m,                      // Dealt
+
+            /\:\sfolds\s$/m,                                // folds
+            /\:\schecks\s$/m,                               // checks
+            /\:\sbets\s.*\d(|\sand\sis\sall-in)$/m,         // bets
+            /\:\scalls\s.*\d(|\sand\sis\sall-in)$/m,        // calls
+            /\:\sraises\s.*\d(|\sand\sis\sall-in)$/m,       // raises
+            /^Uncalled\sbet\s\(.+\)\sreturned\sto\s/,       // Uncalled bet
+
+            /^\*\*\*\s(FLOP|TURN|RIVER)\s\*\*\*\s\[.+\]$/m, // Street
+
+            /\:\sshows\s\[.+\]/,                            // shows
+            /\:\smucks\shand\s$/m,                          // mucks
+            /\scollected\s.+pot$/m,                         // collects
+        ];
+
+        const fixedLines = [
+            '*** HOLE CARDS ***', '*** SHOW DOWN ***', '*** SUMMARY ***'
+        ];
+
+        if (fixedLines.includes(line)) return true;
+
+        const tableGameDescription = index < 2;
+        if (tableGameDescription || index > summaryIndex) return true;
+
+        return allowedRegex.some(v => v.test(line));
+    });
+};
 
 export default {
 
@@ -233,7 +277,8 @@ export default {
     isUncalledBet,
     actionAmount,
     getBigBlind,
-    getColorScale
+    getColorScale,
+    filterAllowedLines
 }
 
 export const testables = {

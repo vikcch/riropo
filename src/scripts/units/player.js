@@ -19,23 +19,26 @@ export const Player = ({ name, stack, seat, position, isButton,
 
             return { ...this };
         },
-        cloneResetStreet() {
+        cloneReset() {
 
             const p = { ...this };
             p.amountOnStreet = 0;
+            p.collect = 0;
 
             return p;
         },
 
         /**
-         * Existe para não alterar a stack quando faz `lastWinnerCollects`  
+         * Em side pots, quando há o 'collect', na proxima history a stack printada
+         * fica actualizada... 
+         * Existe para não alterar a prop `stack`, para facilitar no calculo do profit
          * O `collect` vai para `gatherStack`  
          * Chamado em _render table players_
          * @returns {number}
          */
         mergedStack() {
 
-            return this.stack + this.gatherStack;
+            return this.stack + this.gatherStack - this.collect;
         }
     };
 };
