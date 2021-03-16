@@ -84,9 +84,10 @@ const getPlayerSeat = line => {
 };
 
 /**
+ * Retorna string com a moeda, não precisa fazer calculos, 
  * 
  * @param {string} line
- * @returns {number}
+ * @returns {string}
  */
 const getPlayerBounty = line => {
 
@@ -98,9 +99,9 @@ const getPlayerBounty = line => {
 
     const stackPart = line.substring(bracketIndex);
 
-    const match = stackPart.match(/(|\d+)(|\d+\.\d{2})(?=\sbounty)/g);
+    const match = stackPart.match(/.(|\d+)(|\d+\.\d{2})(?=\sbounty)/g);
 
-    return match ? Number(match[0]) : null;
+    return match ? match[0] : null;
 };
 
 /**

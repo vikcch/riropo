@@ -226,7 +226,7 @@ describe('ease-pokerhand', function () {
 
             const line = 'Seat 7: Ericaao (50680 in chips, €116 bounty) ';
 
-            assert.strictEqual(fn(line), 116);
+            assert.strictEqual(fn(line), '€116');
         });
     });
 
@@ -238,7 +238,7 @@ describe('ease-pokerhand', function () {
 
             const line = 'Seat 7: Ericaao (50680 in chips, €116.54 bounty) ';
 
-            assert.strictEqual(fn(line), 116.54);
+            assert.strictEqual(fn(line), '€116.54');
         });
     });
 

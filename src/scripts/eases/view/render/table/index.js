@@ -107,8 +107,8 @@ const players = function (history, tableMax) {
 
         const { emptySeat, status, dealer, inPlay } = this.images;
 
-        const emptySeatAlpha = player.inPlay ? 1 : .4;
-        drawImage(emptySeat, displayPosition.emptySeat, emptySeatAlpha);
+        const alpha = player.inPlay ? 1 : .4;
+        drawImage(emptySeat, displayPosition.emptySeat, alpha);
         drawImage(status, displayPosition.status);
 
         drawTextCenter(this.context, player.name, 'white', displayPosition.name);
@@ -139,6 +139,28 @@ const players = function (history, tableMax) {
 
             player.holeCards.forEach(drawPlayerCardsAbsx);
         }
+
+        if (player.bounty) {
+
+            const { x, y } = displayPosition.bounty;
+
+            this.context.globalAlpha = alpha;
+
+            const bountyWidth = this.context.measureText(player.bounty).width;
+
+            this.context.beginPath();
+            this.context.arc(x - bountyWidth / 2, y, 7, Math.PI / 2, Math.PI * 1.5);
+            this.context.arc(x + bountyWidth / 2, y, 7, Math.PI * 1.5, Math.PI / 2);
+            this.context.closePath();
+            this.context.fillStyle = '#ffffe1';
+            this.context.fill();
+            this.context.fillStyle = 'black';
+            this.context.stroke();
+
+            drawTextCenter(this.context, player.bounty, 'blue', { x, y });
+            this.context.globalAlpha = 1;
+        }
+
     });
 }
 
@@ -366,11 +388,11 @@ export default {
         action.call(this, history, tableMax);
 
         waitingToAct.call(this, history, tableMax);
-        
+
         chipsValues.call(this, history.players, tableMax);
-        
+
         streetCards.call(this, history.streetCards);
-        
+
         easeMiddlePot.call(this, history, tableMax);
 
         betChips.call(this, history.players, tableMax);

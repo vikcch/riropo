@@ -92,8 +92,6 @@ export default {
      */
     createPlayers(lines, buttonSeat) {
 
-        // TODO:: make history, sendo cada jogada
-
         const { getPlayersInfoLines, getHeroName, makeTablePositions,
             getPlayerName, getPlayerStack, getPlayerSeat, getPlayerBounty,
             getDealtedHoleCards
