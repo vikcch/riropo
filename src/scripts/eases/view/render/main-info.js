@@ -18,6 +18,22 @@ const drawBackground = function () {
     this.context.fillRect(0, 0, width, height);
 };
 
+const drawBackgroundItem = function (label, text, point) {
+
+    const { height: mainInfoHeight } = render.rects.mainInfo;
+
+    const labelWidth = this.context.measureText(label).width + 2;
+    const textWidth = this.context.measureText(text).width + 2;
+
+    const width = labelWidth + textWidth;
+    const height = mainInfoHeight / 2 - 2;
+    const x = point.x - labelWidth;
+    const y = point.y - height / 2
+
+    this.context.fillStyle = '#333333';
+    this.context.fillRect(x, y, width, height);
+};
+
 /**
  * 
  * @this {View}
@@ -29,6 +45,8 @@ const drawItem = function (label, text, point) {
 
     this.context.font = font;
     this.context.textBaseline = 'middle';
+
+    drawBackgroundItem.call(this, label, text, point);
 
     this.context.fillStyle = labelColor;
     this.context.textAlign = 'right';
@@ -49,6 +67,8 @@ const drawHandIdAndProgress = function (mainInfo, point) {
 
     this.context.font = font;
     this.context.textBaseline = 'middle';
+
+    drawBackgroundItem.call(this, 'Hand:', mainInfo.handId, point);
 
     this.context.fillStyle = labelColor;
     this.context.textAlign = 'right';

@@ -55,7 +55,6 @@ export default {
 
             const r = await Promise.all(arrFiles);
 
-            // TODO:: enum images
             const images = {};
             images.background = r[0];
             images.navigation = r[1];

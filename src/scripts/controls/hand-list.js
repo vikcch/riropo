@@ -3,6 +3,7 @@ import Controller from '@/scripts/controller';
 import biz from '../units/biz';
 import Control from './control';
 import Scrollbar from './scrollbar';
+import embeddedRects from '@/scripts/eases/view/embedded-controls-rects';
 
 export default class HandsList extends Control {
 
@@ -35,8 +36,6 @@ export default class HandsList extends Control {
     }
 
     async setImage() {
-
-        // TODO:: maxHiddenRule da scrollbar maior... receber por paremetro
 
         await this.scrollbar.setImages();
     }
@@ -97,25 +96,38 @@ export default class HandsList extends Control {
         this.draw();
     }
 
+    setMaxHiddenRule() {
+
+        const value = Math.floor(this.list.length * 1.1);
+
+        this.scrollbar.rows.maxHiddenRule = value;
+
+        this.scrollbar.ajustThumbSize();
+
+        this.scrollbar.roolToTop();
+    }
+
     /**
      * Obriga a manter 4 ou 5 itens no inicio e fim da lista  
      * Chamado inicialmente pelos buttons de navegaçao
      */
-    adjustRowsIndex() {
+    adjustRowsOffSet() {
 
-        const { index: rowsIndex, visible: rowsVisible, total: rowsTotal }
+        const { offSet: rowsOffSet, visible: rowsVisible, total: rowsTotal }
             = this.scrollbar.rows;
 
-        if (rowsIndex !== 0 && this.listItemIndex < rowsIndex + 5) {
+        if (rowsOffSet !== 0 && this.listItemIndex < rowsOffSet + 5) {
 
-            this.scrollbar.rows.index = this.listItemIndex - 5;
+            this.scrollbar.rows.offSet = Math.max(0, this.listItemIndex - 5);
         }
 
-        const hasMoreRows = rowsIndex + rowsVisible < rowsTotal;
+        const hasMoreRows = rowsOffSet + rowsVisible < rowsTotal;
 
-        if (hasMoreRows && this.listItemIndex > rowsIndex + rowsVisible - 5) {
+        if (hasMoreRows && this.listItemIndex > rowsOffSet + rowsVisible - 5) {
 
-            this.scrollbar.rows.index = this.listItemIndex - (rowsVisible - 5);
+            const value = this.listItemIndex - (rowsVisible - 5);
+            const maxRowOffSet = this.list.length - rowsVisible;
+            this.scrollbar.rows.offSet = Math.min(maxRowOffSet, value);
         }
 
         this.scrollbar.adjustThumbLocation();
@@ -152,7 +164,7 @@ export default class HandsList extends Control {
         const height = this.itemHeight;
 
 
-        const y = (this.listItemIndex - this.scrollbar.rows.index) * height;
+        const y = (this.listItemIndex - this.scrollbar.rows.offSet) * height;
 
         const offBoundaries = y < 0 || y >= this.scrollbar.rows.visible * height;
         if (offBoundaries) return;
@@ -223,7 +235,7 @@ export default class HandsList extends Control {
 
         const { contextToolTip: ctxToolTip } = this.view;
 
-        const itemIndex = this.scrollbar.rows.index + this.hoverIndexFixed;
+        const itemIndex = this.scrollbar.rows.offSet + this.hoverIndexFixed;
 
         const item = this.list[itemIndex];
 
@@ -287,6 +299,7 @@ export default class HandsList extends Control {
     clearHover() {
 
         this.hoverIndexFixed = -1;
+        this.scrollbar.clearHover();
         this.draw();
         this.cleanToolTip();
     };
@@ -299,7 +312,7 @@ export default class HandsList extends Control {
 
         const itemIndexFixed = Math.floor(mousePoint.y / this.itemHeight);
 
-        const itemIndex = this.scrollbar.rows.index + itemIndexFixed;
+        const itemIndex = this.scrollbar.rows.offSet + itemIndexFixed;
 
         if (itemIndex >= this.list.length) return;
 
@@ -376,11 +389,12 @@ export default class HandsList extends Control {
      */
     draw() {
 
-        // TODO:: ir buscar os valores (2 ultimos)
-        this.context.setTransform(1, 0, 0, 1, 0, 0);
+        const { handsList: handsListRect } = embeddedRects;
+
+        this.context.setTransform(1, 0, 0, 1, handsListRect.x, handsListRect.y);
         this.context.clearRect(0, 0, this.width, this.height);
 
-        const start = this.scrollbar.hidden ? 0 : this.scrollbar.rows.index;
+        const start = this.scrollbar.hidden ? 0 : this.scrollbar.rows.offSet;
 
         const { visible: visibleRowsCount } = this.scrollbar.rows;
 
@@ -407,6 +421,8 @@ export default class HandsList extends Control {
         this.drawMarker();
 
         this.scrollbar.draw();
+
+        console.log('redrawwww');
     }
 
     // #endregion

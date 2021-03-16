@@ -92,6 +92,8 @@ export default class Controller {
 
             this.view.handsList.addRange(this.model.handsList);
 
+            this.view.handsList.setMaxHiddenRule();
+
             this.view.updateChat(history, enums.navigation.nextHand);
 
             this.view.render(history, this.model.mainInfo);
@@ -129,6 +131,8 @@ export default class Controller {
         const mousePoint = Controller.mousePoint;
 
         const found = this.view.embeddables.find(v => v.hitMe(mousePoint));
+
+        console.log(this.view.embeddables);
 
         if (found) found.click(mousePoint);
     }
@@ -235,9 +239,6 @@ export default class Controller {
 
         this.view.updateNavigation(enables);
     }
-
-    // TODO:: remover isto
-    static c = 1;
 
     handlerPlay_onClick = () => {
 

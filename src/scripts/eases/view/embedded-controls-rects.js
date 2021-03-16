@@ -37,10 +37,9 @@ export default {
         x: 3 + tableRect.x,
         y: 442 + tableRect.y,
         width: 329, height: 108
+    },
+    handsList: {
+        x: 0, y: 0,
+        width: 96, height: 595
     }
-    // chat: {
-    //     x: 3,
-    //     y: 442,
-    //     width: 329, height: 108
-    // }
 };

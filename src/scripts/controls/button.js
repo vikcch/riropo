@@ -9,16 +9,16 @@ export default class Button {
      * 
      * @param { View } view 
      * @param {*} param1 
+     * @param {*} param2 
      */
-    constructor(view, { x, y, width, height }, state = states.normal, is3d = true) {
+    constructor(view, { x, y, width, height }, { state, is3d } = {}) {
 
-        // OPTIMIZE:: RECECER ULTIMOS PARAMENTROS COMO OBJECT (OPTIONS)
         view.embeddables.push(this);
 
         this.view = view;
 
         // No click, move 1 pixel para a sudeste
-        this.is3d = is3d;
+        this.is3d = is3d ?? true;
 
         this.context = view.context;
         this.x = x;
@@ -36,7 +36,7 @@ export default class Button {
             disabled: null,
         };
 
-        this.state = state;
+        this.state = state ?? states.normal;
         this.isPressed = false;
     }
 

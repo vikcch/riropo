@@ -115,7 +115,6 @@ export default {
      * @param {string} value 
      * @returns {string}
      */
-
     removeMoney(value) {
 
         const approve = x => x >= 0 && x <= 9 || x === '.';
@@ -123,7 +122,14 @@ export default {
         return [...value].filter(approve).join('');
     },
 
-    // TODO:: JSDOCS
+    /**
+     * 
+     * @param {HTMLImageElement } image 
+     * @param {number} row 
+     * @param {number} width 
+     * @param {number} height 
+     * @returns {Promise<HTMLImageElement[]>}
+     */
     async sprites(image, row, width, height) {
 
         View.canvasAux.width = width;

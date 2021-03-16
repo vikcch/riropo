@@ -9,7 +9,7 @@ export default class Control {
      * @param {*} rect 
      * @param {boolean} [isScrollBar={}] Para testar o hover primeiro (hitMe)
      */
-    constructor(view, rect, { isScrollBar } = {}) {
+    constructor(view, rect = {}, { isScrollBar } = {}) {
 
         this.view = view;
         this.context = view.context;
@@ -23,10 +23,6 @@ export default class Control {
         this.height = rect.height;
 
         this.rect = rect;
-
-        // TODO:: se tiver parent no fazer draw por embeddables,
-        // o parente é quem chama o draw()
-        // o find no controller tb precisa de outra opcção (set top layer)
     }
 
     hitMe(point) {

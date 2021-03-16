@@ -25,7 +25,8 @@ export default class View {
         this.canvas = document.querySelector('#canvas');
         this.context = this.canvas.getContext('2d');
 
-        const { table, handsList } = easeRender.rects;
+        const { handsList } = embeddedRects;
+        const { table } = easeRender.rects;
         this.canvas.width = handsList.width + table.width;
         this.canvas.height = handsList.height;
 
@@ -82,25 +83,21 @@ export default class View {
 
     createEmbeddedControls() {
 
-        const { navigation: rect } = embeddedRects;
+        const { navigation: rect, handsList: handsListRect } = embeddedRects;
 
-        const { disabled } = buttonStates;
+        const { disabled: state } = buttonStates;
 
-        this.previousHand = new Button(this, rect.previousHand, disabled);
-        this.previousAction = new Button(this, rect.previousAction, disabled);
+        this.previousHand = new Button(this, rect.previousHand, state);
+        this.previousAction = new Button(this, rect.previousAction, state);
         this.play = new Button(this, rect.play);
-        this.nextAction = new Button(this, rect.nextAction, disabled);
-        this.nextHand = new Button(this, rect.nextHand, disabled);
+        this.nextAction = new Button(this, rect.nextAction, state);
+        this.nextHand = new Button(this, rect.nextHand, state);
 
         const { chat: chatRect } = embeddedRects;
 
         this.chat = new Chat(this, chatRect);
 
-        // OPTIMIZE:: ser embeddedRects em vez de easeRender.rects
-        const { handsList: handsListRect } = easeRender.rects;
-
         this.handsList = new HandsList(this, handsListRect);
-
     }
 
     bindControls(handlers) {
@@ -128,6 +125,8 @@ export default class View {
         this.canvas.addEventListener('mouseout', (e) => {
 
             this.handsList.clearHover();
+            this.chat.clearHover();
+
         });
 
         window.addEventListener('mouseup', () => {
@@ -202,9 +201,12 @@ export default class View {
 
             const states = enums.buttonStates;
 
+            const isHover = this[key].state === states.hover;
+
             const state = enable ? states.normal : states.disabled;
 
-            this[key].setState = state;
+            // Se tiver hover e manter-se enable, nem altera nada (if contrario)
+            if (!(enable && isHover)) this[key].setState = state;
         });
 
     }
@@ -217,7 +219,7 @@ export default class View {
 
     adjustHandsList() {
 
-        this.handsList.adjustRowsIndex();
+        this.handsList.adjustRowsOffSet();
     }
 
 }

@@ -7,7 +7,10 @@ import { DelimitersT } from '@/scripts/units/delimiters';
 import easeConclusion from './conclusion';
 import enums from '@/scripts/units/enums';
 
-// TODO:: JSDOCS
+/**
+ * @param {string[]} lines 
+ * @returns {string[]}
+ */
 const getPostsLines = lines => {
 
     // PokerStars Hand #206007536567:  Hold'em No Limit (€0.01/€0.02 EUR) - 2019/11/10 1:11:59 WET [2019/11/09 20:11:59 ET]

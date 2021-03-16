@@ -27,7 +27,7 @@ export default class Sb extends Control {
         this.rows = {
             visible: 0, // Maximo de rows visiveis
             total: 0,
-            index: 0,
+            offSet: 0,   // OffSetY se for 5, estão 5 items escondidos para cima
             maxHiddenRule: 8, // Apenas para controlar o tamanho de decremento
             //  do height da thumb, tamanhos possiveis da thumb (excluindo completa)
             get shown() {
@@ -63,12 +63,17 @@ export default class Sb extends Control {
 
         const buttonSize = { width: 16, height: 16 };
 
+        const options = {
+            state: buttonStates.normal,
+            is3d: false
+        };
+
         const upRect = { x: this.x, y: this.y, ...buttonSize };
-        this.up = new Button(this.view, upRect, 'normal', false);
+        this.up = new Button(this.view, upRect, options);
 
         const ydownRect = this.y + this.height - 16;
         const downRect = { x: this.x, y: ydownRect, ...buttonSize };
-        this.down = new Button(this.view, downRect, 'normal', false);
+        this.down = new Button(this.view, downRect, options);
 
         this.up.bind({ click: this.upClick });
         this.down.bind({ click: this.downClick });
@@ -82,7 +87,7 @@ export default class Sb extends Control {
 
     roolToTop() {
 
-        this.rows.index = 0;
+        this.rows.offSet = 0;
         this.thumb.y = 0;
     }
 
@@ -90,7 +95,7 @@ export default class Sb extends Control {
 
         this.rows.visible = visible ?? this.rows.visible;
         this.rows.total = total ?? this.rows.total;
-        this.rows.index = Math.max(this.rows.total - this.rows.visible, 0);
+        this.rows.offSet = Math.max(this.rows.total - this.rows.visible, 0);
 
         this.ajustThumbSize();
 
@@ -101,7 +106,7 @@ export default class Sb extends Control {
 
     upClick = () => {
 
-        this.rows.index = Math.max(--this.rows.index, 0);
+        this.rows.offSet = Math.max(--this.rows.offSet, 0);
 
         this.parent.draw();
 
@@ -114,7 +119,7 @@ export default class Sb extends Control {
 
         const max = this.rows.total - this.rows.visible;
 
-        this.rows.index = Math.min(++this.rows.index, max);
+        this.rows.offSet = Math.min(++this.rows.offSet, max);
 
         this.adjustThumbLocation();
 
@@ -141,12 +146,12 @@ export default class Sb extends Control {
     }
 
     /**
-     * Chamado pelos buttons da scrollbar ou `adjustRowsIndex()` do parent
+     * Chamado pelos buttons da scrollbar ou `adjustRowsOffSet()` do parent
      * 
      * @example
      * trackAvailable = 70
      * hiddenCount = 14
-     * hiddenRowsBefore = this.rows.index = 8
+     * hiddenRowsBefore = this.rows.offSet = 8
      * hiddenRowsAfter = 6
      * before = 8 * 70 / 14 => 40
      * after = 6 * 70 / 14 => 30 ('Não é preciso')
@@ -158,7 +163,7 @@ export default class Sb extends Control {
 
         const hiddenCount = this.rows.total - this.rows.visible;
 
-        this.thumb.y = this.rows.index * trackAvailable / hiddenCount;
+        this.thumb.y = this.rows.offSet * trackAvailable / hiddenCount;
     }
 
     /**
@@ -168,16 +173,21 @@ export default class Sb extends Control {
      * trackAvailable = 70
      * hiddenCount = 14
      * this.thumb.y = 40
-     * this.rows.index = 40 * 14 / 70 => 8
+     * this.rows.offSet = 40 * 14 / 70 => 8
      * 
+     * @returns {boolean} offSet alterado
      */
-    ajustIndex() {
+    ajustOffSet() {
+
+        const current = this.rows.offSet;
 
         const trackAvailable = this.height - 16 * 2 - this.thumb.height;
 
         const hiddenCount = this.rows.total - this.rows.visible;
 
-        this.rows.index = Math.round(this.thumb.y * hiddenCount / trackAvailable);
+        this.rows.offSet = Math.round(this.thumb.y * hiddenCount / trackAvailable);
+
+        return current !== this.rows.offSet;
     }
 
     /**
@@ -259,6 +269,16 @@ export default class Sb extends Control {
         this.context.restore();
     }
 
+    clearHover() {
+
+        if (this.hidden) return;
+
+        this.up.state = buttonStates.normal;
+        this.down.state = buttonStates.normal;
+
+        this.draw();
+    }
+
     // #region Mandory Methods
     /**
      * @override
@@ -301,16 +321,15 @@ export default class Sb extends Control {
 
     hover(point) {
 
-        // OPTIMIZE:: só fazer draw de for difente (1px de move pode não fazer diferença)
         if (this.thumb.pressed) {
 
             this.thumb.y = point.y - this.thumb.diffStart;
 
             this.checkThumbBoundaries();
 
-            this.ajustIndex();
+            const offSetChanged = this.ajustOffSet();
 
-            this.parent.draw();
+            if (offSetChanged) this.parent.draw();
         }
 
         this.drawTrack();

@@ -33,9 +33,6 @@ export default {
     // vikcch collected 2120 from side pot
     // vikcch collected 14448 from main pot
 
-
-    // TODO:: em all-ins mostrar logo as cartas
-
     /**
      * 
      * @param {string} lines
