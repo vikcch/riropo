@@ -4,7 +4,7 @@ import { PlayerT } from '@/scripts/units/player';
 import View from '@/scripts/view';
 import displayPositions from '@/scripts/units/display-positions';
 import biz from '@/scripts/units/biz';
-import enums from '@/scripts/units/enums';
+import enums, { profitColor } from '@/scripts/units/enums';
 import easeMiddlePot from './middle-pot';
 import easeRender from '@/scripts/eases/view/render/index'
 
@@ -355,6 +355,43 @@ const middlePotValue = function (history) {
     drawTextCenter(this.context, value, 'white', point);
 };
 
+/**
+ * @this {View}
+ */
+const legend = function () {
+
+    const x = 5, y = 370, width = 72, height = 40;
+
+    this.context.fillStyle = '#f6d37f';
+    this.context.fillRect(x, y, width, height);
+    this.context.fillStyle = '#7e3100';
+    this.context.fillRect(x + 1, y + 1, width - 2, height - 2);
+
+    this.context.fillStyle = profitColor.smallWin;
+    this.context.fillRect(x + 3, y + 3, 10, 10);
+    this.context.fillStyle = profitColor.smallLose;
+    this.context.fillRect(x + 15, y + 3, 10, 10);
+
+    this.context.fillStyle = profitColor.mediumWin;
+    this.context.fillRect(x + 3, y + 15, 10, 10);
+    this.context.fillStyle = profitColor.mediumLose;
+    this.context.fillRect(x + 15, y + 15, 10, 10);
+
+    this.context.fillStyle = profitColor.bigWin;
+    this.context.fillRect(x + 3, y + 27, 10, 10);
+    this.context.fillStyle = profitColor.bigLose;
+    this.context.fillRect(x + 15, y + 27, 10, 10);
+
+    this.context.font = '9px Arial';
+    this.context.textAlign = 'left';
+    this.context.textBaseline = 'middle';
+    this.context.fillStyle = '#f6d37f';
+
+    this.context.fillText('2-10 BB', x + 30, y + 8);
+    this.context.fillText('10-20 BB', x + 30, y + 20);
+    this.context.fillText('20+ BB', x + 30, y + 32);
+};
+
 export default {
 
     /**
@@ -398,6 +435,8 @@ export default {
         betChips.call(this, history.players, tableMax);
 
         middlePotValue.call(this, history);
+
+        legend.call(this);
 
         console.log(history);
     }

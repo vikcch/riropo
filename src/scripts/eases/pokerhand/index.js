@@ -43,7 +43,8 @@ const fixShowCardsOnAllIn = histories => {
     const historyShowCards = {
         ...newHistories[allInIndex - 1],
         players: newHistories[allInIndex].players,
-        line: 'Showing cards'
+        line: 'Showing cards',
+        action: ''
     };
 
     newHistories.splice(allInIndex, 0, historyShowCards);

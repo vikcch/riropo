@@ -375,7 +375,9 @@ export default class HandsList extends Control {
      */
     hitMe({ x, y }) {
 
-        const right = this.x + this.width - this.scrollbar.width;
+        const scrollbarWidth = this.scrollbar.hidden ? 0 : this.scrollbar.width;
+
+        const right = this.x + this.width - scrollbarWidth;
         const bottom = this.y + this.height;
 
         const horizontal = x >= this.x && x <= right;
@@ -421,8 +423,6 @@ export default class HandsList extends Control {
         this.drawMarker();
 
         this.scrollbar.draw();
-
-        console.log('redrawwww');
     }
 
     // #endregion

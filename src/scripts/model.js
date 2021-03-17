@@ -123,6 +123,7 @@ export default class Model {
         return {
             previousHand: this.tracker.hand > 0,
             previousAction: this.tracker.progress > 0,
+            play: !(isLastHand && isLastProgress),
             nextAction,
             nextHand: !isLastHand,
         }
@@ -157,5 +158,10 @@ export default class Model {
     get handsList() {
 
         return this.handHistories.map(v => v.handsListItem);
+    }
+
+    get isVeryLastAction() {
+
+        return !this.getNavigationEnables().play;
     }
 }

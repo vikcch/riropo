@@ -285,6 +285,8 @@ export default class Sb extends Control {
      */
     hitMe(point) {
 
+        if (this.hidden) return false;
+
         // NOTE:: Caso não fizesse "hit" na thumb, ficaria vazio para acionar 
         // os buttons (usa find() no controller) que pertencem á scrollbar
 

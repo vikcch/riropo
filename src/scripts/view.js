@@ -85,13 +85,13 @@ export default class View {
 
         const { navigation: rect, handsList: handsListRect } = embeddedRects;
 
-        const { disabled: state } = buttonStates;
+        const state = buttonStates.disabled;
 
-        this.previousHand = new Button(this, rect.previousHand, state);
-        this.previousAction = new Button(this, rect.previousAction, state);
-        this.play = new Button(this, rect.play);
-        this.nextAction = new Button(this, rect.nextAction, state);
-        this.nextHand = new Button(this, rect.nextHand, state);
+        this.previousHand = new Button(this, rect.previousHand, { state });
+        this.previousAction = new Button(this, rect.previousAction, { state });
+        this.play = new Button(this, rect.play, { state });
+        this.nextAction = new Button(this, rect.nextAction, { state });
+        this.nextHand = new Button(this, rect.nextHand, { state });
 
         const { chat: chatRect } = embeddedRects;
 
@@ -222,4 +222,45 @@ export default class View {
         this.handsList.adjustRowsOffSet();
     }
 
+    async tooglePlayback(nextActionHandler, model) {
+
+        if (this.play.data === undefined) {
+
+            this.play.data = {
+                playing: false,
+                speed: 500,
+                inter: null
+            };
+        }
+
+        this.play.data.playing = !this.play.data.playing;
+
+        const { playing } = this.play.data;
+
+        if (!playing) clearInterval(this.play.data.inter);
+
+        else this.play.data.inter = setInterval(() => {
+
+            if (model.isVeryLastAction) return;
+
+            nextActionHandler({ fromPlay: true });
+
+        }, this.play.data.speed);
+
+        const row = playing ? 5 : 2;
+
+        await this.play.setImages(this.images.navigation, { row });
+
+        this.play.draw();
+    }
+
+
+    stopPlayback() {
+
+        const { playing } = { ... this.play.data };
+
+        if (!playing) return;
+
+        this.tooglePlayback();
+    }
 }

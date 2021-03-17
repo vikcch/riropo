@@ -21,10 +21,21 @@ export const phase = {
     conclusionShowsTease: 'conclusionShowsTease', // Mostra depois de ganhar o pot
 };
 
+export const profitColor = {
+
+    bigWin: '#2e6b61',
+    mediumWin: '#5aa492',
+    smallWin: '#7cc8b5',
+    neutral: '#999987',
+    smallLose: '#ff8282',
+    mediumLose: '#b86a72',
+    bigLose: '#7a3956'
+};
+
 export default {
 
     buttonStates,
     navigation,
-    phase
+    phase,
+    profitColor
 };
-

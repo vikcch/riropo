@@ -18,10 +18,8 @@ export default class Controller {
      */
     constructor(model, view) {
 
-
         this.model = model;
         this.view = view;
-
 
         this.view.bindControls({
             loadHandHistory: this.handlerLoadHandHistory_onChange,
@@ -193,6 +191,8 @@ export default class Controller {
 
     handlerHandsList_onClick = handIndex => {
 
+        this.view.stopPlayback();
+
         const { nextHand } = enums.navigation;
 
         const { history, enables } = this.model.navigateTo(handIndex);
@@ -208,6 +208,8 @@ export default class Controller {
 
 
     handlerPreviousHand_onClick = () => {
+
+        this.view.stopPlayback();
 
         const { previousHand } = enums.navigation;
 
@@ -225,9 +227,7 @@ export default class Controller {
 
     handlerPreviousAction_onClick = () => {
 
-        // const index = getChipIndex(25000);
-
-        // this.view.context.drawImage(this.view.images.chips[index], 0, 100);
+        this.view.stopPlayback();
 
         const { previousAction } = enums.navigation;
 
@@ -242,25 +242,14 @@ export default class Controller {
 
     handlerPlay_onClick = () => {
 
-        // this.showFakeRender();
+        const nextActionHandler = this.handlerNextAction_onClick;
 
-        const hl = [
-            { holeCards: ['2s', 'Ad'], isButton: false },
-            { holeCards: ['2s', 'Kd'], isButton: false },
-            { holeCards: ['2s', 'Qd'], isButton: false },
-            { holeCards: ['2s', 'Ah'], isButton: true },
-            { holeCards: ['2s', 'Ad'], isButton: false },
-            { holeCards: ['2s', 'Ad'], isButton: false },
-            { holeCards: ['2s', 'Ah'], isButton: false },
-            { holeCards: ['2s', '6c'], isButton: true },
-            { holeCards: ['2s', 'Ad'], isButton: false },
-            { holeCards: ['2s', '7d'], isButton: false },
-        ]
-
-        this.view.handsList.addRange(hl);
+        this.view.tooglePlayback(nextActionHandler, this.model);
     };
 
-    handlerNextAction_onClick = () => {
+    handlerNextAction_onClick = ({ fromPlay } = {}) => {
+
+        if (!fromPlay) this.view.stopPlayback();
 
         this.view.previousAction.setState = 'normal';
 
@@ -279,6 +268,8 @@ export default class Controller {
     }
 
     handlerNextHand_onClick = () => {
+
+        this.view.stopPlayback();
 
         const { nextHand } = enums.navigation;
 

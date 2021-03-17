@@ -1,5 +1,6 @@
 import fns, { head, rear } from '@/scripts/units/fns';
 import { pipe } from '@/scripts/units/fxnl';
+import { profitColor } from './enums';
 
 /**
  * 
@@ -211,13 +212,15 @@ export const getCardIndex = card => {
  */
 export const getColorScale = profitBBs => {
 
-    if (profitBBs >= 20) return '#2e6b61';
-    if (profitBBs >= 10) return '#5aa492';
-    if (profitBBs >= 2) return '#7cc8b5';
-    if (profitBBs > -2) return '#999987'; // gray
-    if (profitBBs > -10) return '#ff8282';
-    if (profitBBs > -20) return '#b86a72';
-    return '#7a3956'
+    if (profitBBs >= 20) return profitColor.bigWin;
+    if (profitBBs >= 10) return profitColor.mediumWin;
+    if (profitBBs >= 2) return profitColor.smallWin;
+
+    if (profitBBs <= -20) return profitColor.bigLose;
+    if (profitBBs <= -10) return profitColor.mediumLose;
+    if (profitBBs <= -2) return profitColor.smallLose;
+
+    return profitColor.neutral;
 };
 
 /**

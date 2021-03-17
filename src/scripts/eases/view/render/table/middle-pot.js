@@ -140,8 +140,10 @@ const draw = function (makeChipsOffSetsAbsx, amount, winner, tableMax) {
     // getImageData e putImageData
     const { table: tableRect } = easeRender.rects;
 
+    // NOTE:: Os embededed controls e legenda, tem de ficar abaixo da linha (370)
+
     const background = winner
-        ? this.context.getImageData(tableRect.x, tableRect.y, 792, 400)
+        ? this.context.getImageData(tableRect.x, tableRect.y, 792, 370)
         : null;
 
     const seatFixed = getDisplayPosition(winner, tableMax)?.seatFixed;
