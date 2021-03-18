@@ -8,6 +8,7 @@ import Chat from "./controls/chat";
 import HandsList from "./controls/hand-list";
 import displayPositions from "./units/display-positions";
 import { pointInRect } from "./units/fns";
+import CheckBox from "./controls/checkbox";
 
 
 export default class View {
@@ -64,6 +65,28 @@ export default class View {
         }
     }
 
+    createEmbeddedControls() {
+
+        const { navigation: rect, handsList: handsListRect } = embeddedRects;
+
+        const state = buttonStates.disabled;
+
+        this.previousHand = new Button(this, rect.previousHand, { state });
+        this.previousAction = new Button(this, rect.previousAction, { state });
+        this.play = new Button(this, rect.play, { state });
+        this.nextAction = new Button(this, rect.nextAction, { state });
+        this.nextHand = new Button(this, rect.nextHand, { state });
+
+        const { chat: chatRect, showBigBlinds: showBBsRect } = embeddedRects;
+
+        this.chat = new Chat(this, chatRect);
+
+        this.handsList = new HandsList(this, handsListRect);
+
+        const showBBsText = 'Show Stack Values in Big Blinds';
+        this.showBigBlinds = new CheckBox(this, showBBsRect, showBBsText);
+    }
+
     async setEmbeddedControlsImages() {
 
         const { table } = easeRender.rects;
@@ -79,25 +102,8 @@ export default class View {
 
         // NOTE:: carrega as imagens da scrollbar internamente
         await this.handsList.setImage();
-    }
 
-    createEmbeddedControls() {
-
-        const { navigation: rect, handsList: handsListRect } = embeddedRects;
-
-        const state = buttonStates.disabled;
-
-        this.previousHand = new Button(this, rect.previousHand, { state });
-        this.previousAction = new Button(this, rect.previousAction, { state });
-        this.play = new Button(this, rect.play, { state });
-        this.nextAction = new Button(this, rect.nextAction, { state });
-        this.nextHand = new Button(this, rect.nextHand, { state });
-
-        const { chat: chatRect } = embeddedRects;
-
-        this.chat = new Chat(this, chatRect);
-
-        this.handsList = new HandsList(this, handsListRect);
+        this.showBigBlinds.setImage();
     }
 
     bindControls(handlers) {
@@ -118,6 +124,7 @@ export default class View {
         this.nextAction.bind(handlers.nextAction);
         this.nextHand.bind(handlers.nextHand);
         this.handsList.bind(handlers.handsList);
+        this.showBigBlinds.bind(handlers.showBigBlinds);
     }
 
     setCallOffEmbeddedControls() {

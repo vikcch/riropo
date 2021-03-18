@@ -5,6 +5,11 @@ export const buttonStates = {
     hidden: 'hidden'
 };
 
+export const checkBoxStates = {
+    normal: 'normal',
+    hover: 'hover'
+};
+
 export const navigation = {
 
     previousHand: 'previousHand',
@@ -37,5 +42,6 @@ export default {
     buttonStates,
     navigation,
     phase,
-    profitColor
+    profitColor,
+    checkBoxStates
 };

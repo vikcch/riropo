@@ -3,6 +3,7 @@ import { MainInfoT } from '@/scripts/units/main-info';
 import View from '@/scripts/view';
 import tableBridge from '@/scripts/eases/view/render/table';
 import mainInfoBridge from '@/scripts/eases/view/render/main-info';
+import { getBigBlind } from '@/scripts/units/biz';
 
 const rects = {
 
@@ -19,11 +20,17 @@ export default {
      */
     render(history, mainInfo) {
 
-        const { tableMax } = mainInfo;
+        const { tableMax, cashSign, blinds } = mainInfo;
 
         mainInfoBridge.render.call(this, mainInfo);
 
-        tableBridge.render.call(this, history, tableMax);
+        const displayValueAssets = {
+            cashSign,
+            isBigBlinds: this.showBigBlinds.checked,
+            bigBlind: getBigBlind(blinds)
+        };
+
+        tableBridge.render.call(this, history, tableMax, displayValueAssets);
 
         this.embeddables.forEach(x => x.draw());
     },

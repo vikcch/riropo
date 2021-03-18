@@ -1,4 +1,4 @@
-import fns, { displayValue, head, pureValue } from '@/scripts/units/fns';
+import fns, { head, pureValue } from '@/scripts/units/fns';
 import { HistoryT } from '@/scripts/units/history';
 import { PlayerT } from '@/scripts/units/player';
 import View from '@/scripts/view';
@@ -7,6 +7,22 @@ import biz from '@/scripts/units/biz';
 import enums, { profitColor } from '@/scripts/units/enums';
 import easeMiddlePot from './middle-pot';
 import easeRender from '@/scripts/eases/view/render/index'
+
+// TODO:: separador de milhares e moeda em cash
+export const displayValue = displayValueAssets => value => {
+
+    const { cashSign, isBigBlinds, bigBlind } = displayValueAssets;
+
+    if (isBigBlinds) return `${pureValue(value / bigBlind)} BB`;
+
+    const isInteger = Number.isInteger(value)
+
+    const formated = isInteger ? value : value.toFixed(2);
+
+    if (cashSign) return `${cashSign} ${formated}`;
+
+    return formated;
+};
 
 /**
  * 
@@ -59,9 +75,9 @@ export const drawPlayerCards = function ({ isPLO, point, alpha }) {
  * @this {View}
  * @param {number} value 
  */
-const pot = function (value) {
+const pot = function (value, displayValueAbsx) {
 
-    const amount = displayValue(value);
+    const amount = displayValueAbsx(value);
     const text = `Pot: ${amount}`;
 
     const textWidth = this.context.measureText(text).width;
@@ -88,7 +104,7 @@ const pot = function (value) {
  * @param {HistoryT} history 
  * @param {number} tableMax
  */
-const players = function (history, tableMax) {
+const players = function (history, tableMax, displayValueAbsx) {
 
     const { players } = history
 
@@ -112,7 +128,8 @@ const players = function (history, tableMax) {
         drawImage(status, displayPosition.status);
 
         drawTextCenter(this.context, player.name, 'white', displayPosition.name);
-        drawTextCenter(this.context, player.mergedStack(), 'white', displayPosition.stack);
+        const stack = displayValueAbsx(player.mergedStack());
+        drawTextCenter(this.context, stack, 'white', displayPosition.stack);
 
         if (player.isButton) {
 
@@ -193,7 +210,7 @@ const action = function (history, tableMax) {
  * @param {number} value 
  * @param {number} tableMax
  */
-const waitingToAct = function (history, tableMax) {
+const waitingToAct = function (history, tableMax, displayValueAbsx) {
 
     if (!history.nextPlayer) return;
 
@@ -225,7 +242,7 @@ const waitingToAct = function (history, tableMax) {
         const { name, stack } = history.nextPlayer;
 
         drawTextCenter(this.context, name, 'black', displayPosition.name);
-        drawTextCenter(this.context, stack, 'black', displayPosition.stack);
+        drawTextCenter(this.context, displayValueAbsx(stack), 'black', displayPosition.stack);
 
         return this.context.getImageData(xReal, yReal, width, height);
     };
@@ -286,7 +303,7 @@ const betChips = function (players, tableMax) {
  * @param {PlayerT[]} players 
  * @param {number} tableMax
  */
-const chipsValues = function (players, tableMax) {
+const chipsValues = function (players, tableMax, displayValueAbsx) {
 
     players.forEach(player => {
 
@@ -302,7 +319,7 @@ const chipsValues = function (players, tableMax) {
 
         const value = player.amountOnStreet;
 
-        const text = displayValue(value);
+        const text = displayValueAbsx(value);
 
         const textAlign = seatFixed >= 5 ? 'left' : 'right';
 
@@ -342,7 +359,7 @@ const streetCards = function (streetCards) {
  * @this {View}
  * @param {HistoryT} history 
  */
-const middlePotValue = function (history) {
+const middlePotValue = function (history, displayValueAbsx) {
 
     const streetAmount = history.players.reduce((acc, cur) => acc + cur.amountOnStreet, 0);
 
@@ -352,7 +369,9 @@ const middlePotValue = function (history) {
 
     const point = { x: 400, y: 275 };
 
-    drawTextCenter(this.context, value, 'white', point);
+    const text = displayValueAbsx(value);
+
+    drawTextCenter(this.context, text, 'white', point);
 };
 
 /**
@@ -360,7 +379,7 @@ const middlePotValue = function (history) {
  */
 const legend = function () {
 
-    const x = 5, y = 370, width = 72, height = 40;
+    const x = 3, y = 376, width = 72, height = 40;
 
     this.context.fillStyle = '#f6d37f';
     this.context.fillRect(x, y, width, height);
@@ -399,8 +418,9 @@ export default {
      * @this {View}
      * @param {HistoryT} history 
      * @param {number} tableMax 
+     * @param {object} displayValueAssets
      */
-    render(history, tableMax) {
+    render(history, tableMax, displayValueAssets) {
 
         // NOTE:: `inter` usado em `waitingToAct` e `middlePot`
         // Preciso do translate nos asyncs
@@ -418,23 +438,25 @@ export default {
 
         this.context.drawImage(this.images.background, 0, 0);
 
-        pot.call(this, history.pot);
+        const displayValueAbsx = displayValue(displayValueAssets);
 
-        players.call(this, history, tableMax);
+        pot.call(this, history.pot, displayValueAbsx);
+
+        players.call(this, history, tableMax, displayValueAbsx);
 
         action.call(this, history, tableMax);
 
-        waitingToAct.call(this, history, tableMax);
+        waitingToAct.call(this, history, tableMax, displayValueAbsx);
 
-        chipsValues.call(this, history.players, tableMax);
+        chipsValues.call(this, history.players, tableMax, displayValueAbsx);
 
         streetCards.call(this, history.streetCards);
 
-        easeMiddlePot.call(this, history, tableMax);
+        easeMiddlePot.call(this, history, tableMax, displayValueAbsx);
 
         betChips.call(this, history.players, tableMax);
 
-        middlePotValue.call(this, history);
+        middlePotValue.call(this, history, displayValueAbsx);
 
         legend.call(this);
 

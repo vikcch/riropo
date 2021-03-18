@@ -64,7 +64,8 @@ export default {
     createMainInfo(lines, index, count) {
 
         const { getBlinds, getDate, getGame, getHandId,
-            getRoom, getStakes, getTableName, getIsTournament, getTableMax
+            getRoom, getStakes, getTableName, getIsTournament,
+            getTableMax, getCashSign
         } = createMainInfoAssist;
 
         const sessionProgress = {
@@ -81,7 +82,8 @@ export default {
             blinds: getBlinds(lines),
             isTournament: getIsTournament(lines),
             sessionProgress,
-            tableMax: getTableMax(lines)
+            tableMax: getTableMax(lines),
+            cashSign: getCashSign(lines)
         });
     },
 

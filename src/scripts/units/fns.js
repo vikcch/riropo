@@ -21,14 +21,6 @@ export const rear = array => {
     return array.slice(-1)[0];
 };
 
-// TODO:: separador de milhares e moeda em cash
-export const displayValue = value => {
-
-    if (Number.isInteger(value)) return value;
-
-    return value.toFixed(2);
-};
-
 /**
  * 
  * @param {number} value 

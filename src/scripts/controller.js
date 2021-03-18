@@ -49,6 +49,9 @@ export default class Controller {
                 click: this.handlerHandsList_onClick,
                 tracker: this.model.tracker
             },
+            showBigBlinds: {
+                click: this.handleShowBigBlinds_onClick
+            }
         });
     }
 
@@ -206,6 +209,19 @@ export default class Controller {
         console.log({ handIndex });
     }
 
+    /**
+     * * CheckBox
+     */
+    handleShowBigBlinds_onClick = () => {
+
+        console.log('check box clicada');
+
+        const history = this.model.getHistory();
+
+        if (!history || !this.model.mainInfo) return;
+
+        this.view.render(history, this.model.mainInfo);
+    }
 
     handlerPreviousHand_onClick = () => {
 

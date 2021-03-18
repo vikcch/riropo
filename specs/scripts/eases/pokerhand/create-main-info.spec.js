@@ -265,4 +265,38 @@ describe('ease-pokerhand', function () {
             assert.strictEqual(fn(p), 6);
         });
     });
+
+    describe('#9 getCashSign', function () {
+
+        const fn = testables.getCashSign;
+
+        it('should return the currency sign for cash', function () {
+
+            const p = ["PokerStars Hand #219047045850:  Hold'em No Limit (€0.01/€0.02 EUR) - 2020/10/04 5:38:12 WET [2020/10/04 0:38:12 ET]"];
+
+            assert.strictEqual(fn(p), '€');
+        });
+
+        it('should return the currency sign for cash', function () {
+
+            const p = ["PokerStars Hand #223140871801: Tournament #3108828470, €9+€1 EUR Hold'em No Limit - Level I (25/50) - 2021/01/28 15:01:46 WET [2021/01/28 10:01:46 ET]"];
+
+            assert.strictEqual(fn(p), '');
+        });
+
+        it('should return the currency sign for cash', function () {
+
+            const p = ["PokerStars Hand #219047045850:  Hold'em No Limit (€0.01/€0.02 EUR) - 2020/10/04 5:38:12 WET [2020/10/04 0:38:12 ET]"];
+
+            assert.strictEqual(fn(p), '€');
+        });
+
+        it('should return the currency sign for cash', function () {
+
+            // Play Money
+            const p = ["PokerStars Hand #224938002411:  Hold'em No Limit (50/100) - 2021/03/18 18:10:08 WET [2021/03/18 14:10:08 ET]"];
+
+            assert.strictEqual(fn(p), '');
+        });
+    });
 });

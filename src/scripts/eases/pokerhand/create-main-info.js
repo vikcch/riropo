@@ -209,11 +209,32 @@ const getTableMax = lines => {
     // ...
     // Table 'Akiyama II' 6-max Seat #5 is the button
 
-    const tableMaxLine = lines[1];
+    const tableMaxLine = lines[1].replace('(Play Money) ', '');
 
     const match = tableMaxLine.match(/\d+(?=\-max\sSeat\s#\d+\sis\sthe\sbutton$)/gm)
 
     return Number(head(match));
+};
+
+/**
+ * @param {string[]} lines
+ * @returns {string}
+ */
+const getCashSign = lines => {
+
+    // PokerStars Hand #223144757797: Tournament #3108828470, €9+€1 EUR Hold'em No Limit - Level XVI (1000/2000) - 2021/01/28 17:12:37 WET [2021/01/28 12:12:37 ET]
+    // PokerStars Hand #114439478289:  Omaha Pot Limit ($0.01/$0.02 USD) - 2014/04/07 16:22:45 WET [2014/04/07 11:22:45 ET]
+
+    /** @type {string} */
+    const firstLine = head(lines);
+
+    const startIndex = firstLine.indexOf('(');
+
+    const value = firstLine.charAt(startIndex + 1);
+
+    const isDigit = /\d/.test(value);
+
+    return isDigit ? '' : value;
 };
 
 
@@ -227,5 +248,6 @@ export default {
     getBlinds,
     getTableName,
     getIsTournament,
-    getTableMax
+    getTableMax,
+    getCashSign
 };

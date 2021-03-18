@@ -38,8 +38,14 @@ export default {
         y: 442 + tableRect.y,
         width: 329, height: 108
     },
+
     handsList: {
         x: 0, y: 0,
         width: 96, height: 595
+    },
+
+    showBigBlinds: {
+        x: 99, y: 462,
+        width: 10, height: 14
     }
 };

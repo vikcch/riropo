@@ -103,7 +103,7 @@ export default class Model {
 
         const hand = this.handHistories[this.tracker.hand];
 
-        return hand.histories[this.tracker.progress];
+        return hand?.histories[this.tracker.progress];
     }
 
     getNavigationEnables() {

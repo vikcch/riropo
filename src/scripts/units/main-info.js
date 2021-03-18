@@ -13,6 +13,7 @@
  * @param {number} obj.sessionProgress.current
  * @param {number} obj.sessionProgress.count
  * @param {number} obj.tableMax
+ * @param {string} obj.cashSign 
  */
 export const MainInfo = function ({
     room,
@@ -24,7 +25,8 @@ export const MainInfo = function ({
     tableName,
     isTournament,
     sessionProgress,
-    tableMax
+    tableMax,
+    cashSign
 }) {
 
     return {
@@ -37,7 +39,8 @@ export const MainInfo = function ({
         tableName,
         isTournament,
         sessionProgress,
-        tableMax
+        tableMax,
+        cashSign
     };
 }
 

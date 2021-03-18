@@ -1,4 +1,4 @@
-import fns, { displayValue, head, pureValue } from '@/scripts/units/fns';
+import fns, { head, pureValue } from '@/scripts/units/fns';
 import { HistoryT } from '@/scripts/units/history';
 import { PlayerT } from '@/scripts/units/player';
 import View from '@/scripts/view';
@@ -124,15 +124,13 @@ const drawDragValue = function (chipsOffSets, text, seatFixed) {
 /**
  * @this {View}
  * @param {*} makeChipsOffSetsAbsx 
- * @param {number} amount 
+ * @param {string} text 
  * @param {PlayerT} winner
  * @param {number} tableMax
  */
-const draw = function (makeChipsOffSetsAbsx, amount, winner, tableMax) {
+const draw = function (makeChipsOffSetsAbsx, text, winner, tableMax) {
 
     const { chips } = this.images;
-
-    const text = displayValue(amount);
 
     let count = 0;
 
@@ -182,7 +180,7 @@ const draw = function (makeChipsOffSetsAbsx, amount, winner, tableMax) {
  * @param {HistoryT} history 
  * @param {number} tableMax
  */
-export default function (history, tableMax) {
+export default function (history, tableMax, displayValueAbsx) {
 
     const { chips } = this.images;
 
@@ -201,7 +199,9 @@ export default function (history, tableMax) {
 
     const makeChipsOffSetsAbsx = makeChipsOffSets(chipsOutSets, chipStyle, target);
 
-    const drawAbsx = draw.call(this, makeChipsOffSetsAbsx, amount, winner, tableMax);
+    const text = displayValueAbsx(amount);
+
+    const drawAbsx = draw.call(this, makeChipsOffSetsAbsx, text, winner, tableMax);
 
     if (winner) this.inter = setInterval(drawAbsx, 30);
 
