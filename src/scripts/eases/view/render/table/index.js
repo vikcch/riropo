@@ -1,4 +1,4 @@
-import fns, { head, pureValue } from '@/scripts/units/fns';
+import fns, { head, pureValue, thousandSeparator, twoDecimalOrWhole } from '@/scripts/units/fns';
 import { HistoryT } from '@/scripts/units/history';
 import { PlayerT } from '@/scripts/units/player';
 import View from '@/scripts/view';
@@ -7,21 +7,22 @@ import biz from '@/scripts/units/biz';
 import enums, { profitColor } from '@/scripts/units/enums';
 import easeMiddlePot from './middle-pot';
 import easeRender from '@/scripts/eases/view/render/index'
+import { pipe } from '@/scripts/units/fxnl';
 
 // TODO:: separador de milhares e moeda em cash
 export const displayValue = displayValueAssets => value => {
 
     const { cashSign, isBigBlinds, bigBlind } = displayValueAssets;
 
-    if (isBigBlinds) return `${pureValue(value / bigBlind)} BB`;
+    const finalBBs = pipe(pureValue, thousandSeparator)(value / bigBlind);
 
-    const isInteger = Number.isInteger(value)
+    if (isBigBlinds) return `${finalBBs} BB`;
 
-    const formated = isInteger ? value : value.toFixed(2);
+    const finalAmount = pipe(twoDecimalOrWhole, thousandSeparator)(value);
 
-    if (cashSign) return `${cashSign} ${formated}`;
+    if (cashSign) return `${cashSign} ${finalAmount}`;
 
-    return formated;
+    return finalAmount;
 };
 
 /**

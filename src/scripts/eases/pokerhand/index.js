@@ -195,7 +195,7 @@ export default {
 
         const profit = (lastHero.stack + heroCollects) - initalStack;
 
-        const { blinds } = mainInfo;
+        const { blinds, cashSign } = mainInfo;
 
         const bigBlind = biz.getBigBlind(blinds);
 
@@ -203,7 +203,7 @@ export default {
 
         return {
 
-            holeCards, isButton, profit, position, blinds, profitBBs
+            holeCards, isButton, profit, position, blinds, profitBBs, cashSign
         }
     }
 }

@@ -23,6 +23,48 @@ export const rear = array => {
 
 /**
  * 
+ * @param {string|number} value 
+ * @return {string} 
+ */
+export const thousandSeparator = value => {
+
+    // STOPSHIP:: ARRANHA PARA NEGATIVOS
+
+    const arrSplit = `${value}`.replace('-', '').split('.');
+
+    const wholePart = head(arrSplit);
+
+    const decimalPart = arrSplit.length > 1 ? `.${rear(arrSplit)}` : '';
+
+    const sign = `${value}`.charAt(0) === '-' ? '-' : '';
+
+    const r = [...wholePart].reduce((cur, acc, index, arr) => {
+
+        const comma = (arr.length - index) % 3 === 0 ? ',' : '';
+
+        return `${cur}${comma}${acc}`;
+    });
+
+    return `${sign}${r}${decimalPart}`;
+};
+
+
+/**
+ * 
+ * @param {number} value 
+ * @return {string} 
+ */
+export const twoDecimalOrWhole = value => {
+
+    const v = Number(value.toFixed(2));
+
+    if (Number.isInteger(v)) return `${v}`;
+
+    return value.toFixed(2);
+};
+
+/**
+ * 
  * @param {number} value 
  * @return {number} 
  */
@@ -153,5 +195,7 @@ export default {
     clamp,
     lerp,
     movePoint,
-    capitalize
+    capitalize,
+    twoDecimalOrWhole,
+    thousandSeparator
 }

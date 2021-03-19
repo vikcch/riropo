@@ -4,6 +4,8 @@ import biz from '../units/biz';
 import Control from './control';
 import Scrollbar from './scrollbar';
 import embeddedRects from '@/scripts/eases/view/embedded-controls-rects';
+import { pipe } from '../units/fxnl';
+import { pureValue, thousandSeparator, twoDecimalOrWhole } from '../units/fns';
 
 export default class HandsList extends Control {
 
@@ -246,11 +248,9 @@ export default class HandsList extends Control {
 
         const position = `[${item.position}]`;
 
-        // TODO:: format separador de milhares
-        const profit = item.profit;
+        const profit = `${item.cashSign} ${pipe(twoDecimalOrWhole, thousandSeparator)(item.profit)}`;
 
-        // TODO:: format separador de milhares
-        const profitBBs = `(${item.profitBBs} BBs)`;
+        const profitBBs = `(${pipe(pureValue, thousandSeparator)(item.profitBBs)} BBs)`;
 
         const { blinds } = item;
 
