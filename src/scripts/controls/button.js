@@ -1,7 +1,7 @@
 import Controller from "../controller";
 import View from "../view";
 import fns from "../units/fns";
-import { buttonStates as states } from '@/scripts/units/enums'
+import { buttonStates, buttonStates as states } from '@/scripts/units/enums'
 
 export default class Button {
 
@@ -46,9 +46,25 @@ export default class Button {
         this.draw();
     }
 
+    toogleVisibility() {
+
+        const isHidden = this.state === states.hidden;
+
+        this.state = isHidden ? states.normal : states.hidden;
+
+        this.draw();
+    }
+
     bind(handlers) {
 
         this.handlers = { ...handlers };
+    }
+
+    clearHover() {
+
+        if (this.state !== states.hover) return;
+
+        this.setState = states.normal;
     }
 
     mousedown() {
@@ -90,7 +106,7 @@ export default class Button {
             if (!this.hitMe(mousePoint)) {
 
                 // NOTE:: Pode acontecer settar a `disabled` e estar `hover`
-                const isEnabled = this.state !== states.disabled
+                const isEnabled = this.state !== states.disabled && this.state !== states.hidden;
                 if (isEnabled) this.state = states.normal;
                 this.isPressed = false;
                 this.draw();
@@ -102,6 +118,8 @@ export default class Button {
     }
 
     hitMe({ x, y }) {
+
+        if (this.state === buttonStates.hidden) return false;
 
         const right = this.x + this.width;
         const bottom = this.y + this.height;

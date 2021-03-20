@@ -26,7 +26,9 @@ const files = {
     deck: 'deck-ps-50x70-650x280.png',
     chat: 'chat-329x108.png',
     scrollbarButtons: 'scrollbar-buttons-16x16-32x32.png',
-    smallDeck: 'deck-small-16x20-208-80.png'
+    smallDeck: 'deck-small-16x20-208-80.png',
+    searchHand: 'search-hand.png',
+    clearHandFilter: 'clear-button-28x28.png'
 };
 
 
@@ -50,7 +52,9 @@ export default {
                 getImage(files.deck),
                 getImage(files.chat),
                 getImage(files.scrollbarButtons),
-                getImage(files.smallDeck)
+                getImage(files.smallDeck),
+                getImage(files.searchHand),
+                getImage(files.clearHandFilter)
             ];
 
             const r = await Promise.all(arrFiles);
@@ -85,6 +89,9 @@ export default {
                 const deckSuit = await fns.sprites(r[11], i, 16, 20);
                 images.smallDeck[i] = deckSuit;
             }
+
+            images.searchHand = r[12];
+            images.clearHandFilter = r[13];
 
             console.timeEnd('await total');
 

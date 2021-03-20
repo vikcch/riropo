@@ -5,7 +5,7 @@ import Control from './control';
 import Scrollbar from './scrollbar';
 import embeddedRects from '@/scripts/eases/view/embedded-controls-rects';
 import { pipe } from '../units/fxnl';
-import { pureValue, thousandSeparator, twoDecimalOrWhole } from '../units/fns';
+import { head, pureValue, thousandSeparator, twoDecimalOrWhole } from '../units/fns';
 
 export default class HandsList extends Control {
 
@@ -19,6 +19,7 @@ export default class HandsList extends Control {
         super(view, rect);
 
         this.list = [];
+        this.fullList = [];
 
         this.itemHeight = 25;
 
@@ -34,7 +35,9 @@ export default class HandsList extends Control {
 
     get listItemIndex() {
 
-        return this.handlers.tracker.hand;
+        const fullListHandIndex = this.handlers.tracker.hand;
+
+        return this.list.findIndex(v => v.handIndex === fullListHandIndex);
     }
 
     async setImage() {
@@ -63,24 +66,13 @@ export default class HandsList extends Control {
 
     /**
      * 
-     * @param {string|string[]} value 
+     * @param {object[]} values 
      */
-    add(value) {
+    setRange(values) {
 
-        this.list.push(value);
+        this.fullList = values.map((v, i) => ({ handIndex: i, ...v }));
 
-        this.scrollbar.updateRows({ total: this.list.length });
-
-        this.draw();
-    }
-
-    /**
-     * 
-     * @param {string[]} values 
-     */
-    addRange(values) {
-
-        this.list.push(...values);
+        this.list = this.fullList.slice();
 
         this.scrollbar.updateRows({ total: this.list.length });
 
@@ -94,6 +86,86 @@ export default class HandsList extends Control {
         this.list = [];
 
         this.scrollbar.updateRows({ total: 0 });
+
+        this.draw();
+    }
+
+    /**
+     * 
+     * @returns {undefined|string} Ex: "AK" 
+     */
+    filterItems() {
+
+        const getInput = () => {
+
+            const cardsCount = head(this.fullList).holeCards.length;
+
+            const cardsExample = cardsCount === 2 ? 'AK TT 56' : '98JT';
+
+            const message = `Enter a Hand\n\nEg: ${cardsExample}`;
+
+            const input = prompt(message, 'AA');
+
+            if (input === null) return;
+
+            if (input.trim().length !== cardsCount) return;
+
+            return [...input.toUpperCase()];
+        };
+
+        const setList = cardsInput => {
+
+            this.list = this.fullList.filter(item => {
+
+                const values = item.holeCards.map(([v]) => v);
+
+                cardsInput.forEach(c => {
+
+                    const index = values.indexOf(c);
+
+                    if (index !== -1) values.splice(index, 1);
+                });
+
+                return !values.length;
+            });
+        };
+
+        const cardsInput = getInput();
+
+        if (!cardsInput) return;
+
+        setList(cardsInput);
+
+        if (this.list.length === 0) {
+
+            this.list = this.fullList.slice();
+            return;
+        }
+
+        this.scrollbar.updateRows({ total: this.list.length });
+
+        this.setMaxHiddenRule();
+
+        const { handIndex } = this.list[0];
+
+        this.handlers.click(handIndex);
+
+        this.draw();
+
+        return cardsInput.join('');
+    }
+
+    clearFilter() {
+
+        this.list = this.fullList.slice();
+
+        this.scrollbar.updateRows({ total: this.list.length });
+
+        this.setMaxHiddenRule();
+
+        const { handIndex } = this.list[0];
+
+        this.handlers.click(handIndex);
 
         this.draw();
     }
@@ -316,7 +388,9 @@ export default class HandsList extends Control {
 
         if (itemIndex >= this.list.length) return;
 
-        this.handlers.click(itemIndex);
+        const { handIndex } = this.list[itemIndex];
+
+        this.handlers.click(handIndex);
 
         this.drawMarker();
     }

@@ -9,7 +9,6 @@ import easeMiddlePot from './middle-pot';
 import easeRender from '@/scripts/eases/view/render/index'
 import { pipe } from '@/scripts/units/fxnl';
 
-// TODO:: separador de milhares e moeda em cash
 export const displayValue = displayValueAssets => value => {
 
     const { cashSign, isBigBlinds, bigBlind } = displayValueAssets;

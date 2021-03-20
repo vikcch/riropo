@@ -4,7 +4,7 @@ import seatPositions from '@/scripts/units/display-positions';
 import { getChipIndex } from "./units/biz";
 // TODO:: remover isto
 import { testables } from '@/scripts/eases/view/render/table';
-import enums from '@/scripts/units/enums';
+import enums, { buttonStates } from '@/scripts/units/enums';
 import fns from '@/scripts/units/fns'
 
 export default class Controller {
@@ -51,6 +51,13 @@ export default class Controller {
             },
             showBigBlinds: {
                 click: this.handleShowBigBlinds_onClick
+            },
+            searchHand: {
+                click: this.handleSearchHand_onClick
+            },
+            clearHandsFilter: {
+                click: this.handleClearHandsFilter_onClick
+
             }
         });
     }
@@ -91,7 +98,7 @@ export default class Controller {
 
             const history = this.model.getFirstHistory();
 
-            this.view.handsList.addRange(this.model.handsList);
+            this.view.handsList.setRange(this.model.handsList);
 
             this.view.handsList.setMaxHiddenRule();
 
@@ -102,6 +109,8 @@ export default class Controller {
             const enables = this.model.getNavigationEnables();
 
             this.view.updateNavigation(enables);
+
+            this.view.resetHandSearchFilterVisibility();
         };
 
         reader.onerror = () => {
@@ -222,6 +231,28 @@ export default class Controller {
 
         this.view.render(history, this.model.mainInfo);
     }
+
+    handleSearchHand_onClick = () => {
+
+        const hand = this.view.handsList.filterItems();
+
+        if (hand) {
+
+            this.view.toogleHandSearchFilterVisibility();
+
+            const history = this.model.getHistory();
+
+            this.view.render(history, this.model.mainInfo, hand);
+        }
+    }
+
+    handleClearHandsFilter_onClick = () => {
+
+        this.view.handsList.clearFilter();
+
+        this.view.toogleHandSearchFilterVisibility();
+    }
+
 
     handlerPreviousHand_onClick = () => {
 

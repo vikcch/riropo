@@ -9,9 +9,9 @@ export default {
         return loadImagesBridge.loadImages();
     },
 
-    render(history, mainInfo) {
+    render(history, mainInfo, handFiltered) {
 
-        renderBridge.render.call(this, history, mainInfo)
+        renderBridge.render.call(this, history, mainInfo, handFiltered);
     },
 
     showHeroFoldedHoleCards(hero, model) {

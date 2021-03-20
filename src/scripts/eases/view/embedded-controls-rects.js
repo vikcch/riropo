@@ -41,11 +41,21 @@ export default {
 
     handsList: {
         x: 0, y: 0,
-        width: 96, height: 595
+        width: 96, height: 595 - 44
     },
 
     showBigBlinds: {
         x: 99, y: 462,
         width: 10, height: 14
+    },
+
+    searchHand: {
+        x: 0, y: 595 - 44,
+        width: 96, height: 44
+    },
+
+    clearHandFilter: {
+        x: 66, y: 565,
+        width: 28, height: 28
     }
 };

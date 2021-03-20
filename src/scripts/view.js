@@ -27,9 +27,9 @@ export default class View {
         this.context = this.canvas.getContext('2d');
 
         const { handsList } = embeddedRects;
-        const { table } = easeRender.rects;
+        const { table, mainInfo } = easeRender.rects;
         this.canvas.width = handsList.width + table.width;
-        this.canvas.height = handsList.height;
+        this.canvas.height = mainInfo.height + table.height;
 
         /** @type {HTMLCanvasElement} */
         this.canvasToolTip = document.querySelector('#canvas-tool-tip');
@@ -85,6 +85,16 @@ export default class View {
 
         const showBBsText = 'Show Stack Values in Big Blinds';
         this.showBigBlinds = new CheckBox(this, showBBsRect, showBBsText);
+
+
+        const {
+            searchHand: searchHandRect,
+            clearHandFilter: clearRect
+        } = embeddedRects;
+        const hiddenNot3d = { state: buttonStates.hidden, is3d: false };
+        this.searchHand = new Button(this, searchHandRect, hiddenNot3d);
+
+        this.clearHandsFilter = new Button(this, clearRect, hiddenNot3d);
     }
 
     async setEmbeddedControlsImages() {
@@ -102,6 +112,9 @@ export default class View {
 
         // NOTE:: carrega as imagens da scrollbar internamente
         await this.handsList.setImage();
+
+        await this.searchHand.setImages(this.images.searchHand, { row: 0 });
+        await this.clearHandsFilter.setImages(this.images.clearHandFilter, { row: 0 });
 
         this.showBigBlinds.setImage();
     }
@@ -125,6 +138,8 @@ export default class View {
         this.nextHand.bind(handlers.nextHand);
         this.handsList.bind(handlers.handsList);
         this.showBigBlinds.bind(handlers.showBigBlinds);
+        this.searchHand.bind(handlers.searchHand);
+        this.clearHandsFilter.bind(handlers.clearHandsFilter);
     }
 
     setCallOffEmbeddedControls() {
@@ -133,7 +148,8 @@ export default class View {
 
             this.handsList.clearHover();
             this.chat.clearHover();
-
+            this.searchHand.clearHover();
+            this.clearHandsFilter.clearHover();
         });
 
         window.addEventListener('mouseup', () => {
@@ -171,9 +187,9 @@ export default class View {
      * @param {HistoryT} history 
      * @param {MainInfoT} mainInfo
      */
-    render(history, mainInfo) {
+    render(history, mainInfo, handFiltered) {
 
-        ease.render.call(this, history, mainInfo);
+        ease.render.call(this, history, mainInfo, handFiltered);
     }
 
     hoverHero(hero, mousePoint, tableMax) {
@@ -269,5 +285,18 @@ export default class View {
         if (!playing) return;
 
         this.tooglePlayback();
+    }
+
+    resetHandSearchFilterVisibility() {
+
+        this.searchHand.setState = buttonStates.normal;
+        this.clearHandsFilter.setState = buttonStates.hidden;
+    }
+
+
+    toogleHandSearchFilterVisibility() {
+
+        this.searchHand.toogleVisibility();
+        this.clearHandsFilter.toogleVisibility();
     }
 }

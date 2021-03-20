@@ -28,8 +28,6 @@ export const rear = array => {
  */
 export const thousandSeparator = value => {
 
-    // STOPSHIP:: ARRANHA PARA NEGATIVOS
-
     const arrSplit = `${value}`.replace('-', '').split('.');
 
     const wholePart = head(arrSplit);
