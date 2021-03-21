@@ -37,8 +37,6 @@ export default class Sb extends Control {
 
         this.createButtons();
 
-        // TODO:: fazer track clicable ?
-
         this.thumb = {
             x: 2,
             y: 0,
@@ -305,7 +303,7 @@ export default class Sb extends Control {
     /**
      * @override
      */
-    click() {
+    click(point) {
 
         this.thumb.pressed = false;
         this.thumb.diffStart = null;

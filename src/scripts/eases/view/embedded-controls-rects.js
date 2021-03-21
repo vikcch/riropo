@@ -7,28 +7,28 @@ export default {
     navigation: {
 
         previousHand: {
-            x: 350 + tableRect.x,
-            y: 450 + tableRect.y,
+            x: 470 + tableRect.x,
+            y: 464 + tableRect.y,
             width: 50, height: 28
         },
         previousAction: {
-            x: 410 + tableRect.x,
-            y: 450 + tableRect.y,
+            x: 525 + tableRect.x,
+            y: 464 + tableRect.y,
             width: 50, height: 28
         },
         play: {
-            x: 470 + tableRect.x,
-            y: 450 + tableRect.y,
+            x: 580 + tableRect.x,
+            y: 464 + tableRect.y,
             width: 50, height: 28
         },
         nextAction: {
-            x: 530 + tableRect.x,
-            y: 450 + tableRect.y,
+            x: 635 + tableRect.x,
+            y: 464 + tableRect.y,
             width: 50, height: 28
         },
         nextHand: {
-            x: 590 + tableRect.x,
-            y: 450 + tableRect.y,
+            x: 690 + tableRect.x,
+            y: 464 + tableRect.y,
             width: 50, height: 28
         }
     },

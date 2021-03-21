@@ -239,8 +239,6 @@ const activity = (lines, previousHistory, delimiters) => {
 
         const { value: line, index: lineIndex } = item;
 
-        // TODO:: testar player `vik:` e `vik: cch`
-
         const lastHistory = rear(histories) ?? previousHistory;
 
         const clonedPlayers = lastHistory.players.map(x => x.clone());

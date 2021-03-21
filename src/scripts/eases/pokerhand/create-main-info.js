@@ -149,7 +149,6 @@ const getBlinds = lines => {
     // dirty - cash (USD) => "$0.01/$0.02 USD"
     const dirty = firstLine.substring(startIndex + 1, endIndex);
 
-    // TODO:: format separador de milhares
     return head(dirty.split(' ')) + getAnteFormated(lines);
 };
 

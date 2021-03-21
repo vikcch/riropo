@@ -14,6 +14,7 @@ export const Player = ({ name, stack, seat, position, isButton,
         inPlay: true,
         collect: 0,
         gatherStack: 0,
+        heroMucked: false,
 
         clone() {
 

@@ -114,7 +114,7 @@ const drawDragValue = function (chipsOffSets, text, seatFixed) {
     this.context.textAlign = textAlign;
 
     this.context.textBaseline = 'bottom';
-    this.context.fillStyle = 'red';
+    this.context.fillStyle = 'white';
 
     const offSetX = textAlign === 'left' ? chipsSpan + 4 : -4;
 

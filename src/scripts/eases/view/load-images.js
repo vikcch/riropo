@@ -4,12 +4,8 @@ const getImage = async function (file) {
 
     return new Promise(async (resolve, reject) => {
 
-        // await new Promise(r => setTimeout(r, 1000));
-
         const img = new Image();
         img.onload = () => resolve(img);
-        // TODO:: ver como lidar com isto
-        // img.onerror = reject; 
         img.src = `./src/assets/images/${file}`;
     });
 };
@@ -28,7 +24,8 @@ const files = {
     scrollbarButtons: 'scrollbar-buttons-16x16-32x32.png',
     smallDeck: 'deck-small-16x20-208-80.png',
     searchHand: 'search-hand.png',
-    clearHandFilter: 'clear-button-28x28.png'
+    clearHandFilter: 'clear-button-28x28.png',
+    logo: 'logo-orange-174x26-30-opacy.png'
 };
 
 
@@ -54,7 +51,8 @@ export default {
                 getImage(files.scrollbarButtons),
                 getImage(files.smallDeck),
                 getImage(files.searchHand),
-                getImage(files.clearHandFilter)
+                getImage(files.clearHandFilter),
+                getImage(files.logo)
             ];
 
             const r = await Promise.all(arrFiles);
@@ -93,13 +91,15 @@ export default {
             images.searchHand = r[12];
             images.clearHandFilter = r[13];
 
+            images.logo = r[14];
+
             console.timeEnd('await total');
 
             return images;
 
         } catch (error) {
 
-            console.log(error);
+            console.error(error);
         }
 
     }

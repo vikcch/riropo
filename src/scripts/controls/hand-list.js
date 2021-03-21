@@ -284,8 +284,9 @@ export default class HandsList extends Control {
 
     drawHover() {
 
-        // TODO:: ir buscar os valores (2 ultimos)
-        this.context.setTransform(1, 0, 0, 1, 0, 0);
+        const { handsList: handsListRect } = embeddedRects;
+
+        this.context.setTransform(1, 0, 0, 1, handsListRect.x, handsListRect.y);
 
         this.context.fillStyle = 'white';
         this.context.globalAlpha = .3;

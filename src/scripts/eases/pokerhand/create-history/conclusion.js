@@ -70,8 +70,6 @@ export default {
 
         const mucksIndex = line.lastIndexOf(': mucks hand');
 
-        // TODO:: apagar as holecards quando é o hero a fazer muck
-
         if (mucksIndex !== -1) {
 
             const name = line.substring(0, mucksIndex);
@@ -80,7 +78,8 @@ export default {
 
             const muckedLine = getMuckedLine(lines, player.seat);
 
-            player.holeCards = biz.getLineCards(muckedLine);
+            if (player.isHero) player.heroMucked = true;
+            else player.holeCards = biz.getLineCards(muckedLine);
 
             return phase.conclusionMucks;
         }

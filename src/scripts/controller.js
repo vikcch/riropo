@@ -1,7 +1,6 @@
 import View from "./view";
 import Model from "./model";
 import seatPositions from '@/scripts/units/display-positions';
-import { getChipIndex } from "./units/biz";
 // TODO:: remover isto
 import { testables } from '@/scripts/eases/view/render/table';
 import enums, { buttonStates } from '@/scripts/units/enums';
@@ -89,8 +88,9 @@ export default class Controller {
 
         reader.onload = () => {
 
-            // TODO:: ver se é um hand history valido
             const log = reader.result;
+
+            if (!this.model.logValidation(log)) return;
 
             this.view.handsList.removeAll();
 
@@ -141,8 +141,6 @@ export default class Controller {
         const mousePoint = Controller.mousePoint;
 
         const found = this.view.embeddables.find(v => v.hitMe(mousePoint));
-
-        console.log(this.view.embeddables);
 
         if (found) found.click(mousePoint);
     }
@@ -214,16 +212,12 @@ export default class Controller {
         this.view.render(history, this.model.mainInfo);
 
         this.view.updateNavigation(enables);
-
-        console.log({ handIndex });
     }
 
     /**
      * * CheckBox
      */
     handleShowBigBlinds_onClick = () => {
-
-        console.log('check box clicada');
 
         const history = this.model.getHistory();
 

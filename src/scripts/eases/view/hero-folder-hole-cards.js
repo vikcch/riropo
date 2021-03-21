@@ -17,7 +17,9 @@ const intervalCallBack = function (hero, noCards, point, model) {
 
     const mousePoint = Controller.mousePoint;
 
-    if (!this.hoverHero(hero, mousePoint)) {
+    const { tableMax } = model.mainInfo;
+
+    if (!this.hoverHero(hero, mousePoint, tableMax)) {
 
         // Para o caso de navegar a ação pelo teclado (model.hero = current)
         if (hero === model.hero) {

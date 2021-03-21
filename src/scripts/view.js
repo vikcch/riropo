@@ -9,6 +9,7 @@ import HandsList from "./controls/hand-list";
 import displayPositions from "./units/display-positions";
 import { pointInRect } from "./units/fns";
 import CheckBox from "./controls/checkbox";
+import { drawPoweredBy } from '@/scripts/eases/view/render/table/index';
 
 
 export default class View {
@@ -61,7 +62,7 @@ export default class View {
 
         } catch (error) {
 
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -99,8 +100,11 @@ export default class View {
 
     async setEmbeddedControlsImages() {
 
-        const { table } = easeRender.rects;
+        const { table, logo } = easeRender.rects;
+
         this.context.drawImage(this.images.background, table.x, table.y);
+        this.context.drawImage(this.images.logo, table.x + logo.x, table.y + logo.y);
+        drawPoweredBy.call(this, { fromView: true });
 
         await this.previousHand.setImages(this.images.navigation, { row: 0 })
         await this.previousAction.setImages(this.images.navigation, { row: 1 });

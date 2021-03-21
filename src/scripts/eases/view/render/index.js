@@ -11,7 +11,14 @@ const rects = {
     mainInfo: { x: 96, y: 0, width: 792, height: 40 },
     table: { x: 96, y: 40, width: 792, height: 555 },
     // NOTE:: faz toogle com `searchHand` (button)
-    handFiltered: { x: 0, y: 595 - 44, width: 96, height: 44 }
+    handFiltered: { x: 0, y: 595 - 44, width: 96, height: 44 },
+    get logo() {
+        return {
+            x: this.table.width / 2 - 174 / 2,
+            y: 180
+        };
+    }
+
 };
 
 export default {

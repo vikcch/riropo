@@ -2,6 +2,7 @@ import { head, rear } from "./units/fns";
 import pokerHand from "./units/pokerhand";
 import { MainInfoT } from "@/scripts/units/main-info";
 import biz from "./units/biz";
+import fxnl from "./units/fxnl";
 
 export default class Model {
 
@@ -19,15 +20,11 @@ export default class Model {
 
     /**
      * 
-     * @param {string} log 
+     * @param {string} sessionLog 
      */
     processLog(sessionLog) {
 
-        // TODO:: 10 max é invalido
-
         // STOPSHIP:: ver no live-squeezer se envia com 3 enters
-
-        // TODO:: file com noma `Alterada III` em 'HandHistory/Nova Pasta'
 
         const arrayOfHands = sessionLog.split(/\r\n\r\n\r\n\r\n/).filter(Boolean);
 
@@ -41,6 +38,28 @@ export default class Model {
         });
 
         this.resetTracker();
+    }
+
+    /**
+     * 
+     * @param {string} sessionLog 
+     */
+    logValidation(sessionLog) {
+
+        const isPokerStars = value => value.startsWith('PokerStars ');
+
+        const isTolerableTableMax = value => {
+
+            const index = value.indexOf(' is the button');
+            const target = value.substring(0, index);
+            return target.indexOf('10-max') === -1;
+        };
+
+        const r = fxnl.validator(isPokerStars, isTolerableTableMax)(sessionLog);
+
+        if (!r) alert('Invalid file\n\n- Only PokerStart hand history is allowed\n- 10-max tables are not allowed');
+
+        return r;
     }
 
     resetTracker() {

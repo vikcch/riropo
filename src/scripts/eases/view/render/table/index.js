@@ -26,6 +26,35 @@ export const displayValue = displayValueAssets => value => {
 
 /**
  * 
+ * @this {View}
+ * @param {*} fromView Não tem `setTransform`
+ */
+export const drawPoweredBy = function ({ fromView } = {}) {
+
+    this.context.font = '14px Arial';
+
+    const textLight = 'Winning Poker HUD';
+    const textDark = 'Powered by';
+
+    const textLightWidth = this.context.measureText(textLight).width;
+
+    const { table: tableRect } = easeRender.rects;
+
+    const x = tableRect.width - (textLightWidth + 12) + (fromView ? tableRect.x : 0);
+    const y = 12 + (fromView ? tableRect.y : 0);
+
+    this.context.textBaseline = 'middle';
+    this.context.fillStyle = 'black';
+    this.context.textAlign = 'right';
+    this.context.fillText(textDark, x - 1, y);
+
+    this.context.textAlign = 'left';
+    this.context.fillStyle = '#ffffe1';
+    this.context.fillText(textLight, x + 1, y);
+};
+
+/**
+ * 
  * @param {CanvasRenderingContext2D} context 
  * @param {string} text 
  * @param {{x:number,y:number}} point 
@@ -80,6 +109,7 @@ const pot = function (value, displayValueAbsx) {
     const amount = displayValueAbsx(value);
     const text = `Pot: ${amount}`;
 
+    this.context.font = '14px Arial';
     const textWidth = this.context.measureText(text).width;
 
     const { table: tableRect } = easeRender.rects;
@@ -89,14 +119,16 @@ const pot = function (value, displayValueAbsx) {
     const boxWidth = textWidth + verticalPadding;
     const x = center - textWidth / 2 - verticalPadding / 2;
 
+    this.context.fillStyle = 'black';
+    this.context.fillRect(x - 1, 7, boxWidth + 2, 21);
     this.context.fillStyle = '#ffffe1';
-    this.context.fillRect(x, 8, boxWidth, 16);
+    this.context.fillRect(x, 8, boxWidth, 19);
 
     this.context.textAlign = 'center';
     this.context.textBaseline = 'middle';
     this.context.fillStyle = 'black';
 
-    this.context.fillText(text, center, 16);
+    this.context.fillText(text, center, 18);
 };
 
 /**
@@ -148,7 +180,7 @@ const players = function (history, tableMax, displayValueAbsx) {
             }
         }
 
-        if (player.holeCards && player.inPlay) {
+        if (player.holeCards && player.inPlay && !player.heroMucked) {
 
             const point = displayPosition.holeCards;
 
@@ -367,7 +399,7 @@ const middlePotValue = function (history, displayValueAbsx) {
 
     if (value === 0) return;
 
-    const point = { x: 400, y: 275 };
+    const point = { x: 400, y: 272 };
 
     const text = displayValueAbsx(value);
 
@@ -428,19 +460,23 @@ export default {
 
         const { width, height } = this.canvas;
 
-        const { table: tableRect } = easeRender.rects;
+        const { table: tableRect, logo } = easeRender.rects;
 
         this.context.setTransform(1, 0, 0, 1, tableRect.x, tableRect.y);
-
-        this.context.font = '11px Arial';
 
         this.context.clearRect(0, 0, width, height);
 
         this.context.drawImage(this.images.background, 0, 0);
 
+        this.context.drawImage(this.images.logo, logo.x, logo.y);
+
+        drawPoweredBy.call(this);
+
         const displayValueAbsx = displayValue(displayValueAssets);
 
         pot.call(this, history.pot, displayValueAbsx);
+
+        this.context.font = '11px Arial';
 
         players.call(this, history, tableMax, displayValueAbsx);
 
@@ -459,12 +495,9 @@ export default {
         middlePotValue.call(this, history, displayValueAbsx);
 
         legend.call(this);
-
-        console.log(history);
     }
 }
 
-// TODO:: Remover isto
 export const testables = {
 
     middlePotValue,
