@@ -294,16 +294,27 @@ const activity = (lines, previousHistory, delimiters) => {
         histories.push(history);
     });
 
-    if (hasUncalledBet) closeActivity(histories, rear(dirtyActivityLines).value);
+    if (hasUncalledBet) {
+        // NOTE:: O _Live Squeezer_ em all-ins escreve o "Uncalled bet" depois
+        // das streets e antes do '*** SHOWDOWN ***', podendo o array `histories`
+        // estar vazio, nesse caso usa o paramentro `previousHistory`
+        const lastHistory = rear(histories) ?? previousHistory;
+        const history = closeActivity(lastHistory, rear(dirtyActivityLines).value);
+        histories.push(history);
+    }
 
     return histories;
 };
 
-const closeActivity = (histories, uncalledBetLine) => {
+/**
+ * 
+ * @param {HistoryT} lastHistory 
+ * @param {string} uncalledBetLine 
+ * @returns {HistoryT}
+ */
+const closeActivity = (lastHistory, uncalledBetLine) => {
 
     const amount = biz.uncalledAmount(uncalledBetLine);
-
-    const lastHistory = rear(histories);
 
     const returnedToIndex = uncalledBetLine.indexOf('returned to');
 
@@ -330,7 +341,7 @@ const closeActivity = (histories, uncalledBetLine) => {
         streetCards
     });
 
-    histories.push(history);
+    return history;
 };
 
 

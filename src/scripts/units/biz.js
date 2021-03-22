@@ -232,17 +232,20 @@ const filterAllowedLines = lines => {
 
     // NOTE:: Noise lines em _riropo/hand-history/edge-cases_ (ver index.md)
 
+    // NOTE:: `mucks hand`, `folds` e `checks` têm espaço no fim no log
+    // da PokerStars, mas náo têm no _Live Squeezer_, `Seat x` têm em ambos
+
     const summaryIndex = lines.indexOf('*** SUMMARY ***');
 
     return lines.filter((line, index) => {
 
         const allowedRegex = [
-            /^Seat\s\d:\s.+\)\s(|is\ssitting\sout)$/m,      // Seat x
+            /^Seat\s\d:\s.+\)(|\sis\ssitting\sout)$/m,      // Seat x
             /\:\sposts\s.*\d(|\sand\sis\sall-in)$/m,        // post
             /^Dealt(|ed)\sto\s.+\]$/m,                      // Dealt
 
-            /\:\sfolds\s$/m,                                // folds
-            /\:\schecks\s$/m,                               // checks
+            /\:\sfolds$/m,                                  // folds
+            /\:\schecks$/m,                                 // checks
             /\:\sbets\s.*\d(|\sand\sis\sall-in)$/m,         // bets
             /\:\scalls\s.*\d(|\sand\sis\sall-in)$/m,        // calls
             /\:\sraises\s.*\d(|\sand\sis\sall-in)$/m,       // raises
@@ -251,7 +254,7 @@ const filterAllowedLines = lines => {
             /^\*\*\*\s(FLOP|TURN|RIVER)\s\*\*\*\s\[.+\]$/m, // Street
 
             /\:\sshows\s\[.+\]/,                            // shows
-            /\:\smucks\shand\s$/m,                          // mucks
+            /\:\smucks\shand$/m,                            // mucks
             /\scollected\s.+pot$/m,                         // collects
         ];
 
@@ -264,7 +267,7 @@ const filterAllowedLines = lines => {
         const tableGameDescription = index < 2;
         if (tableGameDescription || index > summaryIndex) return true;
 
-        return allowedRegex.some(v => v.test(line));
+        return allowedRegex.some(v => v.test(line.trimEnd()));
     });
 };
 

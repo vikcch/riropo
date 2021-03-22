@@ -149,7 +149,10 @@ const getBlinds = lines => {
     // dirty - cash (USD) => "$0.01/$0.02 USD"
     const dirty = firstLine.substring(startIndex + 1, endIndex);
 
-    return head(dirty.split(' ')) + getAnteFormated(lines);
+    const ante = getAnteFormated(lines);
+    const straddle = getStraddleFormated(lines);
+
+    return head(dirty.split(' ')) + ante + straddle;
 };
 
 /**
@@ -164,6 +167,20 @@ const getAnteFormated = lines => {
     if (!found) return '';
 
     return `(+${rear(found.split(' '))})`;
+};
+
+/**
+ * 
+ * @param {string[]} lines
+ * @returns {string}
+ */
+const getStraddleFormated = lines => {
+
+    const found = lines.find(x => /:\sposts\sa\sstraddle\s.*\d$/gm.test(x));
+
+    if (!found) return '';
+
+    return `[${rear(found.split(' '))}]`;
 };
 
 /**

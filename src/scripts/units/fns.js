@@ -14,7 +14,7 @@ export const head = array => {
 /**
  * 
  * @param {any[]} array 
- * @returns {any}
+ * @returns {any|undefined}
  */
 export const rear = array => {
 

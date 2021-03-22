@@ -24,8 +24,6 @@ export default class Model {
      */
     processLog(sessionLog) {
 
-        // STOPSHIP:: ver no live-squeezer se envia com 3 enters
-
         const arrayOfHands = sessionLog.split(/\r\n\r\n\r\n\r\n/).filter(Boolean);
 
         const jagged = arrayOfHands.map(x => x.split(/\r\n/));
