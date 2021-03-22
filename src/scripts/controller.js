@@ -17,6 +17,8 @@ export default class Controller {
      */
     constructor(model, view) {
 
+        this.isLoading = false;
+
         this.model = model;
         this.view = view;
 
@@ -86,7 +88,11 @@ export default class Controller {
 
         const reader = new FileReader();
 
-        reader.onload = () => {
+        reader.onload = async () => {
+
+            this.isLoading = true;
+
+            this.view.resetScreen();
 
             const log = reader.result;
 
@@ -94,7 +100,7 @@ export default class Controller {
 
             this.view.handsList.removeAll();
 
-            this.model.processLog(log);
+            await this.model.processLog(log, this.view);
 
             const history = this.model.getFirstHistory();
 
@@ -111,6 +117,8 @@ export default class Controller {
             this.view.updateNavigation(enables);
 
             this.view.resetHandSearchFilterVisibility();
+
+            this.isLoading = false;
         };
 
         reader.onerror = () => {
@@ -150,6 +158,8 @@ export default class Controller {
      * @param {MouseEvent} e 
      */
     handlerCanvas_onMouseMove = (e) => {
+
+        if (this.isLoading) return;
 
         this.setMousePoint(e)
 

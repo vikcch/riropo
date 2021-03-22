@@ -100,12 +100,6 @@ export default class View {
 
     async setEmbeddedControlsImages() {
 
-        const { table, logo } = easeRender.rects;
-
-        this.context.drawImage(this.images.background, table.x, table.y);
-        this.context.drawImage(this.images.logo, table.x + logo.x, table.y + logo.y);
-        drawPoweredBy.call(this, { fromView: true });
-
         await this.previousHand.setImages(this.images.navigation, { row: 0 })
         await this.previousAction.setImages(this.images.navigation, { row: 1 });
         await this.play.setImages(this.images.navigation, { row: 2 });
@@ -120,7 +114,7 @@ export default class View {
         await this.searchHand.setImages(this.images.searchHand, { row: 0 });
         await this.clearHandsFilter.setImages(this.images.clearHandFilter, { row: 0 });
 
-        this.showBigBlinds.setImage();
+        this.resetScreen();
     }
 
     bindControls(handlers) {
@@ -161,6 +155,38 @@ export default class View {
             this.handsList.unpressScrollBar();
             this.chat.unpressScrollBar();
         });
+    }
+
+    resetScreen() {
+
+        this.context.setTransform(1, 0, 0, 1, 0, 0);
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const { table, logo } = easeRender.rects;
+
+        this.context.drawImage(this.images.background, table.x, table.y);
+        this.context.drawImage(this.images.logo, table.x + logo.x, table.y + logo.y);
+        drawPoweredBy.call(this, { fromView: true });
+
+        this.showBigBlinds.setImage();
+
+        if (this.inter !== null) {
+
+            clearInterval(this.inter);
+            this.inter = null;
+        }
+
+        const navs = {
+            previousHand: false,
+            previousAction: false,
+            play: false,
+            nextAction: false,
+            nextHand: false
+        };
+
+        this.updateNavigation(navs);
+
+        this.embeddables.forEach(x => x.draw());
     }
 
     /**
@@ -302,5 +328,36 @@ export default class View {
 
         this.searchHand.toogleVisibility();
         this.clearHandsFilter.toogleVisibility();
+    }
+
+    /**
+     * 
+     * @param {number} index 
+     * @param {number} count 
+     */
+    drawLoadingBar(index, count) {
+
+        const { table, logo } = easeRender.rects;
+
+        const x = table.x + logo.x;
+        const y = table.y + logo.y + this.images.logo.height + 10;
+
+        this.context.setTransform(1, 0, 0, 1, x, y);
+
+        const maxWidth = this.images.logo.width;
+
+        if (index === 0) {
+
+            this.context.fillStyle = '#ffffe1';
+            this.context.fillRect(-3, -3, maxWidth + 6, 16);
+            this.context.fillStyle = 'gray';
+            this.context.fillRect(-2, -2, maxWidth + 4, 16 - 2);
+        }
+
+        this.context.fillStyle = '#ffffe1';
+
+        const width = index * maxWidth / count;
+
+        this.context.fillRect(0, 0, width, 10);
     }
 }

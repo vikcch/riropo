@@ -1,6 +1,7 @@
 import { head, rear } from "./units/fns";
 import pokerHand from "./units/pokerhand";
 import { MainInfoT } from "@/scripts/units/main-info";
+import View from "@/scripts/view";
 import biz from "./units/biz";
 import fxnl from "./units/fxnl";
 
@@ -21,19 +22,40 @@ export default class Model {
     /**
      * 
      * @param {string} sessionLog 
+     * @param {View} view 
+     * 
      */
-    processLog(sessionLog) {
+    async processLog(sessionLog, view) {
+
+        const promise = (hand, index) => new Promise((resolve, reject) => {
+
+            const lines = biz.filterAllowedLines(hand);
+
+            const ph = pokerHand(lines, index, jagged.length);
+
+            // NOTE:: Precisa do `setTimeout` (macrotask) para desenhar,
+            // Não faz update no canvas só com a promise (microtask).
+            // Sem `mod 10` ficava 8x mais lento, assim nem 2x fica
+            if (index % 10 === 0) setTimeout(() => {
+                view.drawLoadingBar(index, jagged.length);
+                resolve(ph);
+            }, 0);
+            else resolve(ph);
+
+        });
 
         const arrayOfHands = sessionLog.split(/\r\n\r\n\r\n\r\n/).filter(Boolean);
 
         const jagged = arrayOfHands.map(x => x.split(/\r\n/));
 
-        this.handHistories = jagged.map((hand, index) => {
+        this.handHistories = [];
 
-            const lines = biz.filterAllowedLines(hand);
+        for (const [index, hand] of jagged.entries()) {
 
-            return pokerHand(lines, index, jagged.length);
-        });
+            const r = await promise(hand, index);
+
+            this.handHistories.push(r);
+        }
 
         this.resetTracker();
     }
