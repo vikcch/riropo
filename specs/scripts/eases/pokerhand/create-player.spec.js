@@ -128,6 +128,33 @@ describe('ease-pokerhand', function () {
         });
     });
 
+    describe('# 3 getPlayersInfoLines', function () {
+
+        const fn = testables.getPlayersInfoLines;
+
+        it('should return only Players info lines', function () {
+
+            const lines = [
+                "PokerStars Hand #194548062440: Tournament #2475587487, $9.80vik$1.20 USD Hold'em No Limit - Level XLI (15000/30000) - 2018/12/17 2:26:26 BRT [2018/12/16 23:26:26 ET]",
+                "Table '2475587487 16' 9-max Seat #5 is the button",
+                "Seat 5: momente07 (867589 in chips)",
+                "Seat 7: Mr.Kruges (1289411 in chips)",
+                "momente07: posts the ante 3750",
+                "Mr.Kruges: posts the ante 3750",
+                "momente07: posts small blind 15000",
+                "Mr.Kruges: posts big blind 30000",
+                "*** HOLE CARDS ***",
+            ];
+
+            const anticipate = [
+                "Seat 5: momente07 (867589 in chips)",
+                "Seat 7: Mr.Kruges (1289411 in chips)",
+            ];
+
+            assert.deepStrictEqual(fn(lines), anticipate);
+        });
+    });
+
     describe('# getHeroName', function () {
 
         const fn = testables.getHeroName;

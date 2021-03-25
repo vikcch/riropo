@@ -22,13 +22,9 @@ const getPlayersInfoLines = lines => {
     // Não inclui a linha '*** HOLE CARDS ***'
     const barePlayersLines = lines.slice(2, holeCardsLineCount);
 
-    const regSeat = value => /^Seat\s\d:\s/gm.test(value);
-    const regChips = value => {
+    const test = value => /^Seat\s\d:\s.+\)(|\sis\ssitting\sout)$/m.test(value);
 
-        return /\)\s(|is\ssitting\sout)$/gm.test(value);
-    };
-
-    return barePlayersLines.filter(x => regSeat(x) && regChips(x));
+    return barePlayersLines.filter(x => test(x.trim()));
 };
 
 /**

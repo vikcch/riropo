@@ -42,7 +42,6 @@ export default class View {
         this.createEmbeddedControls();
 
         this.images = {};
-        this.setImages();
 
         // intervals em table
         this.inter = null;
@@ -50,7 +49,11 @@ export default class View {
         this.setCallOffEmbeddedControls();
     }
 
-    async setImages() {
+    /**
+     * 
+     * @param {*} tryLoadFromOnlineDB callback
+     */
+    async setImages(tryLoadFromOnlineDB) {
 
         try {
 
@@ -59,6 +62,8 @@ export default class View {
             await this.setEmbeddedControlsImages();
 
             this.embeddables.forEach(x => x.draw());
+
+            tryLoadFromOnlineDB();
 
         } catch (error) {
 
@@ -90,15 +95,23 @@ export default class View {
 
         const {
             searchHand: searchHandRect,
-            clearHandFilter: clearRect
+            clearHandFilter: clearRect,
+            shareHand: shareHandRect
         } = embeddedRects;
         const hiddenNot3d = { state: buttonStates.hidden, is3d: false };
         this.searchHand = new Button(this, searchHandRect, hiddenNot3d);
 
         this.clearHandsFilter = new Button(this, clearRect, hiddenNot3d);
+
+        this.shareHand = new Button(this, shareHandRect, { state: buttonStates.hidden });
     }
 
     async setEmbeddedControlsImages() {
+
+        // NOTE:: Os buttons 3d vão buscar o background 
+        // (nao pode ficar so no resetScreen)
+        const { table } = easeRender.rects;
+        this.context.drawImage(this.images.background, table.x, table.y);
 
         await this.previousHand.setImages(this.images.navigation, { row: 0 })
         await this.previousAction.setImages(this.images.navigation, { row: 1 });
@@ -113,6 +126,7 @@ export default class View {
 
         await this.searchHand.setImages(this.images.searchHand, { row: 0 });
         await this.clearHandsFilter.setImages(this.images.clearHandFilter, { row: 0 });
+        await this.shareHand.setImages(this.images.openShareButtons, { row: 1 });
 
         this.resetScreen();
     }
@@ -138,6 +152,7 @@ export default class View {
         this.showBigBlinds.bind(handlers.showBigBlinds);
         this.searchHand.bind(handlers.searchHand);
         this.clearHandsFilter.bind(handlers.clearHandsFilter);
+        this.shareHand.bind(handlers.shareHand);
     }
 
     setCallOffEmbeddedControls() {
@@ -148,6 +163,7 @@ export default class View {
             this.chat.clearHover();
             this.searchHand.clearHover();
             this.clearHandsFilter.clearHover();
+            this.shareHand.clearHover();
         });
 
         window.addEventListener('mouseup', () => {
@@ -319,15 +335,15 @@ export default class View {
 
     resetHandSearchFilterVisibility() {
 
-        this.searchHand.setState = buttonStates.normal;
         this.clearHandsFilter.setState = buttonStates.hidden;
+        this.searchHand.setState = buttonStates.normal;
     }
 
 
     toogleHandSearchFilterVisibility() {
 
-        this.searchHand.toogleVisibility();
         this.clearHandsFilter.toogleVisibility();
+        this.searchHand.toogleVisibility();
     }
 
     /**
@@ -359,5 +375,15 @@ export default class View {
         const width = index * maxWidth / count;
 
         this.context.fillRect(0, 0, width, 10);
+    }
+
+    enableShareHand() {
+
+        this.shareHand.setState = buttonStates.normal;
+    }
+
+    disableShareHand() {
+
+        this.shareHand.setState = buttonStates.hidden;
     }
 }

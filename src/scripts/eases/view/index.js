@@ -6,7 +6,7 @@ export default {
 
     async loadImages() {
 
-        return loadImagesBridge.loadImages();
+        return await loadImagesBridge.loadImages();
     },
 
     render(history, mainInfo, handFiltered) {

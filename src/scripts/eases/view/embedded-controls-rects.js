@@ -57,5 +57,11 @@ export default {
     clearHandFilter: {
         x: 66, y: 565,
         width: 28, height: 28
+    },
+
+    shareHand: {
+        x: tableRect.x + tableRect.width - 227,
+        y: tableRect.y + tableRect.height - 33,
+        width: 223, height: 29
     }
 };

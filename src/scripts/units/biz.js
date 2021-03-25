@@ -206,6 +206,18 @@ export const getCardIndex = card => {
 };
 
 /**
+ * De 0 a 51
+ * @param {string} card 
+ * @returns { number }
+ */
+export const getOrdinalCardIndex = card => {
+
+    const { value, suit } = getCardIndex(card);
+
+    return suit * 13 + value;
+};
+
+/**
  * 
  * @param {number} profitBBs
  * @returns {string} hex color 
@@ -284,7 +296,8 @@ export default {
     actionAmount,
     getBigBlind,
     getColorScale,
-    filterAllowedLines
+    filterAllowedLines,
+    getOrdinalCardIndex
 }
 
 export const testables = {

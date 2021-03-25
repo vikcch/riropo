@@ -40,7 +40,13 @@ export const MainInfo = function ({
         isTournament,
         sessionProgress,
         tableMax,
-        cashSign
+        cashSign,
+        getDescription() {
+
+            const blinds = this.isTournament ? ` [${this.blinds}]` : '';
+
+            return `${this.stakes} - ${this.game}${blinds}`;
+        }
     };
 }
 

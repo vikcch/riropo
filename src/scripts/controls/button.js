@@ -19,6 +19,7 @@ export default class Button {
 
         // No click, move 1 pixel para a sudeste
         this.is3d = is3d ?? true;
+        this.background = null;
 
         this.context = view.context;
         this.x = x;
@@ -43,14 +44,19 @@ export default class Button {
     set setState(value) {
 
         this.state = value;
-        this.draw();
+
+        if (this.isHidden) this.drawBackground();
+        else this.draw();
+    }
+
+    get isHidden() {
+
+        return this.state === states.hidden;
     }
 
     toogleVisibility() {
 
-        const isHidden = this.state === states.hidden;
-
-        this.state = isHidden ? states.normal : states.hidden;
+        this.state = this.isHidden ? states.normal : states.hidden;
 
         this.draw();
     }
@@ -134,7 +140,9 @@ export default class Button {
 
         const keys = ['normal', 'hover', 'disabled'];
 
-        const { width, height } = this;
+        const { x, y, width, height } = this;
+
+        this.background = this.view.context.getImageData(x, y, width + 1, height + 1);
 
         const images = await fns.sprites(image, row, width, height)
 
@@ -144,7 +152,6 @@ export default class Button {
 
             this.images[key] = v;
         });
-
     }
 
     draw() {
@@ -155,20 +162,19 @@ export default class Button {
 
         this.context.setTransform(1, 0, 0, 1, 0, 0);
 
-        const { background } = this.view.images;
-
         if (this.is3d) {
 
-            const outsize = this.isPressed ? 0 : 1;
-
-            this.context.drawImage(background,
-                this.x, this.y, this.width + outsize, this.height + outsize,
-                this.x, this.y, this.width + outsize, this.height + outsize);
+            this.context.putImageData(this.background, this.x, this.y);
         }
 
         const x = this.x + (this.isPressed ? 1 : 0);
         const y = this.y + (this.isPressed ? 1 : 0);
 
         this.context.drawImage(this.images[state], x, y);
+    }
+
+    drawBackground() {
+
+        this.context.putImageData(this.background, this.x, this.y);
     }
 }

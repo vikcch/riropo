@@ -11,6 +11,8 @@ import { pipe } from '@/scripts/units/fxnl';
 
 export const displayValue = displayValueAssets => value => {
 
+    if (pureValue(value) === 0) return 'ALL IN';
+
     const { cashSign, isBigBlinds, bigBlind } = displayValueAssets;
 
     const finalBBs = pipe(pureValue, thousandSeparator)(value / bigBlind);

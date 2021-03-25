@@ -25,7 +25,8 @@ const files = {
     smallDeck: 'deck-small-16x20-208-80.png',
     searchHand: 'search-hand.png',
     clearHandFilter: 'clear-button-28x28.png',
-    logo: 'logo-orange-174x26-30-opacy.png'
+    logo: 'logo-orange-174x26-30-opacy.png',
+    openShareButtons: 'open-share-hand-446x58-223x29.png'
 };
 
 
@@ -52,7 +53,8 @@ export default {
                 getImage(files.smallDeck),
                 getImage(files.searchHand),
                 getImage(files.clearHandFilter),
-                getImage(files.logo)
+                getImage(files.logo),
+                getImage(files.openShareButtons)
             ];
 
             const r = await Promise.all(arrFiles);
@@ -92,6 +94,8 @@ export default {
             images.clearHandFilter = r[13];
 
             images.logo = r[14];
+
+            images.openShareButtons = r[15];
 
             console.timeEnd('await total');
 

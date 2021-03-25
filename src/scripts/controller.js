@@ -58,9 +58,18 @@ export default class Controller {
             },
             clearHandsFilter: {
                 click: this.handleClearHandsFilter_onClick
-
+            },
+            shareHand: {
+                click: this.handlerShareHand_onClick
             }
         });
+
+        const tryLoadFromOnlineDB = () => {
+
+            this.model.tryLoadFromOnlineDB(this);
+        }
+
+        this.view.setImages(tryLoadFromOnlineDB);
     }
 
     /**
@@ -82,43 +91,48 @@ export default class Controller {
         Controller.mousePoint = mousePoint;
     }
 
+    async handLoad(log) {
+
+        this.isLoading = true;
+
+        this.view.resetScreen();
+
+        if (!this.model.logValidation(log)) return;
+
+        this.view.handsList.removeAll();
+
+        await this.model.processLog(log, this.view);
+
+        const history = this.model.getFirstHistory();
+
+        this.view.handsList.setRange(this.model.handsList);
+
+        this.view.handsList.setMaxHiddenRule();
+
+        this.view.updateChat(history, enums.navigation.nextHand);
+
+        this.view.render(history, this.model.mainInfo);
+
+        const enables = this.model.getNavigationEnables();
+
+        this.view.updateNavigation(enables);
+
+        this.view.resetHandSearchFilterVisibility();
+
+        this.view.enableShareHand();
+
+        this.isLoading = false;
+    }
+
     handlerLoadHandHistory_onChange = (event) => {
 
         const { loadHH } = this.view;
 
         const reader = new FileReader();
 
-        reader.onload = async () => {
+        reader.onload = () => {
 
-            this.isLoading = true;
-
-            this.view.resetScreen();
-
-            const log = reader.result;
-
-            if (!this.model.logValidation(log)) return;
-
-            this.view.handsList.removeAll();
-
-            await this.model.processLog(log, this.view);
-
-            const history = this.model.getFirstHistory();
-
-            this.view.handsList.setRange(this.model.handsList);
-
-            this.view.handsList.setMaxHiddenRule();
-
-            this.view.updateChat(history, enums.navigation.nextHand);
-
-            this.view.render(history, this.model.mainInfo);
-
-            const enables = this.model.getNavigationEnables();
-
-            this.view.updateNavigation(enables);
-
-            this.view.resetHandSearchFilterVisibility();
-
-            this.isLoading = false;
+            this.handLoad(reader.result);
         };
 
         reader.onerror = () => {
@@ -270,6 +284,8 @@ export default class Controller {
 
         this.view.adjustHandsList();
 
+        this.view.enableShareHand();
+
         this.view.render(history, this.model.mainInfo);
 
         this.view.updateNavigation(enables);
@@ -311,7 +327,12 @@ export default class Controller {
         // NOTE:: Náo é sempre 'nextAction', caso seja o ultimo progress da hand
         this.view.updateChat(history, next);
 
-        if (next !== nextAction) this.view.adjustHandsList();
+        if (next !== nextAction) {
+
+            this.view.adjustHandsList();
+
+            this.view.enableShareHand();
+        }
 
         this.view.render(history, this.model.mainInfo);
 
@@ -330,9 +351,28 @@ export default class Controller {
 
         this.view.adjustHandsList();
 
+        this.view.enableShareHand();
+
         this.view.render(history, this.model.mainInfo);
 
         this.view.updateNavigation(enables);
+    }
+
+    handlerShareHand_onClick = async () => {
+
+        const content = await this.model.shareHand();
+
+        if (!content) return;
+
+        if (content.success) {
+
+            const { link } = content;
+
+            prompt(`Success\n\nLink: ${link}\n\n[CTRL + C] copy to clipboard`, link);
+
+            this.view.disableShareHand();
+
+        } else alert('Oops, Something Went Wrong!');
     }
 
     //#endregion
