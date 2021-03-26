@@ -269,7 +269,7 @@ const activity = (lines, previousHistory, delimiters) => {
             player.stack -= amount;
             pot += amount;
             player.amountOnStreet += amount;
-        };
+        }
 
         if (action === 'folds') {
 

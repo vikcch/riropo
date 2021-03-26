@@ -1,53 +1,59 @@
 {
   "name": "riropo",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "dependencies": {},
-  "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/plugin-proposal-class-properties": "^7.12.1",
-    "@babel/plugin-transform-runtime": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/register": "^7.12.10",
-    "babel-loader": "^8.2.2",
-    "babel-plugin-webpack-aliases": "^1.1.3",
-    "canvas": "^2.6.1",
-    "chai": "^4.2.0",
-    "eslint": "^7.18.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
-    "esm": "^3.2.25",
-    "html-webpack-plugin": "^4.5.1",
-    "jsdom": "16.4.0",
-    "jsdom-global": "3.0.2",
-    "mocha": "^8.2.1",
-    "module-alias": "^2.2.2",
-    "webpack": "^5.15.0",
-    "webpack-cli": "^4.3.1",
-    "webpack-dev-server": "^3.11.2"
-  },
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "mocha -r jsdom-global/register './specs/**/pokerhand.spec.js'",
-    "test-all": "mocha -r jsdom-global/register './specs/**/*.spec.js'",
-    "serve": "webpack serve --mode development",
-    "build": "webpack --mode production",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
     "test-last": "node ./test-last/index.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vikcch/riropo.git"
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "vue": "^2.6.11"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vikcch/riropo/issues"
+  "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/register": "^7.13.8",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-webpack-aliases": "^1.1.3",
+    "canvas": "^2.6.1",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "jsdom": "^16.5.1",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^8.3.2",
+    "vue-template-compiler": "^2.6.11"
   },
-  "homepage": "https://github.com/vikcch/riropo#readme",
-  "_moduleAliases": {
-    "@root": ".",
-    "@@": "src/"
+  "eslintConfig": {
+    "root": false,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-console": "off",
+      "no-unused-vars": "off",
+      "no-debugger": "off",
+      "no-useless-escape": "off",
+      "no-undef": "off"
+    }
   },
-  "browserslist": "> 0.25%, not dead"
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }

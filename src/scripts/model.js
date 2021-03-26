@@ -296,7 +296,7 @@ export default class Model {
 
     get hero() {
 
-        if (!this.handHistories.length) return;
+        if (!this.handHistories.length) return null;
 
         const history = this.getHistory();
 

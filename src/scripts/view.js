@@ -226,7 +226,7 @@ export default class View {
         };
 
         work[navigation].call();
-    };
+    }
 
     /**
      * 

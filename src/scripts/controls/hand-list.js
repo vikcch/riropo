@@ -226,7 +226,7 @@ export default class HandsList extends Control {
             const y = itemRect.y + 3;
 
             this.context.drawImage(card, 2 + index * 18, y);
-        });
+        })
     }
 
     drawMarker() {
@@ -296,7 +296,7 @@ export default class HandsList extends Control {
 
         this.context.fillRect(0, y, width, this.itemHeight);
         this.context.globalAlpha = 1;
-    };
+    }
 
     cleanToolTip() {
 
@@ -375,7 +375,7 @@ export default class HandsList extends Control {
         this.scrollbar.clearHover();
         this.draw();
         this.cleanToolTip();
-    };
+    }
 
     // #region Mandory Methods
     /**

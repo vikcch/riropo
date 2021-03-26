@@ -73,8 +73,12 @@ const spawn = require('child_process').spawn;
 
 // const command = 'mocha --require module-alias/register ' + last.fullPath;
 
-const command = 'mocha -r jsdom-global/register ' + last.fullPath;
+// const command = 'mocha -r jsdom-global/register ' + last.fullPath;
 
+
+// O file test-config.js permite usar images com import sem dar erro no mocha
+
+const command = 'mocha ./test-last/test-config.js -r jsdom-global/register ' + last.fullPath;
 
 // const cmd = spawn('cmd', ['/s', '/c', command], { customFds: [0, 1, 2] });
 // (node:12604) [DEP0006] DeprecationWarning: child_process: options.customFds option is deprecated. Use options.stdio instead.

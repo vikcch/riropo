@@ -12,3 +12,8 @@ nextActionBtn.addEventListener('click', function () {
     const canvas = document.querySelector('#canvas');
     canvas.requestFullscreen();
 });
+
+import img from '@/assets/images/empty-seat-90x90.png';
+
+const merda = document.querySelector('#merda');
+merda.src = img;

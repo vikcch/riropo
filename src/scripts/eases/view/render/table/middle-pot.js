@@ -72,7 +72,6 @@ const makeChipsOutSets = (amount, chipStyle) => {
         return values.map((vv, ii) => ({
             index: vv,
             x: i * chipStyle.width + chipStyle.margin * i,
-            x: i * 22 + 1 * i,
             y: - ii * 4
         }));
     });
@@ -206,7 +205,7 @@ export default function (history, tableMax, displayValueAbsx) {
     if (winner) this.inter = setInterval(drawAbsx, 30);
 
     drawAbsx();
-};
+}
 
 export const testables = {
 
