@@ -23,6 +23,7 @@ export default class Model {
 
         const { href } = window.location;
 
+        // NOTE:: alterar / adicionar ip do pc na Network para ter acesso pelo telefone
         const prefixDev = 'http://localhost/dev/replayer-riropo/wwwroot';
         const prefixProd = 'https://replayer.winningpokerhud.com';
 
@@ -61,7 +62,7 @@ export default class Model {
 
         try {
             const response = await fetch(url, { ...options, signal: abortController.signal });
-
+            
             try {
                 const data = await response.json();
 

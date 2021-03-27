@@ -31,10 +31,21 @@
     "mocha": "^8.3.2",
     "vue-template-compiler": "^2.6.11"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vikcch/riropo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vikcch/riropo/issues"
+  },
+  "homepage": "https://github.com/vikcch/riropo#readme",
   "eslintConfig": {
     "root": false,
     "env": {
-      "node": true
+      "node": true,
+      "mocha": true
     },
     "extends": [
       "plugin:vue/essential",
@@ -47,8 +58,7 @@
       "no-console": "off",
       "no-unused-vars": "off",
       "no-debugger": "off",
-      "no-useless-escape": "off",
-      "no-undef": "off"
+      "no-useless-escape": "off"
     }
   },
   "browserslist": [

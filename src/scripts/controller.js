@@ -1,9 +1,6 @@
 import View from "./view";
 import Model from "./model";
-import seatPositions from '@/scripts/units/display-positions';
-// TODO:: remover isto
-import { testables } from '@/scripts/eases/view/render/table';
-import enums, { buttonStates } from '@/scripts/units/enums';
+import enums from '@/scripts/units/enums';
 import fns from '@/scripts/units/fns'
 
 export default class Controller {
@@ -79,14 +76,46 @@ export default class Controller {
     setMousePoint(e) {
 
         const {
-            width, height,              // Medida real do canvas
-            offsetWidth, offsetHeight   // Medida escalar (settada no style)
+            width: canvasWidth, height: canvasHeight,   // Medida real do canvas
+            offsetWidth, offsetHeight                   // Medida escalar (settada no style)
         } = this.view.canvas;
 
-        const mousePoint = {
-            x: e.offsetX * width / offsetWidth,
-            y: e.offsetY * height / offsetHeight
+        const windowed = () => {
+
+            return {
+                x: e.offsetX * canvasWidth / offsetWidth,
+                y: e.offsetY * canvasHeight / offsetHeight
+            };
         };
+
+        const fullScreen = () => {
+
+            const widthRatio = window.innerWidth / canvasWidth;
+            const heightRatio = window.innerHeight / canvasHeight;
+
+            // O Browser faz a escalagem com um aspecto ratio fixo, então se
+            // o canvas não tiver o mesmo aspecto ratio do ecran, a imagem fica 
+            // com "barras negras", o ratio escolhido é o menor, ou seja, da
+            // dimensão que fica com a margem 0,  
+
+            const ratio = Math.min(widthRatio, heightRatio);
+
+            const zoomWidth = canvasWidth * ratio;
+            const zoomHeight = canvasHeight * ratio;
+
+            const marginHorizontal = (window.innerWidth - zoomWidth) / 2;
+            const marginVertical = (window.innerHeight - zoomHeight) / 2;
+
+            return {
+                x: (e.offsetX - marginHorizontal) * canvasWidth / zoomWidth,
+                y: (e.offsetY - marginVertical) * canvasHeight / zoomHeight
+            };
+        };
+
+        const isFullScreen = !!(document.fullscreenElement || document.webkitFullscreenElement ||
+            document.mozFullScreenElement);
+
+        const mousePoint = isFullScreen ? fullScreen() : windowed();
 
         Controller.mousePoint = mousePoint;
     }
@@ -372,66 +401,8 @@ export default class Controller {
 
             this.view.disableShareHand();
 
-        } else alert('Oops, Something Went Wrong!');
+        } else alert(content.message);
     }
 
     //#endregion
-
-
-
-    showFakeRender() {
-
-        seatPositions(9).forEach((item, i) => {
-
-            const point = item.emptySeat;
-            const img = this.view.images.emptySeat;
-
-            if (i === 3) this.view.context.globalAlpha = 0.4;
-            this.view.context.drawImage(img, point.x, point.y);
-            this.view.context.globalAlpha = 1;
-
-
-            const { status } = this.view.images;
-            this.view.context.drawImage(status, item.status.x, item.status.y);
-
-
-            this.view.context.textAlign = 'center';
-            this.view.context.textBaseline = 'middle';
-            this.view.context.fillStyle = 'white';
-
-            this.view.context.fillText('lkasdjflkfjd', item.name.x, item.name.y);
-            this.view.context.fillText('24,534', item.stack.x, item.stack.y);
-
-
-            const { chips } = this.view.images;
-            const n = Math.floor(Math.random() * 20);
-
-            this.view.context.drawImage(chips[n], item.chips.x, item.chips.y);
-
-            const { inPlay } = this.view.images;
-            this.view.context.drawImage(inPlay, item.inPlay.x, item.inPlay.y);
-
-            const { dealer } = this.view.images;
-            this.view.context.drawImage(dealer, item.dealer.x, item.dealer.y);
-
-
-            const { actions } = this.view.images;
-            const n2 = Math.floor(Math.random() * 5);
-            this.view.context.drawImage(actions[n2], item.action.x, item.action.y);
-
-
-            const textAlign = i < 4 ? 'right' : 'left';
-
-            this.view.context.textAlign = textAlign;
-            this.view.context.textBaseline = 'bottom';
-            this.view.context.fillStyle = 'white';
-
-            this.view.context.fillText('13,623', item.chipsValue.x, item.chipsValue.y);
-
-        });
-
-        testables.streetCards.call(this.view, ['As', 'Kh', '8s', 'Tc', '2d']);
-        testables.middlePot.call(this.view, { players: [], pot: 2324 });
-        testables.middlePotValue.call(this.view, { players: [], pot: 2324 });
-    }
 }
