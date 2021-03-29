@@ -3,9 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- NOTE:: Para correr no ie11 vb6 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <link rel="shortcut icon" href="data:" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <title>Document</title>
 
     <style>
         div#canvas-container {
@@ -28,7 +32,10 @@
 </head>
 
 <body>
-
+    <noscript>
+        <strong>We're sorry but rir doesn't work properly without JavaScript enabled. Please enable it to
+            continue.</strong>
+    </noscript>
     <div id="canvas-wrapper">
 
         <div id="canvas-container">
@@ -48,7 +55,6 @@
     </div>
 
     <img id="merda" src="" alt="">
-
 </body>
 
 </html>

@@ -1,3 +1,5 @@
+require('isomorphic-fetch');
+
 import { head, rear } from "./units/fns";
 import pokerHand from "./units/pokerhand";
 import { MainInfoT } from "@/scripts/units/main-info";
@@ -47,9 +49,6 @@ export default class Model {
 
         const filePath = `${this.endPointPrefix}/php/riropo-load.php`;
 
-        const abortController = new AbortController();
-        setTimeout(() => abortController.abort(), 10000);
-
         // NOTE:: `id` com 123abc avalia 123 (como parseInt) 
         const param = new URLSearchParams({ id });
         const url = `${filePath}?${param}`;
@@ -58,11 +57,21 @@ export default class Model {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         });
+
         const options = { method: 'GET', mode: 'cors', headers };
 
+        // NOTE:: Não suportado pelo internet explorer
+        if (typeof AbortController !== 'undefined') {
+
+            const abortController = new AbortController();
+            options.signal = abortController.signal;
+
+            setTimeout(() => abortController.abort(), 10000);
+        }
+
         try {
-            const response = await fetch(url, { ...options, signal: abortController.signal });
-            
+            const response = await fetch(url, options);
+
             try {
                 const data = await response.json();
 
@@ -92,7 +101,6 @@ export default class Model {
         }
     }
 
-
     async shareHand() {
 
         if (!this.lines) return;
@@ -121,12 +129,18 @@ export default class Model {
 
         const options = { method: 'POST', mode: 'cors', body, headers };
 
-        const abortController = new AbortController();
-        setTimeout(() => abortController.abort(), 10000);
+        // NOTE:: Não suportado pelo internet explorer
+        if (typeof AbortController !== 'undefined') {
+
+            const abortController = new AbortController();
+            options.signal = abortController.signal;
+
+            setTimeout(() => abortController.abort(), 10000);
+        }
 
         try {
 
-            const response = await fetch(url, { ...options, signal: abortController.signal });
+            const response = await fetch(url, options);
 
             return await response.json();
 
