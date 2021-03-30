@@ -72,6 +72,8 @@ export const getBigBlind = value => {
     // "100/200[400][800]"
     // "€0.01/€0.02"
 
+    if (value === undefined) return;
+
     const targetPart = rear(value.split('/'));
 
     const rdc = (acc, cur) => {

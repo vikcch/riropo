@@ -31,3 +31,9 @@
 `pokeralho3x: is sitting out`
 
 [Grogler](HH20210307%20Grogler%20-%20€0.01-€0.02%20-%20EUR%20No%20Limit%20Hold'em.txt)
+
+---
+
+`Dimon Kers: posts small & big blinds $0.03`
+
+[Natalie II](HH20120305%20Natalie%20II%20-%20$0.01-$0.02%20-%20USD%20No%20Limit%20Hold'em.txt)

@@ -7,25 +7,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="data:" type="image/x-icon">
-    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
     <title>Document</title>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         div#canvas-container {
             position: relative;
         }
 
         #canvas {
-            /* width: 300px; */
-            /* position: absolute; */
+            width: 100%;
+            max-width: 888px;
         }
 
         #canvas-tool-tip {
             position: absolute;
-            /* background-color: rebeccapurple; */
             z-index: 10;
             pointer-events: none;
+        }
+
+        .mobile-button {
+            padding: 16px 24px;
         }
     </style>
 
@@ -46,15 +53,12 @@
     </div>
 
     <div>
-        <input id="load-hand-history" type="file">
+        <input id="load-hand-history" class="mobile-button" type="file" hidden>
 
-        <button id="next-action">next</button>
-
-        <div id="mouse-coords"></div>
+        <button id="fullscreen" class="mobile-button" hidden>fullscreen</button>
 
     </div>
 
-    <img id="merda" src="" alt="">
 </body>
 
 </html>

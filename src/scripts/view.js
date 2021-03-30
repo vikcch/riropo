@@ -7,10 +7,8 @@ import enums, { buttonStates } from '@/scripts/units/enums';
 import Chat from "./controls/chat";
 import HandsList from "./controls/hand-list";
 import displayPositions from "./units/display-positions";
-import { pointInRect } from "./units/fns";
+import fns, { pointInRect } from "./units/fns";
 import CheckBox from "./controls/checkbox";
-import { drawPoweredBy } from '@/scripts/eases/view/render/table/index';
-
 
 export default class View {
 
@@ -19,9 +17,8 @@ export default class View {
 
     constructor() {
 
-        this.coordsDiv = document.querySelector('#mouse-coords');
-
         this.loadHH = document.querySelector('#load-hand-history');
+        this.fullscreen = document.querySelector('#fullscreen');
 
         /** @type {HTMLCanvasElement} */
         this.canvas = document.querySelector('#canvas');
@@ -61,6 +58,8 @@ export default class View {
 
             await this.setEmbeddedControlsImages();
 
+            this.setPlatformVisibility();
+
             this.embeddables.forEach(x => x.draw());
 
             tryLoadFromOnlineDB();
@@ -73,17 +72,28 @@ export default class View {
 
     createEmbeddedControls() {
 
-        const { navigation: rect, handsList: handsListRect } = embeddedRects;
+        const {
+            openHH: openHHRect,
+            navigation: navigationRect,
+            chat: chatRect,
+            handsList: handsListRect,
+            showBigBlinds: showBBsRect,
+            searchHand: searchHandRect,
+            clearHandFilter: clearRect,
+            shareHand: shareHandRect,
+            fullWindowed: fullWindowedRect
+
+        } = embeddedRects;
+
+        this.openHH = new Button(this, openHHRect);
 
         const state = buttonStates.disabled;
 
-        this.previousHand = new Button(this, rect.previousHand, { state });
-        this.previousAction = new Button(this, rect.previousAction, { state });
-        this.play = new Button(this, rect.play, { state });
-        this.nextAction = new Button(this, rect.nextAction, { state });
-        this.nextHand = new Button(this, rect.nextHand, { state });
-
-        const { chat: chatRect, showBigBlinds: showBBsRect } = embeddedRects;
+        this.previousHand = new Button(this, navigationRect.previousHand, { state });
+        this.previousAction = new Button(this, navigationRect.previousAction, { state });
+        this.play = new Button(this, navigationRect.play, { state });
+        this.nextAction = new Button(this, navigationRect.nextAction, { state });
+        this.nextHand = new Button(this, navigationRect.nextHand, { state });
 
         this.chat = new Chat(this, chatRect);
 
@@ -92,18 +102,15 @@ export default class View {
         const showBBsText = 'Show Stack Values in Big Blinds';
         this.showBigBlinds = new CheckBox(this, showBBsRect, showBBsText);
 
-
-        const {
-            searchHand: searchHandRect,
-            clearHandFilter: clearRect,
-            shareHand: shareHandRect
-        } = embeddedRects;
         const hiddenNot3d = { state: buttonStates.hidden, is3d: false };
+
         this.searchHand = new Button(this, searchHandRect, hiddenNot3d);
 
         this.clearHandsFilter = new Button(this, clearRect, hiddenNot3d);
 
         this.shareHand = new Button(this, shareHandRect, { state: buttonStates.hidden });
+
+        this.fullWindowed = new Button(this, fullWindowedRect);
     }
 
     async setEmbeddedControlsImages() {
@@ -112,6 +119,8 @@ export default class View {
         // (nao pode ficar so no resetScreen)
         const { table } = easeRender.rects;
         this.context.drawImage(this.images.background, table.x, table.y);
+
+        await this.openHH.setImages(this.images.openShareButtons, { row: 0 });
 
         await this.previousHand.setImages(this.images.navigation, { row: 0 })
         await this.previousAction.setImages(this.images.navigation, { row: 1 });
@@ -128,21 +137,27 @@ export default class View {
         await this.clearHandsFilter.setImages(this.images.clearHandFilter, { row: 0 });
         await this.shareHand.setImages(this.images.openShareButtons, { row: 1 });
 
+        await this.fullWindowed.setImages(this.images.fullWindowed, { row: 0 });
+
+        this.showBigBlinds.setImage();
+
         this.resetScreen();
     }
 
     bindControls(handlers) {
 
-        // this.coordsDiv.innerHTML = e.offsetX
         this.loadHH.addEventListener('change', handlers.loadHandHistory);
         this.canvas.addEventListener('mousemove', handlers.canvasMouseMove);
         this.canvas.addEventListener('mousedown', handlers.canvasMouseDown);
         this.canvas.addEventListener('mouseup', handlers.canvasMouseUp);
         this.canvas.addEventListener('keyup', handlers.canvasKeyUp);
+        this.canvas.addEventListener('fullscreenchange', handlers.canvasFullscreenchange);
+        this.fullscreen.addEventListener('click', handlers.fullscreen);
     }
 
     bindEmbeddedControls(handlers) {
 
+        this.openHH.bind(handlers.openHH);
         this.previousHand.bind(handlers.previousHand);
         this.previousAction.bind(handlers.previousAction);
         this.play.bind(handlers.play);
@@ -153,6 +168,7 @@ export default class View {
         this.searchHand.bind(handlers.searchHand);
         this.clearHandsFilter.bind(handlers.clearHandsFilter);
         this.shareHand.bind(handlers.shareHand);
+        this.fullWindowed.bind(handlers.fullWindowed);
     }
 
     setCallOffEmbeddedControls() {
@@ -164,6 +180,7 @@ export default class View {
             this.searchHand.clearHover();
             this.clearHandsFilter.clearHover();
             this.shareHand.clearHover();
+            this.fullWindowed.clearHover();
         });
 
         window.addEventListener('mouseup', () => {
@@ -173,24 +190,25 @@ export default class View {
         });
     }
 
-    resetScreen() {
+    setPlatformVisibility() {
 
-        this.context.setTransform(1, 0, 0, 1, 0, 0);
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        // ex: internet explorer 11
+        if (this.canvas.requestFullscreen === undefined) {
 
-        const { table, logo } = easeRender.rects;
-
-        this.context.drawImage(this.images.background, table.x, table.y);
-        this.context.drawImage(this.images.logo, table.x + logo.x, table.y + logo.y);
-        drawPoweredBy.call(this, { fromView: true });
-
-        this.showBigBlinds.setImage();
-
-        if (this.inter !== null) {
-
-            clearInterval(this.inter);
-            this.inter = null;
+            this.fullWindowed.setState = buttonStates.hidden;
         }
+
+        if (!fns.isMobile()) return;
+
+        this.loadHH.removeAttribute('hidden');
+        this.fullscreen.removeAttribute('hidden');
+
+        this.openHH.setState = buttonStates.hidden;
+        this.fullWindowed.setState = buttonStates.hidden;
+
+    }
+
+    resetScreen() {
 
         const navs = {
             previousHand: false,
@@ -202,7 +220,7 @@ export default class View {
 
         this.updateNavigation(navs);
 
-        this.embeddables.forEach(x => x.draw());
+        this.render();
     }
 
     /**
@@ -377,7 +395,9 @@ export default class View {
         this.context.fillRect(0, 0, width, 10);
     }
 
-    enableShareHand() {
+    enableShareHand({ fromDB } = {}) {
+
+        if (fns.isMobile() || fromDB) return;
 
         this.shareHand.setState = buttonStates.normal;
     }
@@ -385,5 +405,27 @@ export default class View {
     disableShareHand() {
 
         this.shareHand.setState = buttonStates.hidden;
+    }
+
+    toogleNavigationKeysSize() {
+
+        const key = `navigation${fns.isFullScreen() ? 'Mobile' : ''}`;
+
+        const { [key]: keyRect } = embeddedRects;
+        this.previousHand.setRect = keyRect.previousHand;
+        this.previousAction.setRect = keyRect.previousAction;
+        this.play.setRect = keyRect.play;
+        this.nextAction.setRect = keyRect.nextAction;
+        this.nextHand.setRect = keyRect.nextHand;
+    }
+
+    async toogleFullWindowedImages() {
+
+        const row = fns.isFullScreen() ? 1 : 0;
+
+        await this.fullWindowed.setImages(this.images.fullWindowed, { row });
+
+        this.fullWindowed.draw();
+
     }
 }

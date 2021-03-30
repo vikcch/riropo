@@ -1,0 +1,45 @@
+﻿PokerStars Hand #76673721561:  Hold'em No Limit ($0.01/$0.02 USD) - 2012/03/05 9:40:04 WET [2012/03/05 4:40:04 ET]
+Table 'Natalie II' 6-max Seat #3 is the button
+Seat 1: Repede81 ($1.03 in chips) 
+Seat 2: Dimon Kers ($1.89 in chips) 
+Seat 3: Hotei777 ($2.87 in chips) 
+Seat 4: todd baha ($0.89 in chips) 
+Seat 5: jackass589 ($0.86 in chips) 
+Seat 6: vikcch ($5.66 in chips) 
+todd baha: posts small blind $0.01
+jackass589: posts big blind $0.02
+Dimon Kers: posts small & big blinds $0.03
+*** HOLE CARDS ***
+Dealt to vikcch [Jc 3d]
+vikcch: folds 
+Repede81: folds 
+Dimon Kers: checks 
+Hotei777: folds 
+todd baha: calls $0.01
+jackass589: checks 
+*** FLOP *** [6d 7d 2s]
+todd baha: bets $0.02
+jackass589: folds 
+Dimon Kers: calls $0.02
+*** TURN *** [6d 7d 2s] [Ad]
+todd baha: checks 
+Dimon Kers: checks 
+*** RIVER *** [6d 7d 2s Ad] [Ac]
+todd baha: checks 
+Dimon Kers: checks 
+*** SHOW DOWN ***
+todd baha: shows [Th Ks] (a pair of Aces)
+Dimon Kers: mucks hand 
+todd baha collected $0.11 from pot
+*** SUMMARY ***
+Total pot $0.11 | Rake $0 
+Board [6d 7d 2s Ad Ac]
+Seat 1: Repede81 folded before Flop (didn't bet)
+Seat 2: Dimon Kers mucked [Jh Qs]
+Seat 3: Hotei777 (button) folded before Flop (didn't bet)
+Seat 4: todd baha (small blind) showed [Th Ks] and won ($0.11) with a pair of Aces
+Seat 5: jackass589 (big blind) folded on the Flop
+Seat 6: vikcch folded before Flop (didn't bet)
+
+
+

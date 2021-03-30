@@ -16,6 +16,7 @@ import searchHand from '@/assets/images/search-hand.png';
 import clearHandFilter from '@/assets/images/clear-button-28x28.png';
 import logo from '@/assets/images/logo-orange-174x26-30-opacy.png';
 import openShareButtons from '@/assets/images/open-share-hand-446x58-223x29.png';
+import fullWindowed from '@/assets/images/full-windowed-26x24-52x48.png';
 
 const getImage = async function (file) {
 
@@ -34,8 +35,6 @@ export default {
 
         try {
 
-            console.time('await total');
-
             const arrFiles = [
                 getImage(background),
                 getImage(navigation),
@@ -52,7 +51,8 @@ export default {
                 getImage(searchHand),
                 getImage(clearHandFilter),
                 getImage(logo),
-                getImage(openShareButtons)
+                getImage(openShareButtons),
+                getImage(fullWindowed)
             ];
 
             const r = await Promise.all(arrFiles);
@@ -90,12 +90,9 @@ export default {
 
             images.searchHand = r[12];
             images.clearHandFilter = r[13];
-
             images.logo = r[14];
-
             images.openShareButtons = r[15];
-
-            console.timeEnd('await total');
+            images.fullWindowed = r[16];
 
             return images;
 

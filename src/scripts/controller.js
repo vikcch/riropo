@@ -24,10 +24,15 @@ export default class Controller {
             canvasMouseDown: this.handlerCanvas_onMouseDown,
             canvasMouseUp: this.handlerCanvas_onMouseUp,
             canvasMouseMove: this.handlerCanvas_onMouseMove,
-            canvasKeyUp: this.handlerCanvas_onKeyUp
+            canvasKeyUp: this.handlerCanvas_onKeyUp,
+            canvasFullscreenchange: this.handlerCanvas_onFullscreenchange,
+            fullscreen: this.handlerFullscreen_onClick
         });
 
         this.view.bindEmbeddedControls({
+            openHH: {
+                click: this.handlerOpenHH_onClick
+            },
             previousHand: {
                 click: this.handlerPreviousHand_onClick,
             },
@@ -58,6 +63,9 @@ export default class Controller {
             },
             shareHand: {
                 click: this.handlerShareHand_onClick
+            },
+            fullWindowed: {
+                click: this.handlerFullWindowed_onClick
             }
         });
 
@@ -112,15 +120,12 @@ export default class Controller {
             };
         };
 
-        const isFullScreen = !!(document.fullscreenElement || document.webkitFullscreenElement ||
-            document.mozFullScreenElement);
-
-        const mousePoint = isFullScreen ? fullScreen() : windowed();
+        const mousePoint = fns.isFullScreen() ? fullScreen() : windowed();
 
         Controller.mousePoint = mousePoint;
     }
 
-    async handLoad(log) {
+    async handLoad(log, { fromDB } = {}) {
 
         this.isLoading = true;
 
@@ -148,9 +153,18 @@ export default class Controller {
 
         this.view.resetHandSearchFilterVisibility();
 
-        this.view.enableShareHand();
+        this.view.enableShareHand({ fromDB });
 
         this.isLoading = false;
+    }
+
+    handlerOpenHH_onClick = () => {
+
+        // NOTE:: Existem dois controlos:
+        // * openHH - Embedded button, quando clicado (este evento) triga o "loadHH"
+        // * loadHH - `<input type="file" hidden>` o evento change lê o file
+
+        this.view.loadHH.click();
     }
 
     handlerLoadHandHistory_onChange = (event) => {
@@ -212,8 +226,6 @@ export default class Controller {
 
         if (found) found.hover(mousePoint);
 
-        this.view.coordsDiv.innerHTML = e.offsetX;
-
         const { hero } = this.model;
         const { tableMax } = { ...this.model.mainInfo };
 
@@ -249,8 +261,39 @@ export default class Controller {
         }
     }
 
+    handlerCanvas_onFullscreenchange = () => {
+
+        this.view.toogleFullWindowedImages();
+
+        if (!fns.isMobile()) return;
+
+        this.view.toogleNavigationKeysSize();
+
+        const history = this.model.getHistory();
+
+        this.view.render(history, this.model.mainInfo);
+    }
+
+    handlerFullscreen_onClick = () => {
+
+        // NOTE:: Existem dois controlos:
+        // * fullWindowed - Embedded button, para desktop
+        // * fullscrenn - `<button hidden>` para mobile
+
+        this.handlerFullWindowed_onClick();
+    }
 
     //#region EmbeddedControls
+
+    handlerFullWindowed_onClick = () => {
+
+        const { canvas } = this.view;
+
+        if (canvas.requestFullscreen === undefined) return;
+
+        if (fns.isFullScreen()) document.exitFullscreen();
+        else canvas.requestFullscreen();
+    }
 
     handlerHandsList_onClick = handIndex => {
 
@@ -261,6 +304,8 @@ export default class Controller {
         const { history, enables } = this.model.navigateTo(handIndex);
 
         this.view.updateChat(history, nextHand);
+
+        this.view.enableShareHand();
 
         this.view.render(history, this.model.mainInfo);
 

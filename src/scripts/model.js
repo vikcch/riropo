@@ -79,14 +79,11 @@ export default class Model {
 
                 const { log } = data;
 
-                if (log.includes('\r\n')) controller.handLoad(log);
+                const isSecure = log.includes('\r\n');
 
-                else {
+                const secureLog = isSecure ? log : log.replace(/\n/g, '\r\n');
 
-                    const secureLog = log.replace(/\n/g, '\r\n');
-
-                    controller.handLoad(secureLog);
-                }
+                controller.handLoad(secureLog, { fromDB: true });
 
             } catch (err) {
 

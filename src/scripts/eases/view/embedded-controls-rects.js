@@ -2,7 +2,15 @@ import render from '@/scripts/eases/view/render/index';
 
 const tableRect = render.rects.table;
 
+const phi = 1.618;
+
 export default {
+
+    openHH: {
+        x: 2 + tableRect.x,
+        y: 2 + tableRect.y,
+        width: 223, height: 29
+    },
 
     navigation: {
 
@@ -63,5 +71,40 @@ export default {
         x: tableRect.x + tableRect.width - 227,
         y: tableRect.y + tableRect.height - 33,
         width: 223, height: 29
+    },
+
+    navigationMobile: {
+
+        previousHand: {
+            x: 342 + tableRect.x,
+            y: 464 + tableRect.y,
+            width: 50 * phi, height: 28 * phi
+        },
+        previousAction: {
+            x: 432 + tableRect.x,
+            y: 464 + tableRect.y,
+            width: 50 * phi, height: 28 * phi
+        },
+        play: {
+            x: 522 + tableRect.x,
+            y: 464 + tableRect.y,
+            width: 50 * phi, height: 28 * phi
+        },
+        nextAction: {
+            x: 612 + tableRect.x,
+            y: 464 + tableRect.y,
+            width: 50 * phi, height: 28 * phi
+        },
+        nextHand: {
+            x: 702 + tableRect.x,
+            y: 464 + tableRect.y,
+            width: 50 * phi, height: 28 * phi
+        }
+    },
+
+    fullWindowed: {
+        x: 753 + tableRect.x,
+        y: 410 + tableRect.y,
+        width: 26, height: 24
     }
 };

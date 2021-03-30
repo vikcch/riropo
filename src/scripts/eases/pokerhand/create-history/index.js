@@ -13,12 +13,17 @@ import enums from '@/scripts/units/enums';
  */
 const getPostsLines = lines => {
 
-    // PokerStars Hand #206007536567:  Hold'em No Limit (€0.01/€0.02 EUR) - 2019/11/10 1:11:59 WET [2019/11/09 20:11:59 ET]
-    // Table 'Akiyama II' 6-max Seat #5 is the button
-    // Seat 2: vikcch (€2 in chips) 
-    // Seat 5: ruipinho1 (€5.60 in chips) 
-    // ruipinho1: posts small blind €0.01
-    // vikcch: posts big blind €0.02
+    // PokerStars Hand #76673721561:  Hold'em No Limit ($0.01/$0.02 USD) - 2012/03/05 9:40:04 WET [2012/03/05 4:40:04 ET]
+    // Table 'Natalie II' 6-max Seat #3 is the button
+    // Seat 1: Repede81 ($1.03 in chips) 
+    // Seat 2: Dimon Kers ($1.89 in chips) 
+    // Seat 3: Hotei777 ($2.87 in chips) 
+    // Seat 4: todd baha ($0.89 in chips) 
+    // Seat 5: jackass589 ($0.86 in chips) 
+    // Seat 6: vikcch ($5.66 in chips) 
+    // todd baha: posts small blind $0.01
+    // jackass589: posts big blind $0.02
+    // Dimon Kers: posts small & big blinds $0.03
     // *** HOLE CARDS ***
 
     const holeCardsLineCount = lines.indexOf('*** HOLE CARDS ***');

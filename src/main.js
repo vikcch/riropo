@@ -2,18 +2,4 @@ import Controller from './scripts/controller';
 import Model from './scripts/model';
 import View from '@/scripts/view';
 
-const controller = new Controller(new Model(), new View());
-
-const nextActionBtn = document.querySelector('#next-action');
-
-
-nextActionBtn.addEventListener('click', function () {
-
-    const canvas = document.querySelector('#canvas');
-    canvas.requestFullscreen();
-});
-
-import img from '@/assets/images/empty-seat-90x90.png';
-
-const merda = document.querySelector('#merda');
-merda.src = img;
+new Controller(new Model(), new View());

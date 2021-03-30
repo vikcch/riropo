@@ -18,7 +18,6 @@ const rects = {
             y: 180
         };
     }
-
 };
 
 export default {
@@ -30,7 +29,7 @@ export default {
      */
     render(history, mainInfo, handFiltered) {
 
-        const { tableMax, cashSign, blinds } = mainInfo;
+        const { tableMax, cashSign, blinds } = { ...mainInfo };
 
         mainInfoBridge.render.call(this, mainInfo);
 

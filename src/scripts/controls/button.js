@@ -49,6 +49,17 @@ export default class Button {
         else this.draw();
     }
 
+    /**
+     * @param {{x:number,y:number,width:number,height:number}}
+     */
+    set setRect({ x, y, width, height }) {
+
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
     get isHidden() {
 
         return this.state === states.hidden;
@@ -170,7 +181,7 @@ export default class Button {
         const x = this.x + (this.isPressed ? 1 : 0);
         const y = this.y + (this.isPressed ? 1 : 0);
 
-        this.context.drawImage(this.images[state], x, y);
+        this.context.drawImage(this.images[state], x, y, this.width, this.height);
     }
 
     drawBackground() {
