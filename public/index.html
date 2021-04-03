@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="data:" type="image/x-icon">
-    <title>Document</title>
+    <title>RIRIPO - Poker Replayer Online</title>
+    <script src="./hh_for_replayer.js"></script>
 
     <style>
         * {
@@ -31,8 +32,14 @@
             pointer-events: none;
         }
 
+        #mobile-controls {
+            text-align: center;
+            padding: 8px;
+        }
+
         .mobile-button {
             padding: 16px 24px;
+            font-size: 14px;
         }
     </style>
 
@@ -43,6 +50,10 @@
         <strong>We're sorry but rir doesn't work properly without JavaScript enabled. Please enable it to
             continue.</strong>
     </noscript>
+
+    <!-- NOTE:: No site replayer.winningpokerhud.com obtenho o size da pagina -->
+    <!-- pelo size do #canvas e pelo getBoundingClientRect de #mobile-controls -->
+
     <div id="canvas-wrapper">
 
         <div id="canvas-container">
@@ -52,11 +63,12 @@
         <canvas id="canvas" tabindex="0"> </canvas>
     </div>
 
-    <div>
+    <div id="mobile-controls">
         <input id="load-hand-history" class="mobile-button" type="file" hidden>
 
-        <button id="fullscreen" class="mobile-button" hidden>fullscreen</button>
+        <button id="load-hand-history-bogus" class="mobile-button" hidden>Open Hand History</button>
 
+        <button id="fullscreen" class="mobile-button" hidden>Fullscreen</button>
     </div>
 
 </body>

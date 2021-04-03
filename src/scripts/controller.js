@@ -26,7 +26,8 @@ export default class Controller {
             canvasMouseMove: this.handlerCanvas_onMouseMove,
             canvasKeyUp: this.handlerCanvas_onKeyUp,
             canvasFullscreenchange: this.handlerCanvas_onFullscreenchange,
-            fullscreen: this.handlerFullscreen_onClick
+            fullscreen: this.handlerFullscreen_onClick,
+            loadHHBogus: this.handlerOpenHH_onClick
         });
 
         this.view.bindEmbeddedControls({
@@ -69,12 +70,15 @@ export default class Controller {
             }
         });
 
-        const tryLoadFromOnlineDB = () => {
+        const tryPreLoad = () => {
 
-            this.model.tryLoadFromOnlineDB(this);
+            const isFile = window.location.protocol === 'file:';
+
+            if (isFile) this.model.tryLoadFromHardDrive(this)
+            else this.model.tryLoadFromOnlineDB(this);
         }
 
-        this.view.setImages(tryLoadFromOnlineDB);
+        this.view.setImages(tryPreLoad);
     }
 
     /**
@@ -327,6 +331,8 @@ export default class Controller {
     handleSearchHand_onClick = () => {
 
         const hand = this.view.handsList.filterItems();
+
+        // STOPSHIP:: não deixar passar para outras hands quando se filtra
 
         if (hand) {
 

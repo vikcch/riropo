@@ -62,9 +62,9 @@ const legend = function () {
     this.context.textBaseline = 'middle';
     this.context.fillStyle = '#f6d37f';
 
-    this.context.fillText('2-10 BB', x + 30, y + 8);
-    this.context.fillText('10-20 BB', x + 30, y + 20);
-    this.context.fillText('20+ BB', x + 30, y + 32);
+    this.context.fillText('2-10 BB', x + 30, y + 9);
+    this.context.fillText('10-20 BB', x + 30, y + 21);
+    this.context.fillText('20+ BB', x + 30, y + 33);
 };
 
 const version = function () {
@@ -73,7 +73,7 @@ const version = function () {
 
     this.context.font = '11px consolas';
 
-    const text = '';
+    const text = 'RIROPO v0.9.0';
 
     this.context.textAlign = 'left';
     this.context.fillStyle = '#ffffe1';

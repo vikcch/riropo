@@ -7,6 +7,7 @@ import View from "@/scripts/view";
 import Controller from "@/scripts/controller";
 import biz from "./units/biz";
 import fxnl from "./units/fxnl";
+import TextDecoder from '@/scripts/extra/text-encoder-text-decoder';
 
 export default class Model {
 
@@ -32,6 +33,19 @@ export default class Model {
         const isDev = href.includes('localhost') || href.includes('127.0.0.1');
 
         return isDev ? prefixDev : prefixProd;
+    }
+
+    tryLoadFromHardDrive(controller) {
+
+        const u_atob = ascii => {
+            return Uint8Array.from(atob(ascii), c => c.charCodeAt(0));
+        };
+
+        if (!window.hh_hard_drive) return;
+
+        const decoded = new TextDecoder().decode(u_atob(window.hh_hard_drive));
+
+        controller.handLoad(decoded.replace(/\\u20AC/g, '€'));
     }
 
     /**
@@ -110,11 +124,15 @@ export default class Model {
             .map(v => biz.getOrdinalCardIndex(v))
             .join('-');
 
+        const isFile = window.location.protocol === 'file:';
+
+        const origem = `riropo-${isFile ? 'desktop' : 'site'}`;
+
         const body = JSON.stringify({
             myrequest: 'send_data',
             hero_js: heroName,
             log_js: log,
-            origem_js: 'replayer-site',
+            origem_js: origem,
             descripton_js: this.mainInfo.getDescription(),
             holecards_js: holecards
         });
@@ -175,7 +193,10 @@ export default class Model {
 
         });
 
-        const arrayOfHands = sessionLog.split(/\r\n\r\n\r\n\r\n/).filter(Boolean);
+        // NOTE:: `filter` para ignorar possiveis "enters" a mais no fim
+        const arrayOfHands = sessionLog
+            .split(/\r\n\r\n\r\n\r\n/)
+            .filter(v => v.length > '\r\n\r\n'.length);
 
         const jagged = arrayOfHands.map(x => x.split(/\r\n/));
 

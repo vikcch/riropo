@@ -18,6 +18,7 @@ export default class View {
     constructor() {
 
         this.loadHH = document.querySelector('#load-hand-history');
+        this.loadHHBogus = document.querySelector('#load-hand-history-bogus');
         this.fullscreen = document.querySelector('#fullscreen');
 
         /** @type {HTMLCanvasElement} */
@@ -153,6 +154,7 @@ export default class View {
         this.canvas.addEventListener('keyup', handlers.canvasKeyUp);
         this.canvas.addEventListener('fullscreenchange', handlers.canvasFullscreenchange);
         this.fullscreen.addEventListener('click', handlers.fullscreen);
+        this.loadHHBogus.addEventListener('click', handlers.loadHHBogus);
     }
 
     bindEmbeddedControls(handlers) {
@@ -200,7 +202,7 @@ export default class View {
 
         if (!fns.isMobile()) return;
 
-        this.loadHH.removeAttribute('hidden');
+        this.loadHHBogus.removeAttribute('hidden');
         this.fullscreen.removeAttribute('hidden');
 
         this.openHH.setState = buttonStates.hidden;

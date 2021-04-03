@@ -1,0 +1,40 @@
+﻿PokerStars Hand #218373046316: Tournament #2997696817, €0.90+€0.10 EUR Hold'em No Limit - Level IV (50/100) - 2020/09/12 18:00:51 WET [2020/09/12 13:00:51 ET]
+Table '2997696817 14' 6-max Seat #5 is the button
+Seat 1: jonhCash_13 (15793 in chips) 
+Seat 2: kakekton (5034 in chips) 
+Seat 3: AAlmostNuts (33120 in chips) 
+Seat 4: Serpe37 (25128 in chips) 
+Seat 5: vikcch (15447 in chips) 
+Seat 6: AAfreddyAA (9730 in chips) 
+jonhCash_13: posts the ante 10
+kakekton: posts the ante 10
+AAlmostNuts: posts the ante 10
+Serpe37: posts the ante 10
+vikcch: posts the ante 10
+AAfreddyAA: posts the ante 10
+AAfreddyAA: posts small blind 50
+jonhCash_13: posts big blind 100
+*** HOLE CARDS ***
+Dealt to vikcch [Qh 8s]
+kakekton: folds 
+AAlmostNuts: folds 
+Serpe37: folds 
+vikcch: raises 100 to 200
+AAfreddyAA: folds 
+jonhCash_13 has timed out while disconnected
+jonhCash_13: folds 
+jonhCash_13 is sitting out
+Uncalled bet (100) returned to vikcch
+vikcch collected 310 from pot
+vikcch: doesn't show hand 
+*** SUMMARY ***
+Total pot 310 | Rake 0 
+Seat 1: jonhCash_13 (big blind) folded before Flop
+Seat 2: kakekton folded before Flop (didn't bet)
+Seat 3: AAlmostNuts folded before Flop (didn't bet)
+Seat 4: Serpe37 folded before Flop (didn't bet)
+Seat 5: vikcch (button) collected (310)
+Seat 6: AAfreddyAA (small blind) folded before Flop
+
+
+

@@ -37,3 +37,9 @@
 `Dimon Kers: posts small & big blinds $0.03`
 
 [Natalie II](HH20120305%20Natalie%20II%20-%20$0.01-$0.02%20-%20USD%20No%20Limit%20Hold'em.txt)
+
+---
+
+`jonhCash_13 has timed out while disconnected`
+
+[T2997696817](HH20200912%20T2997696817%20No%20Limit%20Hold'em%20€0.90%20+%20€0.10.txt)
