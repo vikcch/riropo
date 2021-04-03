@@ -92,7 +92,7 @@ export default class HandsList extends Control {
 
     /**
      * 
-     * @returns {undefined|string} Ex: "AK" 
+     * @returns {undefined|{hand:string, indexs:number[]}} Ex: "AK" 
      */
     filterItems() {
 
@@ -152,7 +152,10 @@ export default class HandsList extends Control {
 
         this.draw();
 
-        return cardsInput.join('');
+        return {
+            hand: cardsInput.join(''),
+            indexs: this.list.map(v => v.handIndex)
+        };
     }
 
     clearFilter() {

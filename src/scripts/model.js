@@ -14,6 +14,7 @@ export default class Model {
     constructor() {
 
         this.handHistories = [];
+        this.filteredIndexsHH = null;
 
         this.tracker = {
 
@@ -242,12 +243,18 @@ export default class Model {
 
     navigation(key) {
 
-        const work = {
+        const shiftHand = value => {
 
-            previousHand: () => {
-                this.tracker.hand--;
-                this.tracker.progress = 0;
-            },
+            const source = this.fullOrFilteredHH;
+
+            const index = source.findIndex(v => v.index === this.tracker.hand);
+
+            this.tracker.hand = source[index + value].index;
+            this.tracker.progress = 0;
+        };
+
+        const work = {
+            previousHand: () => shiftHand(-1),
             previousAction: () => this.tracker.progress--,
             nextAction: () => {
 
@@ -258,14 +265,10 @@ export default class Model {
                 const maxProgress = hand.histories.length - 1;
 
                 if (this.tracker.progress > maxProgress) {
-                    this.tracker.hand++;
-                    this.tracker.progress = 0;
+                    shiftHand(+1);
                 }
             },
-            nextHand: () => {
-                this.tracker.hand++;
-                this.tracker.progress = 0;
-            }
+            nextHand: () => shiftHand(+1)
         };
 
         work[key].call();
@@ -301,9 +304,11 @@ export default class Model {
 
         if (!this.handHistories.length) return {};
 
-        const lastHandIndex = this.handHistories.length - 1;
+        const source = this.fullOrFilteredHH;
 
-        const lastHandMaxProgress = rear(this.handHistories).histories.length - 1;
+        const lastHandIndex = rear(source).index;
+
+        const lastHandMaxProgress = rear(source).histories.length - 1;
 
         const isLastHand = this.tracker.hand === lastHandIndex;
 
@@ -312,7 +317,7 @@ export default class Model {
         const nextAction = !(isLastHand && isLastProgress);
 
         return {
-            previousHand: this.tracker.hand > 0,
+            previousHand: this.tracker.hand > source[0].index,
             previousAction: this.tracker.progress > 0,
             play: !(isLastHand && isLastProgress),
             nextAction,
@@ -361,5 +366,16 @@ export default class Model {
     get isVeryLastAction() {
 
         return !this.getNavigationEnables().play;
+    }
+
+    get fullOrFilteredHH() {
+
+        const isFiltered = !!this.filteredIndexsHH;
+
+        const filteredHandCB = v => this.filteredIndexsHH.includes(v.index);
+
+        return isFiltered
+            ? this.handHistories.filter(filteredHandCB)
+            : this.handHistories;
     }
 }

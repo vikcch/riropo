@@ -14,7 +14,8 @@ export default class Controller {
      */
     constructor(model, view) {
 
-        this.isLoading = false;
+        // Para log e imagens
+        this.isLoading = true;
 
         this.model = model;
         this.view = view;
@@ -70,15 +71,15 @@ export default class Controller {
             }
         });
 
-        const tryPreLoad = () => {
+        const tryPreLoadLog = () => {
 
             const isFile = window.location.protocol === 'file:';
 
             if (isFile) this.model.tryLoadFromHardDrive(this)
             else this.model.tryLoadFromOnlineDB(this);
-        }
+        };
 
-        this.view.setImages(tryPreLoad);
+        this.view.setImages(tryPreLoadLog, this);
     }
 
     /**
@@ -330,21 +331,27 @@ export default class Controller {
 
     handleSearchHand_onClick = () => {
 
-        const hand = this.view.handsList.filterItems();
+        const r = this.view.handsList.filterItems();
 
-        // STOPSHIP:: não deixar passar para outras hands quando se filtra
+        this.model.filteredIndexsHH = r?.indexs;
 
-        if (hand) {
+        if (r) {
 
             this.view.toogleHandSearchFilterVisibility();
 
             const history = this.model.getHistory();
 
-            this.view.render(history, this.model.mainInfo, hand);
+            this.view.render(history, this.model.mainInfo, r.hand);
+
+            const enables = this.model.getNavigationEnables();
+
+            this.view.updateNavigation(enables);
         }
     }
 
     handleClearHandsFilter_onClick = () => {
+
+        this.model.filteredIndexsHH = null;
 
         this.view.handsList.clearFilter();
 
