@@ -1,14 +1,10 @@
-# RIROPO - Poker Replayer Online
+# RIROPO - Online Poker Replayer
 
 <p align="center">
   <a href="https://replayer.winningpokerhud.com/">
     <img src="./docs/riropo-logo.png" alt="riropo-poker-replayer">
   </a>
 </p>
-
-<h1 align="center">
-RIROPO is an Online Poker Replayer
-</h1>
 
 <p align="center">
   <a href="https://replayer.winningpokerhud.com/">
