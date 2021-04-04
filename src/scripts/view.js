@@ -142,7 +142,6 @@ export default class View {
 
         await this.fullWindowed.setImages(this.images.fullWindowed, { row: 0 });
 
-        // STOPSHIP:: DA ERRO SE FIZER REFRESH DA PAGINA E O MOUSE ESTIVER EM
         this.showBigBlinds.setImage();
 
         this.resetScreen();
