@@ -48,6 +48,8 @@ const getGame = lines => {
     /** @type {string} */
     const firstLine = head(lines);
 
+    if (firstLine.includes("Hold'em No Limit")) return "Hold'em No Limit";
+
     const isTournament = firstLine.includes('Tournament #');
 
     if (isTournament) {

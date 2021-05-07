@@ -4,7 +4,8 @@ import { PlayerT } from '@/scripts/units/player';
 import View from '@/scripts/view';
 import displayPositions from '@/scripts/units/display-positions';
 import biz from '@/scripts/units/biz';
-import easeRender from '@/scripts/eases/view/render/index'
+import easeRender from '@/scripts/eases/view/render/index';
+import embeddedRects from '@/scripts/eases/view/embedded-controls-rects';
 
 const frames = 10;
 
@@ -136,11 +137,15 @@ const draw = function (makeChipsOffSetsAbsx, text, winner, tableMax) {
     // NOTE:: Os metodos translate() e setTransform() não afectam
     // getImageData e putImageData
     const { table: tableRect } = easeRender.rects;
+    const { openHH: openHHRect } = embeddedRects;
+    const openHHRectBottom = openHHRect.y + openHHRect.height;
 
     // NOTE:: Os embededed controls e legenda, tem de ficar abaixo da linha (370)
+    // Adicionado o desconto do button 'OPEN HAND HISTORY' (desaparecia quando 
+    // o pote era arrastado)
 
     const background = winner
-        ? this.context.getImageData(tableRect.x, tableRect.y, 792, 370)
+        ? this.context.getImageData(tableRect.x, openHHRectBottom, 792, 340)
         : null;
 
     const seatFixed = getDisplayPosition(winner, tableMax)?.seatFixed;
@@ -156,7 +161,7 @@ const draw = function (makeChipsOffSetsAbsx, text, winner, tableMax) {
 
         if (count > 0) {
 
-            this.context.putImageData(background, tableRect.x, tableRect.y);
+            this.context.putImageData(background, tableRect.x, openHHRectBottom);
 
             this.context.setTransform(1, 0, 0, 1, tableRect.x, tableRect.y);
 

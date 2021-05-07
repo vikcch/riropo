@@ -94,6 +94,18 @@ describe('ease-pokerhand', function () {
 
             assert.deepStrictEqual(fn(lines), anticipate);
         });
+
+        it('should return the game', function () {
+
+            // Natural8 - sala 
+            const lines = [
+                "Poker Hand #TM619196965: Tournament #25313659, L-62: $25 Mini Main Event Hold'em No Limit   - Level13(600/1,200) - 2021/04/16 20:20:03",
+            ];
+
+            const anticipate = "Hold'em No Limit";
+
+            assert.deepStrictEqual(fn(lines), anticipate);
+        });
     });
 
     describe('#4 getStakes', function () {
@@ -140,6 +152,18 @@ describe('ease-pokerhand', function () {
             ];
 
             const anticipate = "Freeroll";
+
+            assert.deepStrictEqual(fn(lines), anticipate);
+        });
+
+        it('should return the stakes', function () {
+
+            // Natural8 - sala 
+            const lines = [
+                "Poker Hand #TM619196965: Tournament #25313659, L-62: $25 Mini Main Event Hold'em No Limit   - Level13(600/1,200) - 2021/04/16 20:20:03",
+            ];
+
+            const anticipate = "$25";
 
             assert.deepStrictEqual(fn(lines), anticipate);
         });

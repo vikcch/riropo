@@ -8,6 +8,7 @@ import Controller from "@/scripts/controller";
 import biz from "./units/biz";
 import fxnl from "./units/fxnl";
 import TextDecoder from '@/scripts/extra/text-encoder-text-decoder';
+import easeTranspiler from '@/scripts/eases/transpile/index';
 
 export default class Model {
 
@@ -121,6 +122,7 @@ export default class Model {
 
         const log = this.lines.join('\r\n').concat('\r\n\r\n\r\n');
         const heroName = this.hero.name;
+        const room = this.getRoom();
         const holecards = this.hero.holeCards
             .map(v => biz.getOrdinalCardIndex(v))
             .join('-');
@@ -135,7 +137,8 @@ export default class Model {
             log_js: log,
             origem_js: origem,
             descripton_js: this.mainInfo.getDescription(),
-            holecards_js: holecards
+            holecards_js: holecards,
+            room_js: room
         });
 
         const headers = new Headers({
@@ -219,7 +222,12 @@ export default class Model {
      */
     logValidation(sessionLog) {
 
-        const isPokerStars = value => value.startsWith('PokerStars ');
+        const room = value => {
+
+            const starts = ['PokerStars ', 'Poker Hand #'];
+
+            return starts.some(v => value.startsWith(v));
+        };
 
         const isTolerableTableMax = value => {
 
@@ -228,9 +236,15 @@ export default class Model {
             return target.indexOf('10-max') === -1;
         };
 
-        const r = fxnl.validator(isPokerStars, isTolerableTableMax)(sessionLog);
+        const r = fxnl.validator(room, isTolerableTableMax)(sessionLog);
 
-        if (!r) alert('Invalid file\n\n- Only PokerStart hand history is allowed\n- 10-max tables are not allowed');
+        if (!r) alert(`Invalid file
+        
+        Supported Rooms:
+        - PokerStars
+        - Natural8
+
+        - 10-max tables are not allowed`);
 
         return r;
     }
@@ -377,5 +391,22 @@ export default class Model {
         return isFiltered
             ? this.handHistories.filter(filteredHandCB)
             : this.handHistories;
+    }
+
+
+    transpileToPokerStars(log) {
+
+        return easeTranspiler.transpile(log);
+    }
+
+    getRoom() {
+
+        const [head] = this.lines;
+
+        if (!head) return;
+
+        if (head.startsWith('PokerStars ')) return 'PokerStars';
+
+        if (head.startsWith('Poker Hand #')) return 'Natural8';
     }
 }

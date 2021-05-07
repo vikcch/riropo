@@ -34,6 +34,8 @@ See it on action: [https://replayer.winningpokerhud.com/](https://replayer.winni
 
 * PokerStars
 
+* Natural8
+
 ## Related Projects
 
 * Free HUD - [WINNING POKER HUD](https://winningpokerhud.com/)

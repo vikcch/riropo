@@ -136,11 +136,13 @@ export default class Controller {
 
         this.view.resetScreen();
 
-        if (!this.model.logValidation(log)) return;
+        if (!this.model.logValidation(log)) return this.isLoading = false;
 
         this.view.handsList.removeAll();
 
-        await this.model.processLog(log, this.view);
+        const transpiledLog = this.model.transpileToPokerStars(log);
+
+        await this.model.processLog(transpiledLog, this.view);
 
         const history = this.model.getFirstHistory();
 
@@ -168,6 +170,8 @@ export default class Controller {
         // NOTE:: Existem dois controlos:
         // * openHH - Embedded button, quando clicado (este evento) triga o "loadHH"
         // * loadHH - `<input type="file" hidden>` o evento change lê o file
+
+        this.view.stopPlayback();
 
         this.view.loadHH.click();
     }
@@ -446,6 +450,8 @@ export default class Controller {
     }
 
     handlerShareHand_onClick = async () => {
+
+        this.view.stopPlayback();
 
         const content = await this.model.shareHand();
 
