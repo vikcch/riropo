@@ -140,7 +140,7 @@ export default class Controller {
 
         this.view.handsList.removeAll();
 
-        const transpiledLog = this.model.transpileToPokerStars(log);
+        const transpiledLog = this.model.transpileToPokerStars(log, fromDB);
 
         await this.model.processLog(transpiledLog, this.view);
 

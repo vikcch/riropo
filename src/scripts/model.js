@@ -394,7 +394,9 @@ export default class Model {
     }
 
 
-    transpileToPokerStars(log) {
+    transpileToPokerStars(log, fromDB) {
+
+        if (fromDB) return log;
 
         return easeTranspiler.transpile(log);
     }
