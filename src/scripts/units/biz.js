@@ -29,7 +29,7 @@ const collectedAmount = line => {
 
     const arrSplit = line.split(' ');
 
-    const dirtyValue = rear(arrSplit.filter(x => /\d$/gm.test(x)));
+    const dirtyValue = rear(arrSplit.filter(x => /^(?!pot).*\d$/gm.test(x)));
 
     return pipe(fns.removeMoney, Number)(dirtyValue);
 };
@@ -269,7 +269,7 @@ const filterAllowedLines = lines => {
 
             /\:\sshows\s\[.+\]/,                            // shows
             /\:\smucks\shand$/m,                            // mucks
-            /\scollected\s.+pot$/m,                         // collects
+            /\scollected\s.+pot(\-\d)?$/m,                  // collects
         ];
 
         const fixedLines = [

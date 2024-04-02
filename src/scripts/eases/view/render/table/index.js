@@ -120,7 +120,7 @@ const players = function (history, tableMax, displayValueAbsx) {
         this.context.globalAlpha = 1;
     };
 
-    const isPLO = players.find(x => x.isHero).holeCards.length === 4;
+    const isPLO = players.find(x => x.isHero).holeCards.length >= 4;
 
     players.forEach(player => {
 
@@ -130,7 +130,7 @@ const players = function (history, tableMax, displayValueAbsx) {
 
         const alpha = player.inPlay ? 1 : .4;
         drawImage(emptySeat, displayPosition.emptySeat, alpha);
-        drawImage(status, displayPosition.status);
+        drawImage(status, displayPosition.status, alpha);
 
         drawTextCenter(this.context, player.name, 'white', displayPosition.name);
         const stack = displayValueAbsx(player.mergedStack());

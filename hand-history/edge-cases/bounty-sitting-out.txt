@@ -1,0 +1,54 @@
+PokerStars Hand #229955142562: Tournament #3268208790, �2.30+�2.30+�0.40 EUR Hold'em No Limit - Level XV (300/600) - 2021/09/18 20:32:19 WET [2021/09/18 15:32:19 ET]
+Table '3268208790 4' 9-max Seat #4 is the button
+Seat 1: Dawk1ns (39222 in chips, �8.76 bounty) 
+Seat 2: jinho1976 (19012 in chips, �4.60 bounty) 
+Seat 3: Rhino189 (17813 in chips, �3.45 bounty) 
+Seat 4: fromtardis (18647 in chips, �7.47 bounty) 
+Seat 6: tolino888 (35649 in chips, �8.04 bounty) 
+Seat 7: vikcch (8520 in chips, �2.30 bounty) 
+Seat 8: bonapt (21676 in chips, �3.45 bounty) is sitting out
+Seat 9: horus330 (20932 in chips, �9.20 bounty) 
+Dawk1ns: posts the ante 90
+jinho1976: posts the ante 90
+Rhino189: posts the ante 90
+fromtardis: posts the ante 90
+tolino888: posts the ante 90
+vikcch: posts the ante 90
+bonapt: posts the ante 90
+horus330: posts the ante 90
+tolino888: posts small blind 300
+vikcch: posts big blind 600
+*** HOLE CARDS ***
+Dealt to vikcch [7d Ah]
+bonapt: folds 
+horus330: folds 
+Dawk1ns: folds 
+jinho1976: folds 
+Rhino189: folds 
+fromtardis: folds 
+tolino888: raises 600 to 1200
+vikcch: raises 7230 to 8430 and is all-in
+tolino888: calls 7230
+*** FLOP *** [Js Ad 8c]
+*** TURN *** [Js Ad 8c] [5c]
+*** RIVER *** [Js Ad 8c 5c] [Kc]
+*** SHOW DOWN ***
+tolino888: shows [Qd Ts] (a straight, Ten to Ace)
+vikcch: shows [7d Ah] (a pair of Aces)
+tolino888 collected 17580 from pot
+tolino888 wins �1.15 for eliminating vikcch and their own bounty increases by �1.15 to �9.19
+vikcch finished the tournament in 16th place
+*** SUMMARY ***
+Total pot 17580 | Rake 0 
+Board [Js Ad 8c 5c Kc]
+Seat 1: Dawk1ns folded before Flop (didn't bet)
+Seat 2: jinho1976 folded before Flop (didn't bet)
+Seat 3: Rhino189 folded before Flop (didn't bet)
+Seat 4: fromtardis (button) folded before Flop (didn't bet)
+Seat 6: tolino888 (small blind) showed [Qd Ts] and won (17580) with a straight, Ten to Ace
+Seat 7: vikcch (big blind) showed [7d Ah] and lost with a pair of Aces
+Seat 8: bonapt folded before Flop (didn't bet)
+Seat 9: horus330 folded before Flop (didn't bet)
+
+
+
