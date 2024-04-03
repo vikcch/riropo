@@ -136,11 +136,13 @@ export default class Controller {
 
         this.view.resetScreen();
 
-        if (!this.model.logValidation(log)) return this.isLoading = false;
+        const secureLog = this.model.makeSecureLog(log);
+
+        if (!this.model.logValidation(secureLog)) return this.isLoading = false;
 
         this.view.handsList.removeAll();
 
-        const transpiledLog = this.model.transpileToPokerStars(log, fromDB);
+        const transpiledLog = this.model.transpileToPokerStars(secureLog, fromDB);
 
         await this.model.processLog(transpiledLog, this.view);
 

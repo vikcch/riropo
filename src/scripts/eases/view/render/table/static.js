@@ -73,7 +73,7 @@ const version = function () {
 
     this.context.font = '11px consolas';
 
-    const text = 'RIROPO v0.10.2';
+    const text = 'RIROPO v0.10.3';
 
     this.context.textAlign = 'left';
     this.context.fillStyle = '#ffffe1';

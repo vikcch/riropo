@@ -141,7 +141,7 @@ const players = function (history, tableMax, displayValueAbsx) {
             drawImage(dealer, displayPosition.dealer);
         }
 
-        if (player.inPlay && !player.holeCards) {
+        if (player.inPlay && !player.holeCards && !player.villianMucked) {
 
             drawImage(inPlay, displayPosition.inPlay);
 

@@ -91,16 +91,17 @@ export default {
      * 
      * @param {string[]} lines 
      * @param {number} buttonSeat 
+     * @param {number} gameMode
      * @returns {Player[]} 
      */
-    createPlayers(lines, buttonSeat) {
+    createPlayers(lines, buttonSeat, gameMode) {
 
         const { getPlayersInfoLines, getHeroName, makeTablePositions,
             getPlayerName, getPlayerStack, getPlayerSeat, getPlayerBounty,
             getDealtedHoleCards
         } = createPlayer;
 
-        const playersLines = getPlayersInfoLines(lines);
+        const playersLines = getPlayersInfoLines(lines, gameMode);
 
         const heroName = getHeroName(lines);
 

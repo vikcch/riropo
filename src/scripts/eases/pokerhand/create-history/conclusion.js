@@ -79,10 +79,13 @@ export default {
             const muckedLine = getMuckedLine(lines, player.seat);
 
             if (player.isHero) player.heroMucked = true;
-            
+
             // NOTE:: No live-squeezer escreve: "villian: mucks hand" (hero perpective)
             // Na PokerStars também tem a linha do "mucked [Jh Qs]" (Em Summary)
             else if (muckedLine) player.holeCards = biz.getLineCards(muckedLine);
+
+            // NOTE:: Sem cards em summary (de live-squeezer), oculta "in-play cards"
+            else player.villianMucked = true;
 
             return phase.conclusionMucks;
         }

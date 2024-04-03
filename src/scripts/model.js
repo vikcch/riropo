@@ -249,6 +249,23 @@ export default class Model {
         return r;
     }
 
+    makeSecureLog(log) {
+
+        // NOTE:: PokerStars em tourmanents mudou o log (bug/temporario?), começa com
+        // linha em branco, '\n' em vez de '\r\n', só uma linha em branco entre hands
+        const trimmed = log.trim();
+
+        const isSecure = trimmed.includes('\r\n');
+
+        const isSpaced = trimmed.includes('\r\n\r\n\r\n\r\n');
+
+        const spaced = isSpaced ? trimmed : trimmed.replace(/\n\n/g, '\n\n\n\n');
+
+        const secureLog = isSecure ? spaced : spaced.replace(/\n/g, '\r\n');
+
+        return secureLog;
+    }
+
     resetTracker() {
 
         this.tracker.hand = 0;

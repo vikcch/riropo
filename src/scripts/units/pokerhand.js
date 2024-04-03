@@ -63,11 +63,13 @@ const getGameMode = lines => {
  */
 export default function (lines, index, count) {
 
+    const gameMode = getGameMode(lines);
+
     const buttonSeat = getButtonSeat(lines);
 
     const mainInfo = ease.createMainInfo(lines, index, count);
 
-    const players = ease.createPlayers(lines, buttonSeat);
+    const players = ease.createPlayers(lines, buttonSeat, gameMode);
 
     const histories = ease.createHistories(lines, players);
 
@@ -77,11 +79,11 @@ export default function (lines, index, count) {
 
         playersCount: countPlayers(lines),
         buttonSeat,
-        gameMode: getGameMode(lines),
+        gameMode,
         mainInfo,
         players,
         histories,
-        handsListItem, 
+        handsListItem,
         lines,
         index
     };

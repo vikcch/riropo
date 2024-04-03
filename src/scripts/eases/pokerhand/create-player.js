@@ -5,9 +5,10 @@ import fns from '../../units/fns';
  * Exclui as duas primeiras linhas do log e acaba nos posts
  * 
  * @param {string[]} lines
+ * @param {number} gameMode Tournament: 1, 3
  * @returns {string[]}
  */
-const getPlayersInfoLines = lines => {
+const getPlayersInfoLines = (lines, gameMode) => {
 
     // PokerStars Hand #206007536567:  Hold'em No Limit (€0.01/€0.02 EUR) - 2019/11/10 1:11:59 WET [2019/11/09 20:11:59 ET]
     // Table 'Akiyama II' 6-max Seat #5 is the button
@@ -22,7 +23,12 @@ const getPlayersInfoLines = lines => {
     // Não inclui a linha '*** HOLE CARDS ***'
     const barePlayersLines = lines.slice(2, holeCardsLineCount);
 
-    const test = value => /^Seat\s\d:\s.+\)(|\sis\ssitting\sout)$/m.test(value);
+    const isTournament = [1, 3].includes(gameMode);
+
+    // NOTE:: Em cash não inclui o player na mesa, em tournament tem que fazer "posts"
+    const test = isTournament
+        ? value => /^Seat\s\d:\s.+\)(|\sis\ssitting\sout)$/m.test(value)
+        : value => /^Seat\s\d:\s.+\)$/m.test(value);
 
     return barePlayersLines.filter(x => test(x.trim()));
 };
