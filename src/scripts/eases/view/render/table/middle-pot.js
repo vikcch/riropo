@@ -111,12 +111,23 @@ const drawDragValue = function (chipsOffSets, text, seatFixed) {
     const { x, y, chipsSpan } = head(chipsOffSets);
 
     const textAlign = seatFixed >= 5 ? 'left' : 'right';
+    const offSetX = textAlign === 'left' ? chipsSpan + 4 : -4;
+
+    // NOTE:: Background para diferenciar o valor que fica por cima das cartas
+    // Podia mostrar apenas quando há board
+    if ([2, 8].includes(seatFixed)) {
+
+        this.context.fillStyle = 'black';
+        const textWidth = this.context.measureText(text).width;
+        // NOTE:: valor negativo no "witdh" faz o fillRect para tras
+        const sign = textAlign === 'left' ? 1 : -1;
+        this.context.fillRect(x + offSetX, y + 6, textWidth * sign, 12);
+    }
+
     this.context.textAlign = textAlign;
 
     this.context.textBaseline = 'bottom';
     this.context.fillStyle = 'white';
-
-    const offSetX = textAlign === 'left' ? chipsSpan + 4 : -4;
 
     this.context.fillText(text, x + offSetX, y + 18);
 };

@@ -73,7 +73,9 @@ const version = function () {
 
     this.context.font = '11px consolas';
 
-    const text = 'RIROPO v0.10.3';
+    // NOTE:: Complementado com `vue.config.js`
+    const version = process.env.VUE_APP_VERSION;
+    const text = `RIROPO v${version}`;
 
     this.context.textAlign = 'left';
     this.context.fillStyle = '#ffffe1';
