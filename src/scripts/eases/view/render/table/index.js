@@ -354,7 +354,7 @@ const streetCards = function (streetCards) {
 
         const x = 268 + image.width * index + (index * 4);
 
-        const y = 152;
+        const y = 164;
 
         this.context.drawImage(image, x, y);
     });
@@ -372,7 +372,7 @@ const middlePotValue = function (history, displayValueAbsx) {
 
     if (value === 0) return;
 
-    const point = { x: 400, y: 272 };
+    const point = { x: 400, y: 282 };
 
     const text = displayValueAbsx(value);
 

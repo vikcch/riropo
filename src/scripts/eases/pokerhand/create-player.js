@@ -21,7 +21,9 @@ const getPlayersInfoLines = (lines, gameMode) => {
     const holeCardsLineCount = lines.indexOf('*** HOLE CARDS ***');
 
     // Não inclui a linha '*** HOLE CARDS ***'
-    const barePlayersLines = lines.slice(2, holeCardsLineCount);
+    const barePlayersLines = lines
+        .slice(2, holeCardsLineCount)
+        .filter(v => !v.trim().endsWith('(moved from another table into small blind)'));
 
     const isTournament = [1, 3].includes(gameMode);
 
