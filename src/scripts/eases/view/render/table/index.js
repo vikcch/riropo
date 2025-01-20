@@ -129,8 +129,9 @@ const players = function (history, tableMax, displayValueAbsx) {
         const { emptySeat, status, dealer, inPlay } = this.images;
 
         const alpha = player.inPlay ? 1 : .4;
+        const alphaLight = player.inPlay ? 1 : .55;
         drawImage(emptySeat, displayPosition.emptySeat, alpha);
-        drawImage(status, displayPosition.status, alpha);
+        drawImage(status, displayPosition.status, player.inPlay ? 1 : alphaLight);
 
         drawTextCenter(this.context, player.name, 'white', displayPosition.name);
         const stack = displayValueAbsx(player.mergedStack());
