@@ -237,12 +237,12 @@ export default class Model {
         };
 
         const r = fxnl.validator(room, isTolerableTableMax)(sessionLog);
-
+        
         if (!r) alert(`Invalid file
         
         Supported Rooms:
         - PokerStars
-        - Natural8
+        - GG Poker
 
         - 10-max tables are not allowed`);
 

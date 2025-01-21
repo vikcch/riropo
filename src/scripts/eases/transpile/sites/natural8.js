@@ -2,6 +2,7 @@ import { pipe } from "@/scripts/units/fxnl";
 
 const addGapBetweenHands = value => value.replace(/\n\n\n/gm, '\n\n\n\n');
 
+// NOTE:: Já adiciona `\r\n` no "model.makeSecureLog"
 const addCarriageReturn = value => value.replace(/\n/gm, '\r\n');
 
 const removeExtraDealts = value => value.replace(/^Dealt to .+ \r\n/gm, '');
@@ -38,6 +39,8 @@ const patchShows = value => value.map((handLog) => {
     return others.join('\r\n');
 });
 
+const trimHands = value => value.map(v => v.trim());
+
 const joinHands = value => value.join('\r\n\r\n\r\n\r\n');
 
 /**
@@ -52,9 +55,9 @@ const joinHands = value => value.join('\r\n\r\n\r\n\r\n');
  */
 export default function (log) {
 
-    const r = pipe(addGapBetweenHands, addCarriageReturn,
+    const r = pipe(addGapBetweenHands,
         removeExtraDealts, patchShowdowm, removeFirst,
-        makeArray, patchShows, joinHands
+        makeArray, patchShows, trimHands, joinHands
     )(log);
 
     return r;
