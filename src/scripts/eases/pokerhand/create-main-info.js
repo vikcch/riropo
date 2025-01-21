@@ -178,7 +178,7 @@ const getAnteFormated = lines => {
  */
 const getStraddleFormated = lines => {
 
-    const found = lines.find(x => /:\sposts\sa\sstraddle\s.*\d$/gm.test(x));
+    const found = lines.find(x => /: posts (a )?straddle .*\d$/gm.test(x));
 
     if (!found) return '';
 
